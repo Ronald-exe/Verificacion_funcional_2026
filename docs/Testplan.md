@@ -22,10 +22,8 @@ El DUT corresponde al módulo bs_gnrtr_n_rbtr de Library.sv. Su nombre, sus par�
 
 ---
 
-## 2. Listen las capacidades leyendo el código.
+## 2. Listen las capacidades del codigo.
 
-### 1. Bus de interconexión — `bs_gnrtr_n_rbtr`
- 
 | Bloque | Función | Qué se prueba |
 |---|---|---|
 | `bs_gnrtr_n_rbtr` (top) | Replica `bits` buses independientes, cada uno con `drvrs` terminales | Que cada instancia de bus opera de forma aislada de las demás (si `bits>1`) |
@@ -41,35 +39,69 @@ El DUT corresponde al módulo bs_gnrtr_n_rbtr de Library.sv. Su nombre, sus par�
 | `tri_buf` (bus, `trn_chng`, `bs_bsy`) | Aislamiento eléctrico de las líneas compartidas | Solo el terminal con `bs_grnt` maneja cada línea; los demás quedan en alta impedancia |
 | Sistema completo | Dirección de destino (8 bits altos de `D_in`) | Un paquete es capturado solo por el terminal cuyo `id` coincide |
 | Sistema completo | Broadcast (`bdcst`, por defecto `{8{1'b1}}`) | Un paquete con dirección broadcast es capturado por **todos** los terminales |
+| Sistema completo | Dirección inválida | Un paquete a una dirección que no es ningún `id` ni `bdcst` no lo captura nadie |
+| Reset (`dff_async_rst` en todo el diseño) | Estado conocido tras reset | Todas las máquinas de estado y contadores vuelven a estado inicial de forma asíncrona |
+---
 
+## 3. Paquetes/transfer de comunicacion
 
-### 2. FIFOs — `fifo_flops` (de `fifo.sv`)
+### pck1: Trans_bus
  
-| Bloque | Función | Qué se prueba |
-|---|---|---|
-| `fifo_flops` (entrada, x drvrs) | FIFO de entrada — almacena lo que el terminal quiere transmitir | Push/pop en orden correcto (FIFO), datos no se pierden ni duplican |
-| `fifo_flops` (salida, x drvrs) | FIFO de salida — almacena lo que el terminal recibió del bus | Igual que la de entrada, del lado de recepción |
-| `count` (registro interno) | Contador de ocupación de la FIFO | Incrementa en `push`, decrementa en `pop`, se mantiene igual en `push+pop` simultáneo (`2'b11`) |
-| `pndng` | Bandera de "hay datos disponibles" | `pndng=0` solo cuando `count==0`; `pndng=1` en cualquier otro caso |
-| `full` | Bandera de FIFO llena | `full=1` exactamente cuando `count==depth` |
-| Backpressure — FIFO llena | Comportamiento ante `push` con `count==depth` | El `count` se mantiene igual (no crece más allá de `depth`, según el `case` de `count`); confirmar que no se corrompe ni se pierde el contenido existente |
-| FIFO vacía | Comportamiento ante `pop` con `count==0` | El `count` se mantiene en 0 (no baja de 0); confirmar que `Dout` no entrega dato basura |
-| `prll_d_reg` (registro por posición, dentro de cada etapa de la FIFO) | Desplazamiento del dato en cada `push` (clock del registro = `push`) | El dato avanza una posición por cada `push`, y el `aux_mux`/`aux_mux_or` selecciona correctamente la posición que corresponde a `count` para `Dout` |
-| Reset (`rst`) | Estado conocido tras reset | `count` vuelve a 0; `pndng` y `full` reflejan FIFO vacía |
-
----
-
-## 3. Rastreen el formato del paquete ustedes mismos
-
-Pregunta concreta a responder con el código: **¿qué parte de `D_push`/`D_pop` es dirección y qué parte es dato?**
-
-Pistas de dónde mirar (no la respuesta):
-- Busquen dónde se instancia el controlador de interfaz (`ntrfs_cntrl_n_rbtr` o `ntrfs_cntrl`, según cuál DUT eligieron en el paso 1) y qué le conectan al puerto `D_in`.
-- Ese puerto `D_in` en la instancia va a estar conectado a un *slice* de `D_push` (ej. `D_push[algo:algo]`). Ese slice es su respuesta.
-
-Repitan el ejercicio para confirmar si esa relación cambia con `pckg_sz`, o si siempre son los mismos bits (altos o bajos) sin importar el tamaño del paquete.
-
----
+**Mailbox:** `ant_drvr_mbx` — Agent/Generator → Driver/monitor
+ 
+| Campo | Descripción |
+|---|---|
+| `tipo` | Escritura, lectura, o reset |
+| `id_destino` | Terminal destino (0..drvrs-1) o `bdcst` |
+| `id_origen` | Terminal que transmite |
+| `dato` | Payload a enviar |
+| `largo` | 16, 32 o 64 bits |
+| `retardo` | Tiempo de espera antes de lanzar la transacción |
+ 
+### pck2: Trans_bus_ejecutada
+ 
+**Mailbox:** `drv_chckr_mbx` — Driver/monitor → Checker
+ 
+| Campo | Descripción |
+|---|---|
+| `tipo` | (heredado de pck1) |
+| `id_destino` | (heredado de pck1) |
+| `id_origen` | (heredado de pck1) |
+| `dato_enviado` | Lo que salió del driver |
+| `dato_recibido` | Lo que capturó el monitor en el/los terminal(es) destino |
+| `largo` | (heredado de pck1) |
+| `tiempo_ejecucion` | Ciclo real en que se transmitió (después de esperar el turno del árbitro) |
+ 
+### pck3: Trans_sb
+ 
+**Mailbox:** `chckr_sb_mbx` — Checker → Scoreboard
+ 
+| Campo | Descripción |
+|---|---|
+| `t_envio` | Timestamp de inicio de transmisión |
+| `t_recibido` | Timestamp en que el/los destino(s) capturaron el dato |
+| `latencia` | `t_recibido - t_envio` |
+| `dato` | Dato comparado (enviado vs. recibido) |
+| `tipo` | `Entregado`, `Broadcast_completo`, `DireccionInvalida`, `Colision_arbitraje`, `Rst` |
+ 
+### pck4: Instrucciones_agente
+ 
+**Mailbox:** `tst_agnt_mbx` — Test → Agent/Generator
+ 
+| Campo | Descripción |
+|---|---|
+| `tipo_secuencia` | `Trans_aleatoria`, `Trans_especifica`, `Rafaga_aleatoria`, `Broadcast_forzado`, `Direccion_invalida_forzada` |
+| `n_transacciones` | Cantidad de transacciones a generar |
+| `pckg_sz` | Largo de paquete a usar en esta secuencia (16/32/64) |
+ 
+### pck5: Solicitud_sb
+ 
+**Mailbox:** `tst_sb_mbx` — Test → Scoreboard
+ 
+| Campo | Descripción |
+|---|---|
+| `tipo_reporte` | `Reporte_completo` (CSV de todas las transacciones) o `Retardo_promedio` |
+ 
 
 ## 4. Entiendan el handshake de transmisión/recepción trazando la máquina de estados
 
