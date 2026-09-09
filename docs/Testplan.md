@@ -45,34 +45,20 @@ El DUT corresponde al módulo bs_gnrtr_n_rbtr de Library.sv. Su nombre, sus par�
 
 ## 3. Paquetes/transfer de comunicacion
 
-### pck1: Trans_bus
+## pck1: Trans_bus_ejecutada
  
-**Mailbox:** `ant_drvr_mbx` — Agent/Generator → Driver/monitor
+**Mailbox:** `mon_chckr_mbx` — Monitor → Checker
  
 | Campo | Descripción |
 |---|---|
 | `tipo` | Escritura, lectura, o reset |
 | `id_destino` | Terminal destino (0..drvrs-1) o `bdcst` |
 | `id_origen` | Terminal que transmite |
-| `dato` | Payload a enviar |
-| `largo` | 16, 32 o 64 bits |
-| `retardo` | Tiempo de espera antes de lanzar la transacción |
- 
-### pck2: Trans_bus_ejecutada
- 
-**Mailbox:** `drv_chckr_mbx` — Driver/monitor → Checker
- 
-| Campo | Descripción |
-|---|---|
-| `tipo` | (heredado de pck1) |
-| `id_destino` | (heredado de pck1) |
-| `id_origen` | (heredado de pck1) |
-| `dato_enviado` | Lo que salió del driver |
 | `dato_recibido` | Lo que capturó el monitor en el/los terminal(es) destino |
-| `largo` | (heredado de pck1) |
+| `largo` | 16, 32 o 64 bits |
 | `tiempo_ejecucion` | Ciclo real en que se transmitió (después de esperar el turno del árbitro) |
  
-### pck3: Trans_sb
+## pck2: Trans_sb
  
 **Mailbox:** `chckr_sb_mbx` — Checker → Scoreboard
  
@@ -84,9 +70,9 @@ El DUT corresponde al módulo bs_gnrtr_n_rbtr de Library.sv. Su nombre, sus par�
 | `dato` | Dato comparado (enviado vs. recibido) |
 | `tipo` | `Entregado`, `Broadcast_completo`, `DireccionInvalida`, `Colision_arbitraje`, `Rst` |
  
-### pck4: Instrucciones_agente
+## pck3: Instrucciones_agente
  
-**Mailbox:** `tst_agnt_mbx` — Test → Agent/Generator
+**Mailbox:** `tst_agnt_mbx` — Test → Generator
  
 | Campo | Descripción |
 |---|---|
@@ -94,29 +80,52 @@ El DUT corresponde al módulo bs_gnrtr_n_rbtr de Library.sv. Su nombre, sus par�
 | `n_transacciones` | Cantidad de transacciones a generar |
 | `pckg_sz` | Largo de paquete a usar en esta secuencia (16/32/64) |
  
-### pck5: Solicitud_sb
+## pckP: Trans_esperada
  
-**Mailbox:** `tst_sb_mbx` — Test → Scoreboard
+**Mailbox:** `pred_chckr_mbx` — Predictor (Golden Reference) → Checker
  
 | Campo | Descripción |
 |---|---|
-| `tipo_reporte` | `Reporte_completo` (CSV de todas las transacciones) o `Retardo_promedio` |
+| `id_destino` | Terminal(es) que deberían recibir el paquete (uno o todos, si es broadcast) |
+| `dato_esperado` | Lo que el modelo de referencia predice que debería llegar |
+| `orden_esperado` | Posición esperada en la cola de recepción del terminal destino (el predictor modela el orden FIFO por terminal) |
  
+> El Predictor recibe el mismo estímulo que el `Agent/Driver` (no es una entrada del DUT). Se planea implementar como **una FIFO simulada en software** (una cola por terminal que modela el orden esperado de llegada) — es un modelo del ambiente, no la FIFO del RTL, por eso vive en el ambiente y no en `top_dut.sv`.
+ 
+## pck4: Solicitud_sb
+ 
+**Mailbox:** `tst_sb_mbx` — Test → Scoreboard
 
-## 4. Entiendan el handshake de transmisión/recepción trazando la máquina de estados
+## 4. Comunicacion
 
-Método sugerido:
-1. Dibujen el diagrama de estados a mano (3 bits de estado = hasta 8 estados) usando la tabla `case` de next-state de `Read_st_Mchn` y `Write_st_Mchn`.
-2. Para cada estado, anoten qué señales de salida están activas (de la tabla de output logic).
-3. Ubiquen en qué estado se activa `push` (o `pop`) y en qué estado el dato de salida ya es válido y estable.
+**Eventos:** el driver espera el evento de fin de transmisión antes de lanzar la siguiente transacción; el monitor espera el evento de dato válido antes de capturarlo. Son las señales del DUT que marcan esos dos momentos.
+ 
+**Semáforo:** el bus es un recurso compartido entre los `drvrs` terminales. Se usa un semáforo de 1 llave para que solo un driver tenga el acceso de escritura a la interfaz a la vez.
+ 
+**Mailbox:** ya definidos en la sección 3 (`pck1`-`pck4`), no se repiten aquí.
 
-Esto es lo que el profe pide como "interfaces de comunicación entre módulos": que entiendan el protocolo, no solo que dibujen cajas conectadas.
 
 ---
 
-## 5. Diagrama de bloques (el 5% aparte)
+## 5. Diagrama de bloques del test
 
-Partan del diagrama del profesor ("El DUT será un bus como el que se muestra a continuación") y agréguenle encima, con otro color, las cajas del testbench: dónde va el generador, el driver, el monitor, el scoreboard, por cada terminal y para el bus. Uno de ustedes lo puede bosquejar en papel/pizarra primero y el otro lo pasa a Draw.io o Lucidchart.
+```mermaid
+flowchart TD
+    Test -->|pck3| Generator
+    Test -->|pck4| Scoreboard
+ 
+    subgraph Environment
+        Generator --> AgentDriver["Agent/Driver"]
+        AgentDriver -->|expected| Scoreboard
+        Monitor -->|pck1| Checker
+        Checker -->|pck2| Scoreboard
+    end
+ 
+    AgentDriver -->|interface| DUT["bs_gnrtr_n_rbtr (DUT)"]
+    DUT -->|interface| Monitor
+    Predictor["Predictor (FIFO simulada)"] -->|pckP| Checker
+```
+ 
 
 ---
 
