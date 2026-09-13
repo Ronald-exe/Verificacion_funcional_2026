@@ -26,7 +26,12 @@
 //   pckg_sz - ancho en bits del campo packet
 //==============================================================================
 
-class checker #(
+// NOTA: la clase se llama "checker_c" y no "checker" porque 'checker' es
+// una palabra reservada de SystemVerilog desde IEEE 1800-2012 (construcción
+// checker/endchecker para "assertion checkers"). Usar "checker" como
+// nombre de clase es rechazado por compiladores estrictos (Verilator,
+// y en general herramientas comerciales que implementan LRM completo).
+class checker_c #(
   parameter int drvrs   = tb_pkg::DRVRS_DEFAULT,
   parameter int pckg_sz = tb_pkg::PCKG_SZ_DEFAULT
 );
@@ -67,4 +72,4 @@ class checker #(
   //                        expected_event #(drvrs, pckg_sz) exp);
   // endfunction
 
-endclass : checker
+endclass : checker_c

@@ -40,7 +40,7 @@ class environment #(
   driver     #(drvrs, pckg_sz)             drv [drvrs];
   monitor    #(drvrs, pckg_sz)             mon;
   scoreboard #(drvrs, pckg_sz, broadcast)  sb;
-  checker    #(drvrs, pckg_sz)             chk;
+  checker_c  #(drvrs, pckg_sz)             chk;  // 'checker' es palabra reservada en SV
 
   mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb    [drvrs];
   mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb_sb;
