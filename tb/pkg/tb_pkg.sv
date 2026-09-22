@@ -33,6 +33,12 @@ package tb_pkg;
   parameter int PCKG_SZ_DEFAULT         = 16;    // configs previstas: 16, 32, 64
   parameter logic [7:0] BROADCAST_DEFAULT = 8'hFF;
 
+  parameter int NUM_TRANSACTIONS_DEFAULT = 50;
+
+  // El RTL real detecta broadcast fijo a 0xFF; ignora el parámetro
+  // 'broadcast' (ver ntrfs_cntrl_n_rbtr en rtl/Library.sv).
+  parameter logic [7:0] BROADCAST_RTL_ACTUAL = 8'hFF;
+
   // Ancho fijo del campo de destino dentro del paquete (sec. 4 del spec).
   // El destino siempre ocupa los 8 bits superiores, sin importar pckg_sz.
   parameter int DEST_FIELD_WIDTH        = 8;

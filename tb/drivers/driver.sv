@@ -49,21 +49,28 @@ class driver #(
     virtual bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz)).driver_mp vif,
     mailbox #(tx_transaction #(drvrs, pckg_sz))               tx_mb
   );
-    // TODO: asignar this.id, this.vif, this.tx_mb
+    this.id    = id;
+    this.vif   = vif;
+    this.tx_mb = tx_mb;
   endfunction
 
   task run();
-    // -----------------------------------------------------------------
-    // TODO (equipo):
-    //   forever begin
-    //     tx_transaction #(drvrs, pckg_sz) tr;
-    //     tx_mb.get(tr);
-    //     // presentar pndng[id] = 1 y D_pop[id] = tr.packet
-    //     // esperar (por ciclo de reloj) hasta observar pop[id] == 1
-    //     // limpiar pndng[id] según corresponda antes de atender la
-    //     // siguiente transacción
-    //   end
-    // -----------------------------------------------------------------
+    tx_transaction #(drvrs, pckg_sz) tr;
+
+    vif.pndng[id] = 1'b0;
+
+    forever begin
+      tx_mb.get(tr);  // llega del Generator
+
+      // negedge: no competir con el DUT, que muestrea en posedge.
+      @(negedge vif.clk);
+      vif.D_pop[id] = tr.packet;  // hacia el DUT
+      vif.pndng[id] = 1'b1;
+
+      do @(negedge vif.clk); while (!vif.pop[id]);  // espera confirmación del DUT
+
+      vif.pndng[id] = 1'b0;
+    end
   endtask
 
 endclass : driver

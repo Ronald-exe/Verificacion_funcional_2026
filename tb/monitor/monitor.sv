@@ -44,21 +44,33 @@ class monitor #(
     virtual bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz)).monitor_mp vif,
     mailbox #(dut_event #(drvrs, pckg_sz))                        event_mb
   );
-    // TODO: asignar this.vif, this.event_mb
+    this.vif      = vif;
+    this.event_mb = event_mb;
   endfunction
 
   task run();
-    // -----------------------------------------------------------------
-    // TODO (equipo):
-    //   forever @(posedge vif.clk) begin
-    //     for (interfaz i = 0 .. drvrs-1) begin
-    //       if (vif.pop[i])  -> construir dut_event(EVT_POP,  i, vif.D_pop[i])
-    //                           y event_mb.put()
-    //       if (vif.push[i]) -> construir dut_event(EVT_PUSH, i, vif.D_push[i])
-    //                           y event_mb.put()
-    //     end
-    //   end
-    // -----------------------------------------------------------------
+    dut_event #(drvrs, pckg_sz) ev;
+
+    forever @(posedge vif.clk) begin
+      for (int unsigned i = 0; i < drvrs; i++) begin
+        // pop y push son independientes: nunca if/else.
+        if (vif.pop[i]) begin  // el DUT confirmó consumo en i
+          ev              = new();
+          ev.event_type   = tb_pkg::EVT_POP;
+          ev.interface_id = i;
+          ev.packet       = vif.D_pop[i];
+          event_mb.put(ev);  // hacia el Checker
+        end
+
+        if (vif.push[i]) begin  // el DUT entregó un paquete en i
+          ev              = new();
+          ev.event_type   = tb_pkg::EVT_PUSH;
+          ev.interface_id = i;
+          ev.packet       = vif.D_push[i];
+          event_mb.put(ev);  // hacia el Checker
+        end
+      end
+    end
   endtask
 
 endclass : monitor

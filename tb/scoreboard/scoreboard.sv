@@ -57,31 +57,62 @@ class scoreboard #(
     mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb_sb,
     mailbox #(expected_event #(drvrs, pckg_sz)) expected_mb
   );
-    // TODO: asignar this.tx_mb_sb, this.expected_mb
+    this.tx_mb_sb    = tx_mb_sb;
+    this.expected_mb = expected_mb;
   endfunction
 
   task run();
-    // -----------------------------------------------------------------
-    // TODO (equipo):
-    //   forever begin
-    //     tx_transaction #(drvrs, pckg_sz) tr;
-    //     tx_mb_sb.get(tr);
-    //     tx_pending[tr.interface_id].push_back(tr);
-    //     // determinar destino (unicast / broadcast / inválido, sec. 5)
-    //     // actualizar rx_expected[] según el destino (sec. 12)
-    //     // construir y enviar expected_event(s) correspondientes a expected_mb
-    //   end
-    // -----------------------------------------------------------------
+    tx_transaction    #(drvrs, pckg_sz) tr;
+    expected_event    #(drvrs, pckg_sz) exp;
+    logic [tb_pkg::DEST_FIELD_WIDTH-1:0] dest;
+
+    if (broadcast !== tb_pkg::BROADCAST_RTL_ACTUAL) begin
+      $display("T=%0t [Scoreboard] WARNING: broadcast=0x%0h configurado, pero el RTL siempre usa 0x%0h.",
+                $time, broadcast, tb_pkg::BROADCAST_RTL_ACTUAL);
+    end
+
+    forever begin
+      tx_mb_sb.get(tr);  // llega del Generator
+
+      tx_pending[tr.interface_id].push_back(tr);
+
+      exp              = new();
+      exp.event_type   = tb_pkg::EVT_POP;
+      exp.interface_id = tr.interface_id;
+      exp.packet       = tr.packet;
+      expected_mb.put(exp);  // hacia el Checker: esperado de este pop
+
+      dest = tr.packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH];
+
+      if (dest == tb_pkg::BROADCAST_RTL_ACTUAL) begin
+        for (int unsigned i = 0; i < drvrs; i++) begin
+          rx_expected[i].push_back(tr);
+
+          exp              = new();
+          exp.event_type   = tb_pkg::EVT_PUSH;
+          exp.interface_id = i;
+          exp.packet       = tr.packet;
+          expected_mb.put(exp);  // hacia el Checker: esperado en cada interfaz
+        end
+      end else if (dest < drvrs) begin
+        rx_expected[dest].push_back(tr);
+
+        exp              = new();
+        exp.event_type   = tb_pkg::EVT_PUSH;
+        exp.interface_id = dest;
+        exp.packet       = tr.packet;
+        expected_mb.put(exp);  // hacia el Checker: esperado en el destino
+      end
+      // destino inválido: no se espera ningún push
+    end
   endtask
 
-  // -------------------------------------------------------------------
-  // TODO (equipo): interfaz de consulta/confirmación para el Checker.
-  // Pendiente de definición exacta (DUT_BUS_SPEC.md sec. 13 y sec. 22).
-  // Ejemplos de firma a considerar:
-  //   function automatic void confirm_pop(int unsigned id);
-  //   function automatic void confirm_push(int unsigned id);
-  // Estos métodos serían el ÚNICO mecanismo permitido para que el
-  // Checker provoque el pop_front() de tx_pending[]/rx_expected[].
-  // -------------------------------------------------------------------
+  function automatic void confirm_pop(int unsigned id);
+    if (tx_pending[id].size() != 0) void'(tx_pending[id].pop_front());
+  endfunction
+
+  function automatic void confirm_push(int unsigned id);
+    if (rx_expected[id].size() != 0) void'(rx_expected[id].pop_front());
+  endfunction
 
 endclass : scoreboard

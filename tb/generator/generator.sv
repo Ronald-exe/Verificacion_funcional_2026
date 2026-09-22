@@ -39,25 +39,33 @@ class generator #(
   mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb_sb;         // Generator -> Scoreboard
 
   // Criterio de finalización de la generación (cantidad de transacciones,
-  // tiempo, o combinación con el escenario activo). A definir por el test.
-  int unsigned num_transactions;
+  // tiempo, o combinación con el escenario activo). A definir por el test;
+  // si el test no lo cambia, se usa el default de tb_pkg.
+  int unsigned num_transactions = tb_pkg::NUM_TRANSACTIONS_DEFAULT;
 
   function new(
     mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb    [drvrs],
     mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb_sb
   );
-    // TODO: asignar this.tx_mb, this.tx_mb_sb
+    this.tx_mb    = tx_mb;
+    this.tx_mb_sb = tx_mb_sb;
   endfunction
 
   task run();
-    // -----------------------------------------------------------------
-    // PLACEHOLDER DE GENERACIÓN (TestplanV3.md sec. 6 y 8: TP01-TP16)
-    //   Aquí se implementará la generación por capas. Esqueleto esperado
-    //   por cada transacción:
-    //     1. tr = new(); tr.randomize();  // con constraints según escenario
-    //     2. tx_mb[tr.interface_id].put(tr);
-    //     3. tx_mb_sb.put(tr_copia);       // objeto independiente
-    // -----------------------------------------------------------------
+    for (int unsigned n = 0; n < num_transactions; n++) begin
+      tx_transaction #(drvrs, pckg_sz) tr, tr_sb;
+
+      tr = new();
+      void'(tr.randomize());
+
+      tr_sb = new tr;  // copia independiente para el Scoreboard
+
+      tx_mb[tr.interface_id].put(tr);  // hacia el Driver de esa interfaz
+      tx_mb_sb.put(tr_sb);             // hacia el Scoreboard
+
+      $display("T=%0t [Generator] tx#%0d if=%0d packet=0x%0h",
+                $time, n, tr.interface_id, tr.packet);
+    end
   endtask
 
 endclass : generator

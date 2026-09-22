@@ -33,17 +33,23 @@ class tx_transaction #(
   // Paquete completo: [pckg_sz-1 -: DEST_FIELD_WIDTH] = destino, resto = payload
   rand logic [pckg_sz-1:0] packet;
 
-  // -----------------------------------------------------------------------
-  // TODO (equipo): constraints de aleatorización por capas (ver
-  // TestplanV3.md sec. 6: escenario -> tipo de tráfico -> interfaz origen
-  // -> destino -> payload -> momento de solicitud). Ejemplos a definir:
-  //   constraint c_interface_id_range { interface_id < drvrs; }
-  //   constraint c_destination        { /* unicast válido / broadcast / inválido */ }
-  //   constraint c_payload_patterns   { /* 0, todos unos, 1010..., 0101... */ }
-  // -----------------------------------------------------------------------
+  constraint c_interface_id_range {
+    interface_id < drvrs;
+  }
+
+  // Broadcast fijo a 0xFF: así lo detecta el RTL real, que ignora el
+  // parámetro 'broadcast' (ver ntrfs_cntrl_n_rbtr en rtl/Library.sv).
+  constraint c_destination {
+    packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] dist {
+      [0 : drvrs-1]                             :/ 70, // unicast válido
+      tb_pkg::BROADCAST_RTL_ACTUAL               :/ 20, // broadcast
+      [drvrs : tb_pkg::BROADCAST_RTL_ACTUAL - 1] :/ 10  // inválido
+    };
+  }
 
   function new();
-    // TODO: inicialización de campos por defecto
+    interface_id = 0;
+    packet       = '0;
   endfunction
 
   // TODO (equipo): función auxiliar para extraer el campo de destino
