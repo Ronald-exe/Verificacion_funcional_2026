@@ -32,45 +32,55 @@
 //   pckg_sz - ancho en bits del campo packet
 //==============================================================================
 
-class driver #(
-  parameter int drvrs   = tb_pkg::DRVRS_DEFAULT,
-  parameter int pckg_sz = tb_pkg::PCKG_SZ_DEFAULT
-);
+// Driver minimo:
+// - se conecta a la interface por modport drv
+// - presenta un paquete hardcodeado en D_pop
+// - espera pop del DUT
+//
+// Todavia no usa tx_transaction ni mailbox.
+// Solo sirve para ver senales en EPWave.
 
-  // Identificador de la interfaz que maneja esta instancia (0 .. drvrs-1)
-  int unsigned id;
+class driver;
 
-  virtual bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz)).driver_mp vif;
+  virtual bus_if.driver_mp vif;
+  int                interface_id;
 
-  mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb;
-
-  function new(
-    int unsigned                                              id,
-    virtual bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz)).driver_mp vif,
-    mailbox #(tx_transaction #(drvrs, pckg_sz))               tx_mb
-  );
-    this.id    = id;
-    this.vif   = vif;
-    this.tx_mb = tx_mb;
+  function new(virtual bus_if.driver_mp vif, int interface_id);
+    this.vif          = vif;
+    this.interface_id = interface_id;
   endfunction
 
-  task run();
-    tx_transaction #(drvrs, pckg_sz) tr;
+  task run(int num_pkts = 1);
 
-    vif.pndng[id] = 1'b0;
+    vif.pndng[0][interface_id] = 0;
+    vif.D_pop[0][interface_id] = '0;
 
-    forever begin
-      tx_mb.get(tr);  // llega del Generator
+    repeat (num_pkts) begin
+      @(posedge vif.clk);
 
-      // negedge: no competir con el DUT, que muestrea en posedge.
-      @(negedge vif.clk);
-      vif.D_pop[id] = tr.packet;  // hacia el DUT
-      vif.pndng[id] = 1'b1;
+      // Paquete: destino = interface_id + 1 (mod drvrs), payload = id
+      vif.D_pop[0][interface_id] = {8'( (interface_id + 1) % 4 ), 8'(interface_id)};
+      vif.pndng[0][interface_id] = 1;
 
-      do @(negedge vif.clk); while (!vif.pop[id]);  // espera confirmación del DUT
+      $display("[DRV %0d] paquete ofrecido @%0t", interface_id, $time);
 
-      vif.pndng[id] = 1'b0;
+      fork
+        begin
+          while (vif.pop[0][interface_id] !== 1'b1)
+            @(posedge vif.clk);
+          $display("[DRV %0d] pop recibido @%0t", interface_id, $time);
+        end
+        begin
+          repeat (200) @(posedge vif.clk);
+          $display("[DRV %0d] TIMEOUT esperando pop @%0t", interface_id, $time);
+        end
+      join_any
+      disable fork;
+
+      vif.pndng[0][interface_id] = 0;
+      @(posedge vif.clk);
     end
+
   endtask
 
-endclass : driver
+endclass

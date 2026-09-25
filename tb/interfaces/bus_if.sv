@@ -1,68 +1,82 @@
-// Top-level basico
-// - genera clk
-// - genera reset
-// - instancia bus_if
-// - instancia el DUT y lo conecta a la interface
+//==============================================================================
+// <NOMBRE DEL CURSO>
+// Integrantes: <Integrante 1> - <Integrante 2>
+//==============================================================================
+// Archivo   : bus_if.sv
+// Componente: Interfaz de conexión entre el testbench y el DUT bs_gnrtr_n_rbtr
+//------------------------------------------------------------------------------
+// Descripción:
+//   Contiene ÚNICAMENTE las señales físicas del DUT (DUT_BUS_SPEC.md sec. 3):
+//     clk, reset, pndng, D_pop, pop, push, D_push
 //
-// Todavia no hay driver ni monitor. Solo se verifica
-// que el DUT se instancia y que reset/clk funcionan.
+//   Esta interfaz es solo el mecanismo de conexión. NO contiene:
+//     - Scoreboard, Checker, Generator
+//     - lógica de predicción
+//     - queues
+//     - mailboxes
+//   Toda esa lógica vive en las clases del testbench, no en la interfaz.
+//
+// Parámetros:
+//   bits    - fijo = 1 (se mantiene como parámetro por consistencia con el DUT)
+//   drvrs   - cantidad de interfaces/drivers del bus (2, 4, 8, ...)
+//   pckg_sz - tamaño del paquete en bits (16, 32, 64)
+//
+// Conexión:
+//   tb_top.sv instancia esta interfaz y la conecta físicamente a los puertos
+//   del módulo bs_gnrtr_n_rbtr. Driver y Monitor acceden a ella mediante
+//   virtual interfaces tipadas con los modports definidos abajo.
+//==============================================================================
 
-`include "Library.sv"
+// Interfase generica para que la interfase virtual se conecte
+// de forma directa, ya inicializa clk y define modports del 
+// dut que puertos son:
+//
+// reset, pndng, D_pop, pop, push y D_push
 
-module tb_top;
 
-  localparam int bits    = 1;
-  localparam int drvrs   = 4;
-  localparam int pckg_sz = 16;
-  localparam bit [7:0] broadcast = 8'hFF;
+interface bus_if #(
+  parameter int bits = 1, 
+  parameter int drvrs = 4,
+  parameter int pckg_sz = 16
+)(
 
-  logic clk;
+  input logic clk
 
-  // Reloj
-  initial clk = 0;
-  always #5 clk = ~clk;
+);
 
-  // Interface
-  bus_if #(
-    .bits(bits),
-    .drvrs(drvrs),
-    .pckg_sz(pckg_sz)
-  ) bus_if_inst (
-    .clk(clk)
+
+  logic reset;
+
+  logic				        reset;
+  logic 			        pndng[bits-1:0][drvrs-1:0];
+  logic [pckg_sz-1:0] D_pop[bits-1:0][drvrs-1:0];
+  logic 			        pop[bits-1:0][drvrs-1:0];
+  logic 			        push[bits-1:0][drvrs-1:0];
+  logic [pckg_sz-1:0] D_push[bits-1:0][drvrs-1:0];
+
+  modport dut (
+    input  reset,
+    input  pndng,
+    input  D_pop,
+    output pop,
+    output push,
+    output D_push
   );
 
-  // DUT
-  bs_gnrtr_n_rbtr #(
-    .bits(bits),
-    .drvrs(drvrs),
-    .pckg_sz(pckg_sz),
-    .broadcast(broadcast)
-  ) dut (
-    .clk(clk),
-    .reset(bus_if_inst.reset),
-    .pndng(bus_if_inst.pndng),
-    .D_pop(bus_if_inst.D_pop),
-    .pop(bus_if_inst.pop),
-    .push(bus_if_inst.push),
-    .D_push(bus_if_inst.D_push)
+  modport driver_mp (
+    output pndng,
+    output D_pop,
+    input  pop,
+    input  clk
   );
 
-  // Estimulos minimos
-  initial begin
-    // Ondas
-    $dumpfile("dump.vcd");
-    $dumpvars(0, tb_top);
+  modport monitor_mp (
+    input  pndng,
+    input  D_pop,
+    input  pop,
+    input  push,
+    input  D_push,
+    input  clk
+  );
 
-    // Reset inicial
-    bus_if_inst.reset = 1;
-    repeat(5) @(posedge clk);
-    bus_if_inst.reset = 0;
-
-    // Deja correr para observar
-    repeat(50) @(posedge clk);
-
-    $display("[TB] fin de simulacion @%0t", $time);
-    $finish;
-  end
-
-endmodule
+endinterface
