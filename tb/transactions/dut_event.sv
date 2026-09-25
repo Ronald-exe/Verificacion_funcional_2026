@@ -3,7 +3,7 @@
 // Integrantes: <Integrante 1> - <Integrante 2>
 //==============================================================================
 // Archivo   : dut_event.sv
-// Componente: Evento observado por el Monitor
+// Componente: Evento observado en el DUT
 //------------------------------------------------------------------------------
 // Descripción:
 //   Representa un evento capturado a partir de la actividad física del DUT.
@@ -34,11 +34,14 @@ class dut_event #(
   logic [pckg_sz-1:0]   packet;
 
   function new();
-    // TODO: inicialización de campos por defecto
+    event_type   = tb_pkg::EVT_POP;
+    interface_id = 0;
+    packet       = '0;
   endfunction
 
   function void print(string tag = "dut_event");
-    // TODO: imprimir event_type, interface_id y packet ($display)
+    $display("[%s] type=%s if=%0d pkt=0x%h @%0t",
+             tag, event_type.name(), interface_id, packet, $time);
   endfunction
 
 endclass : dut_event
