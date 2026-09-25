@@ -1,36 +1,3 @@
-//==============================================================================
-// <NOMBRE DEL CURSO>
-// Integrantes: <Integrante 1> - <Integrante 2>
-//==============================================================================
-// Archivo   : monitor.sv
-// Componente: Monitor
-//------------------------------------------------------------------------------
-// Descripción:
-//   Observa PASIVAMENTE la interfaz física del DUT y traduce la actividad
-//   en objetos dut_event, enviados al Checker.
-//
-//   Flujo conceptual (DUT_BUS_SPEC.md sec. 10-11):
-//     DUT -> Monitor -> dut_event -> event_mb -> Checker
-//
-//   Debe capturar, por cada interfaz i:
-//     - pop[i]  + D_pop[i]   -> dut_event(EVT_POP,  i, D_pop[i])
-//     - push[i] + D_push[i]  -> dut_event(EVT_PUSH, i, D_push[i])
-//
-//   pop y push son eventos independientes y pueden ocurrir en el mismo
-//   ciclo (DUT_BUS_SPEC.md sec. 17); deben generar DOS dut_event separados,
-//   uno nunca sustituye al otro.
-//
-//   IMPORTANTE: el Monitor NO determina PASS/FAIL.
-//
-// Conexiones:
-//   - virtual interface (modport monitor_mp) -> lectura de todas las señales
-//   - mailbox #(dut_event) event_mb           -> hacia el Checker
-//
-// Parámetros:
-//   drvrs   - cantidad de interfaces a observar
-//   pckg_sz - ancho en bits del campo packet
-//==============================================================================
-
 // Monitor minimo:
 // - se conecta a la interface por modport mon
 // - observa pop y push en cada ciclo

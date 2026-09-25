@@ -1,4 +1,4 @@
-// Top-level basico:
+// Top-level basico
 // - genera clk
 // - genera reset
 // - instancia bus_if
@@ -6,6 +6,10 @@
 //
 // Todavia no hay driver ni monitor. Solo se verifica
 // que el DUT se instancia y que reset/clk funcionan.
+
+`include "Library.sv"
+`include "driver.sv"
+`include "monitor.sv"
 
 module tb_top;
 
@@ -45,20 +49,36 @@ module tb_top;
     .D_push(bus_if_inst.D_push)
   );
 
-  // Estimulos minimos
-  initial begin
-    // Ondas
-    $dumpfile("dump.vcd");
-    $dumpvars(0, tb_top);
+  driver  driver_mp[drvrs];
+  monitor monitor_mp;
 
-    // Reset inicial
+  initial begin
+    $dumpfile("dump.vcd");
+    $dumpvars(0, dut);
+
     bus_if_inst.reset = 1;
     repeat(5) @(posedge clk);
     bus_if_inst.reset = 0;
 
-    // Deja correr para observar
-    repeat(50) @(posedge clk);
+    for (int i = 0; i < drvrs; i++)
+      driver_mp[i] = new(bus_if_inst, i);
 
+    monitor_mp = new(bus_if_inst, drvrs);
+
+    fork
+      begin : run_drivers
+        for (int i = 0; i < drvrs; i++) begin
+          automatic int idx = i;
+          fork
+            driver_mp[idx].run(1);
+          join_none
+        end
+        wait fork;
+      end
+      monitor_mp.run();
+    join_any
+
+    repeat(200) @(posedge clk);
     $display("[TB] fin de simulacion @%0t", $time);
     $finish;
   end

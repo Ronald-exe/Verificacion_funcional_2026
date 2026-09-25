@@ -55,28 +55,18 @@ interface bus_if #(
   logic [pckg_sz-1:0] D_push[bits-1:0][drvrs-1:0];
 
   modport dut (
-    input  reset,
-    input  pndng,
-    input  D_pop,
-    output pop,
-    output push,
-    output D_push
+    input  reset, pndng, D_pop
+    output pop, push, D_push
+
   );
 
   modport driver_mp (
-    output pndng,
-    output D_pop,
-    input  pop,
-    input  clk
+    input  pop, clk
+    output pndng, D_pop,
   );
 
   modport monitor_mp (
-    input  pndng,
-    input  D_pop,
-    input  pop,
-    input  push,
-    input  D_push,
-    input  clk
+    input  pndng, D_pop, pop, push,D_push, clk
   );
 
 endinterface
