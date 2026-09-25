@@ -10,18 +10,14 @@
 //   del DUT, para UNA interfaz específica identificada por 'id'.
 //
 //   Responsabilidad EXCLUSIVA:
-//     tx_transaction  -->  pndng[id] / D_pop[id]  (señales de entrada del DUT)
-//     y observar la confirmación de consumo: pop[id]
+//     tx_transaction  -->  pndng[0][id] / D_pop[0][id]
+//     observar la confirmación de consumo: pop[0][id]
 //
 //   El Driver NO debe:
 //     - decidir PASS/FAIL
 //     - acceder al Scoreboard
 //     - implementar predicción funcional
 //     - comparar paquetes
-//
-//   El Environment instancia 'drvrs' Drivers (uno por interfaz):
-//     driver #(drvrs, pckg_sz) drv [drvrs];
-//   cada uno con su propio 'id' (0 .. drvrs-1) y su propio mailbox tx_mb[id].
 //
 // Conexiones:
 //   - virtual interface (modport driver_mp) -> señales físicas del DUT
@@ -32,97 +28,64 @@
 //   pckg_sz - ancho en bits del campo packet
 //==============================================================================
 
-// Driver minimo:
-// - se conecta a la interface por modport drv
-// - presenta un paquete hardcodeado en D_pop
-// - espera pop del DUT
-//
-// Todavia no usa tx_transaction ni mailbox.
-// Solo sirve para ver senales en EPWave.
+class driver #(
+  parameter int drvrs   = tb_pkg::DRVRS_DEFAULT,
+  parameter int pckg_sz = tb_pkg::PCKG_SZ_DEFAULT
+);
 
-// Top-level basico
-// - genera clk
-// - genera reset
-// - instancia bus_if
-// - instancia el DUT y lo conecta a la interface
-//
-// Todavia no hay driver ni monitor. Solo se verifica
-// que el DUT se instancia y que reset/clk funcionan.
+  int unsigned id;
+  virtual bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz)).driver_mp vif;
+  mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb;
 
-`include "Library.sv"
-`include "driver.sv"
-`include "monitor.sv"
+  // Timeout por paquete (ciclos negedge)
+  localparam int TIMEOUT_CYCLES = 2000;
 
-module tb_top;
-
-  localparam int bits    = 1;
-  localparam int drvrs   = 4;
-  localparam int pckg_sz = 16;
-  localparam bit [7:0] broadcast = 8'hFF;
-
-  logic clk;
-
-  // Reloj
-  initial clk = 0;
-  always #5 clk = ~clk;
-
-  // Interface
-  bus_if #(
-    .bits(bits),
-    .drvrs(drvrs),
-    .pckg_sz(pckg_sz)
-  ) bus_if_inst (
-    .clk(clk)
+  function new(
+    int unsigned                                                  id,
+    virtual bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz)).driver_mp  vif,
+    mailbox #(tx_transaction #(drvrs, pckg_sz))                   tx_mb
   );
+    this.id    = id;
+    this.vif   = vif;
+    this.tx_mb = tx_mb;
+  endfunction
 
-  // DUT
-  bs_gnrtr_n_rbtr #(
-    .bits(bits),
-    .drvrs(drvrs),
-    .pckg_sz(pckg_sz),
-    .broadcast(broadcast)
-  ) dut (
-    .clk(clk),
-    .reset(bus_if_inst.reset),
-    .pndng(bus_if_inst.pndng),
-    .D_pop(bus_if_inst.D_pop),
-    .pop(bus_if_inst.pop),
-    .push(bus_if_inst.push),
-    .D_push(bus_if_inst.D_push)
-  );
+  task run();
+    tx_transaction #(drvrs, pckg_sz) tr;
+    bit timed_out;
 
-  driver  driver_mp[drvrs];
-  monitor monitor_mp;
+    vif.pndng[0][id] = 1'b0;
+    vif.D_pop[0][id] = '0;
 
-  initial begin
-    $dumpfile("dump.vcd");
-    $dumpvars(0, dut);
+    forever begin
+      tx_mb.get(tr);
 
-    bus_if_inst.reset = 1;
-    repeat(5) @(posedge clk);
-    bus_if_inst.reset = 0;
+      // Escribe en negedge: no compite con el DUT que muestrea en posedge.
+      @(negedge vif.clk);
+      vif.D_pop[0][id] = tr.packet;
+      vif.pndng[0][id] = 1'b1;
 
-    for (int i = 0; i < drvrs; i++)
-      driver_mp[i] = new(bus_if_inst, i);
+      $display("[DRV %0d] ofrecido pkt=0x%h @%0t", id, tr.packet, $time);
 
-    monitor_mp = new(bus_if_inst, drvrs);
-
-    fork
-      begin : run_drivers
-        for (int i = 0; i < drvrs; i++) begin
-          automatic int idx = i;
-          fork
-            driver_mp[idx].run(1);
-          join_none
+      timed_out = 0;
+      fork
+        begin
+          while (vif.pop[0][id] !== 1'b1)
+            @(negedge vif.clk);
+          $display("[DRV %0d] pop recibido @%0t", id, $time);
         end
-        wait fork;
-      end
-      monitor_mp.run();
-    join_any
+        begin
+          repeat (TIMEOUT_CYCLES) @(negedge vif.clk);
+          timed_out = 1;
+          $display("[DRV %0d] TIMEOUT esperando pop @%0t", id, $time);
+        end
+      join_any
+      disable fork;
 
-    repeat(200) @(posedge clk);
-    $display("[TB] fin de simulacion @%0t", $time);
-    $finish;
-  end
+      // Limpia aunque haya timeout (permite continuar al siguiente paquete)
+      vif.pndng[0][id] = 1'b0;
+      @(negedge vif.clk);
+    end
+  endtask
 
-endmodule
+endclass : driver
