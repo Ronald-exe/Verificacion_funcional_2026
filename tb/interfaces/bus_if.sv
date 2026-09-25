@@ -27,40 +27,56 @@
 //   virtual interfaces tipadas con los modports definidos abajo.
 //==============================================================================
 
+// Interfase generica para que la interfase virtual se conecte
+// de forma directa, ya inicializa clk y define modports del 
+// dut que puertos son:
+//
+// reset, pndng, D_pop, pop, push y D_push
+
+
 interface bus_if #(
-  parameter int bits    = tb_pkg::BITS_DEFAULT,
-  parameter int drvrs   = tb_pkg::DRVRS_DEFAULT,
-  parameter int pckg_sz = tb_pkg::PCKG_SZ_DEFAULT
+  parameter int bits = 1, 
+  parameter int drvrs = 4,
+  parameter int pckg_sz = 16
+)(
+
+  input logic clk
+
 );
 
-  logic clk;
+
   logic reset;
 
-  logic [drvrs-1:0]               pndng;
-  logic [drvrs-1:0][pckg_sz-1:0]  D_pop;
-  logic [drvrs-1:0]               pop;
-  logic [drvrs-1:0]               push;
-  logic [drvrs-1:0][pckg_sz-1:0]  D_push;
+  logic				        reset;
+  logic 			        pndng[bits-1:0][drvrs-1:0];
+  logic [pckg_sz-1:0] D_pop[bits-1:0][drvrs-1:0];
+  logic 			        pop[bits-1:0][drvrs-1:0];
+  logic 			        push[bits-1:0][drvrs-1:0];
+  logic [pckg_sz-1:0] D_push[bits-1:0][drvrs-1:0];
 
-  // ---------------------------------------------------------------------
-  // Modports
-  // ---------------------------------------------------------------------
-  // driver_mp: cada Driver maneja UNA interfaz i. Conduce la solicitud/
-  //            transmisión (pndng[i], D_pop[i]) y observa la confirmación
-  //            (pop[i]) y lo recibido (push[i], D_push[i]).
+  modport dut (
+    input  reset,
+    input  pndng,
+    input  D_pop,
+    output pop,
+    output push,
+    output D_push
+  );
+
   modport driver_mp (
-    input  clk, reset, pop, push, D_push,
-    output pndng, D_pop
+    output pndng,
+    output D_pop,
+    input  pop,
+    input  clk
   );
 
-  // monitor_mp: observación pasiva de TODAS las señales del bus, sin
-  //             manejar ninguna de ellas.
   modport monitor_mp (
-    input clk, reset, pndng, D_pop, pop, push, D_push
+    input  pndng,
+    input  D_pop,
+    input  pop,
+    input  push,
+    input  D_push,
+    input  clk
   );
 
-  // TODO (equipo): si se requiere, agregar un modport adicional de solo
-  // lectura para el propio tb_top (generación de clk/reset), o clocking
-  // blocks si se decide muestrear con temporización explícita.
-
-endinterface : bus_if
+endinterface
