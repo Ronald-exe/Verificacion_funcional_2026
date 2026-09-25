@@ -1,72 +1,62 @@
+
+Bus if · SV
 //==============================================================================
 // <NOMBRE DEL CURSO>
 // Integrantes: <Integrante 1> - <Integrante 2>
 //==============================================================================
 // Archivo   : bus_if.sv
-// Componente: Interfaz de conexión entre el testbench y el DUT bs_gnrtr_n_rbtr
+// Componente: Interfaz física entre el ambiente de verificación y el DUT
 //------------------------------------------------------------------------------
 // Descripción:
-//   Contiene ÚNICAMENTE las señales físicas del DUT (DUT_BUS_SPEC.md sec. 3):
-//     clk, reset, pndng, D_pop, pop, push, D_push
+//   Agrupa las señales del bus compartido bs_gnrtr_n_rbtr y expone dos
+//   modports basados en clocking blocks (antes se accedía a las señales
+//   directo, sin CB, y el driver "resolvía" la carrera contra el DUT
+//   conduciendo en negedge):
+//     - driver_mp  (vía cb_drv)  -> el Driver conduce pndng/D_pop y lee pop
+//     - monitor_mp (vía cb_mon)  -> el Monitor solo lee pop/D_pop/push/D_push
 //
-//   Esta interfaz es solo el mecanismo de conexión. NO contiene:
-//     - Scoreboard, Checker, Generator
-//     - lógica de predicción
-//     - queues
-//     - mailboxes
-//   Toda esa lógica vive en las clases del testbench, no en la interfaz.
-//
-// Parámetros:
-//   bits    - fijo = 1 (se mantiene como parámetro por consistencia con el DUT)
-//   drvrs   - cantidad de interfaces/drivers del bus (2, 4, 8, ...)
-//   pckg_sz - tamaño del paquete en bits (16, 32, 64)
-//
-// Conexión:
-//   tb_top.sv instancia esta interfaz y la conecta físicamente a los puertos
-//   del módulo bs_gnrtr_n_rbtr. Driver y Monitor acceden a ella mediante
-//   virtual interfaces tipadas con los modports definidos abajo.
-//==============================================================================
 
-// Interfase generica para que la interfase virtual se conecte
-// de forma directa, ya inicializa clk y define modports del 
-// dut que puertos son:
-//
-// reset, pndng, D_pop, pop, push y D_push
+//==============================================================================
 
 
 interface bus_if #(
-  parameter int bits = 1, 
-  parameter int drvrs = 4,
-  parameter int pckg_sz = 16
-)(
-
-  input logic clk
-
+  parameter int bits    = tb_pkg::BITS_DEFAULT,
+  parameter int drvrs   = tb_pkg::DRVRS_DEFAULT,
+  parameter int pckg_sz = tb_pkg::PCKG_SZ_DEFAULT
 );
-
-
+ 
+  logic clk;
   logic reset;
-
-  logic				        reset;
-  logic 			        pndng[bits-1:0][drvrs-1:0];
-  logic [pckg_sz-1:0] D_pop[bits-1:0][drvrs-1:0];
-  logic 			        pop[bits-1:0][drvrs-1:0];
-  logic 			        push[bits-1:0][drvrs-1:0];
-  logic [pckg_sz-1:0] D_push[bits-1:0][drvrs-1:0];
-
-  modport dut (
-    input  reset, pndng, D_pop
-    output pop, push, D_push
-
-  );
+ 
+  logic [drvrs-1:0]   pndng;
+  logic [pckg_sz-1:0] D_pop  [drvrs];
+  logic [drvrs-1:0]   pop;
+ 
+  logic [drvrs-1:0]   push;
+  logic [pckg_sz-1:0] D_push [drvrs];
+ 
+  // Clocking blocks
+  
+  clocking cb_drv @(posedge clk);
+    default input #1step output #1;
+    output pndng, D_pop;
+    input  pop;
+  endclocking
+ 
+  clocking cb_mon @(posedge clk);
+    default input #1step;
+    input pop, D_pop, push, D_push;
+  endclocking
+ 
+  // Modports
 
   modport driver_mp (
-    input  pop, clk
-    output pndng, D_pop,
+    input  clk, reset, pop,
+    output pndng, D_pop
   );
-
+ 
   modport monitor_mp (
-    input  pndng, D_pop, pop, push,D_push, clk
+    input clk, reset, pop, D_pop, push, D_push
   );
-
+ 
 endinterface
