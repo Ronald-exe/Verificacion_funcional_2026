@@ -1,4 +1,4 @@
-// Top-level basico
+// Top-level basico:
 // - genera clk
 // - genera reset
 // - instancia bus_if
@@ -6,8 +6,6 @@
 //
 // Todavia no hay driver ni monitor. Solo se verifica
 // que el DUT se instancia y que reset/clk funcionan.
-
-`include "Library.sv"
 
 module tb_top;
 
