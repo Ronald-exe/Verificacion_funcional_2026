@@ -3,7 +3,7 @@
 // Integrantes: <Integrante 1> - <Integrante 2>
 //==============================================================================
 // Archivo   : tx_transaction.sv
-// Componente: Transacción generada por el Generator
+// Componente: Transacción de transmisión
 //------------------------------------------------------------------------------
 // Descripción:
 //   Representa una solicitud de transmisión para una interfaz determinada.
@@ -14,8 +14,8 @@
 //
 //   Campos mínimos requeridos por el spec:
 //     interface_id - interfaz/driver que origina la transmisión
-//     packet        - paquete completo: [pckg_sz-1 -: 8] = destino,
-//                      resto = payload (ver sec. 4)
+//     packet       - paquete completo: [pckg_sz-1 -: 8] = destino,
+//                    resto = payload (ver sec. 4)
 //
 // Parámetros:
 //   drvrs   - acota el rango válido de interface_id (0 .. drvrs-1)
@@ -37,13 +37,13 @@ class tx_transaction #(
     interface_id < drvrs;
   }
 
-  // Broadcast fijo a 0xFF: así lo detecta el RTL real, que ignora el
-  // parámetro 'broadcast' (ver ntrfs_cntrl_n_rbtr en rtl/Library.sv).
+  // Distribución de destinos: 70% unicast válido, 20% broadcast, 10% inválido.
+  // El broadcast usa BROADCAST_RTL_ACTUAL porque el RTL real lo ignora.
   constraint c_destination {
     packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] dist {
-      [0 : drvrs-1]                             :/ 70, // unicast válido
-      tb_pkg::BROADCAST_RTL_ACTUAL               :/ 20, // broadcast
-      [drvrs : tb_pkg::BROADCAST_RTL_ACTUAL - 1] :/ 10  // inválido
+      [0 : drvrs-1]                              :/ 70,
+      tb_pkg::BROADCAST_RTL_ACTUAL               :/ 20,
+      [drvrs : tb_pkg::BROADCAST_RTL_ACTUAL - 1] :/ 10
     };
   }
 
@@ -52,19 +52,21 @@ class tx_transaction #(
     packet       = '0;
   endfunction
 
-  // TODO (equipo): función auxiliar para extraer el campo de destino
-  // function logic [tb_pkg::DEST_FIELD_WIDTH-1:0] get_destination();
-  //   return packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH];
-  // endfunction
+  // Extrae el campo de destino (8 bits superiores) del paquete
+  function logic [tb_pkg::DEST_FIELD_WIDTH-1:0] get_destination();
+    return packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH];
+  endfunction
 
-  // Utilidades de depuración -----------------------------------------------
+  // Utilidades de depuración 
+
   function void print(string tag = "tx_transaction");
-    // TODO: imprimir interface_id y packet en formato legible ($display)
+    $display("[%s] if=%0d dest=0x%h pkt=0x%h @%0t",
+             tag, interface_id, get_destination(), packet, $time);
   endfunction
 
   function string sprint();
-    // TODO: retornar representación en string (para logs/reportes)
-    return "";
+    return $sformatf("tx{if=%0d, dest=0x%h, pkt=0x%h}",
+                     interface_id, get_destination(), packet);
   endfunction
 
 endclass : tx_transaction
