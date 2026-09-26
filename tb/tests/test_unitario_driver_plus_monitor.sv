@@ -28,6 +28,7 @@
 
 `include "Library.sv"
 `include "tb_pkg.sv"
+`include "bus_if.sv"
 `include "tx_transaction.sv"
 `include "dut_event.sv"
 `include "driver.sv"
@@ -54,9 +55,8 @@ module tb_top;
     .bits(bits),
     .drvrs(drvrs),
     .pckg_sz(pckg_sz)
-  ) bus_if_inst (
-    .clk(clk)
-  );
+  ) bus_if_inst ();
+  assign bus_if_inst.clk = clk;
 
   // DUT
   bs_gnrtr_n_rbtr #(

@@ -12,7 +12,8 @@ module tb_top;
   initial clk = 0;
   always #5 clk = ~clk;
 
-  bus_if #(.bits(bits), .drvrs(drvrs), .pckg_sz(pckg_sz)) bus_if_inst(.clk(clk));
+  bus_if #(.bits(bits), .drvrs(drvrs), .pckg_sz(pckg_sz)) bus_if_inst();
+  assign bus_if_inst.clk = clk;
 
   bs_gnrtr_n_rbtr #(
     .bits(bits), .drvrs(drvrs), .pckg_sz(pckg_sz), .broadcast(broadcast)

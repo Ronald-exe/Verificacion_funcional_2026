@@ -2,33 +2,36 @@
 // <NOMBRE DEL CURSO>
 // Integrantes: <Integrante 1> - <Integrante 2>
 //==============================================================================
-// Archivo   : expected_event.sv
-// Componente: Evento esperado generado por el Scoreboard
+// Archivo   : dut_event.sv
+// Componente: Evento observado en el DUT
 //------------------------------------------------------------------------------
 // Descripción:
-//   Representa el evento que el modelo funcional del Scoreboard espera que
-//   ocurra en el DUT.
+//   Representa un evento capturado a partir de la actividad física del DUT.
 //
 //   Comunicación (DUT_BUS_SPEC.md sec. 11):
-//     Scoreboard -> Checker   vía expected_mb
+//     Monitor -> Checker   vía event_mb
 //
-//   Estructura compatible campo a campo con dut_event para permitir
-//   comparación directa dentro del Checker (mismo tipo event_type_e,
-//   mismo ancho de packet).
+//   event_type distingue (tb_pkg::event_type_e):
+//     EVT_POP  - el Monitor observó pop[i]; se captura el D_pop[i] asociado
+//                (se conserva para diagnóstico, ver sec. 11)
+//     EVT_PUSH - el Monitor observó push[i]; se captura el D_push[i] asociado
+//
+//   IMPORTANTE: el Monitor NO determina PASS/FAIL. Solo reporta lo observado;
+//   la comparación es responsabilidad exclusiva del Checker.
 //
 // Parámetros:
 //   drvrs   - rango válido de interface_id
 //   pckg_sz - ancho en bits del campo packet
 //==============================================================================
 
-class expected_event #(
+class dut_event #(
   parameter int drvrs   = tb_pkg::DRVRS_DEFAULT,
   parameter int pckg_sz = tb_pkg::PCKG_SZ_DEFAULT
 );
 
-  tb_pkg::event_type_e event_type;   // EVT_POP o EVT_PUSH esperado
+  tb_pkg::event_type_e event_type;   // EVT_POP o EVT_PUSH
   int unsigned          interface_id;
-  logic [pckg_sz-1:0]   packet;      // paquete esperado, cuando aplica
+  logic [pckg_sz-1:0]   packet;
 
   function new();
     event_type   = tb_pkg::EVT_POP;
@@ -36,9 +39,9 @@ class expected_event #(
     packet       = '0;
   endfunction
 
-  function void print(string tag = "expected_event");
+  function void print(string tag = "dut_event");
     $display("[%s] type=%s if=%0d pkt=0x%h @%0t",
              tag, event_type.name(), interface_id, packet, $time);
   endfunction
 
-endclass : expected_event
+endclass : dut_event
