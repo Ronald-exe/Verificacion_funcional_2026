@@ -36,7 +36,6 @@
 module tb_top;
 
   // Parámetros de la prueba
-  // ---------------------------------------------------------------------
   localparam int bits        = tb_pkg::BITS_DEFAULT;
   localparam int drvrs       = tb_pkg::DRVRS_DEFAULT;
   localparam int pckg_sz     = tb_pkg::PCKG_SZ_DEFAULT;
@@ -45,16 +44,12 @@ module tb_top;
   localparam int NUM_TX_PER_IF = 8;      // 8 paquetes por interfaz
   localparam int SIM_CYCLES    = 20000;  // ciclos de simulación
 
-  // ---------------------------------------------------------------------
   // Reloj
-  // ---------------------------------------------------------------------
   logic clk;
   initial clk = 0;
   always #5 clk = ~clk;
 
-  // ---------------------------------------------------------------------
   // Interface
-  // ---------------------------------------------------------------------
   bus_if #(
     .bits(bits),
     .drvrs(drvrs),
@@ -63,9 +58,7 @@ module tb_top;
     .clk(clk)
   );
 
-  // ---------------------------------------------------------------------
   // DUT
-  // ---------------------------------------------------------------------
   bs_gnrtr_n_rbtr #(
     .bits(bits),
     .drvrs(drvrs),
@@ -81,27 +74,19 @@ module tb_top;
     .D_push(bus_if_inst.D_push)
   );
 
-  // ---------------------------------------------------------------------
   // Mailboxes
-  // ---------------------------------------------------------------------
   mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb    [drvrs];  // Gen -> Driver[i]
   mailbox #(dut_event      #(drvrs, pckg_sz)) event_mb;          // Monitor -> drenaje
 
-  // ---------------------------------------------------------------------
   // Componentes del ambiente
-  // ---------------------------------------------------------------------
   driver  #(.drvrs(drvrs), .pckg_sz(pckg_sz)) drv [drvrs];
   monitor #(.drvrs(drvrs), .pckg_sz(pckg_sz)) mon;
 
-  // ---------------------------------------------------------------------
   // Contadores para reporte final
-  // ---------------------------------------------------------------------
   int pop_count  = 0;
   int push_count = 0;
 
-  // ---------------------------------------------------------------------
   // Secuencia principal
-  // ---------------------------------------------------------------------
   initial begin
     // Ondas
     $dumpfile("dump.vcd");
@@ -128,9 +113,7 @@ module tb_top;
 
     // Lanzar todo en paralelo
     fork
-      // ---------------------------------------------------------------
       // Fake Generator: NUM_TX_PER_IF tx por interfaz
-      // ---------------------------------------------------------------
       begin : gen_block
         for (int i = 0; i < drvrs; i++) begin
           automatic int idx = i;
@@ -150,9 +133,7 @@ module tb_top;
         wait fork;   // espera a que terminen todos los generadores
       end
 
-      // ---------------------------------------------------------------
       // Drivers en paralelo
-      // ---------------------------------------------------------------
       begin : drv_block
         for (int i = 0; i < drvrs; i++) begin
           automatic int idx = i;
@@ -163,14 +144,10 @@ module tb_top;
         wait fork;   // nunca termina (los drivers tienen forever)
       end
 
-      // ---------------------------------------------------------------
       // Monitor
-      // ---------------------------------------------------------------
       mon.run();
 
-      // ---------------------------------------------------------------
       // Drenaje de event_mb (el monitor ya imprime por $display)
-      // ---------------------------------------------------------------
       begin : drain_block
         dut_event #(drvrs, pckg_sz) ev;
         forever begin
@@ -182,14 +159,10 @@ module tb_top;
 
     join_none
 
-    // -----------------------------------------------------------------
     // Tiempo de simulación
-    // -----------------------------------------------------------------
     repeat (SIM_CYCLES) @(posedge clk);
 
-    // -----------------------------------------------------------------
     // Reporte final
-    // -----------------------------------------------------------------
     $display("");
     $display("================================================================");
     $display("  REPORTE PRUEBA UNITARIA  @%0t", $time);
