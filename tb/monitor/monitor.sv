@@ -38,27 +38,27 @@ class monitor #(
   virtual bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz)).monitor_mp vif;
   mailbox #(dut_event #(drvrs, pckg_sz)) event_mb;
 
-  // Detección de flanco. Dimensionado con drvrs, no hardcodeado.
+  // Detección de flanco. Dimensionado con drvrs
   logic prev_pop  [0:0][drvrs-1:0];
   logic prev_push [0:0][drvrs-1:0];
 
   function new(
-    virtual bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz)).monitor_mp vif,
-    mailbox #(dut_event #(drvrs, pckg_sz))                        event_mb
+    virtual bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz)).monitor_mp vif, // modport para detectar errores de conexión
+    mailbox #(dut_event #(drvrs, pckg_sz))                        event_mb // mailbox porque el monitor no sabe cuántos eventos habra
   );
     this.vif      = vif;
-    this.event_mb = event_mb;
+    this.event_mb = event_mb; // este lo debe de consumir el checker
   endfunction
 
   task run();
     dut_event #(drvrs, pckg_sz) ev;
-
+    // Inicialización de flancos previos para no reportar eventos cada ciclo 
     for (int i = 0; i < drvrs; i++) begin
       prev_pop[0][i]  = 1'b0;
       prev_push[0][i] = 1'b0;
     end
 
-    forever @(posedge vif.clk) begin
+    forever @(posedge vif.clk) begin // este vive en todo el tiempo de simulación 
       for (int i = 0; i < drvrs; i++) begin
 
         // POP: flanco de subida
@@ -71,8 +71,8 @@ class monitor #(
           $display("[MON] POP  if=%0d pkt=0x%h @%0t", i, ev.packet, $time);
         end
 
-        // PUSH: flanco de subida (evento independiente)
-        if (vif.push[0][i] === 1'b1 && prev_push[0][i] === 1'b0) begin
+        // PUSH: flanco de subida independiente por si pasan ambos a la vez
+        if (vif.push[0][i] === 1'b1 && prev_push[0][i] === 1'b0) begin 
           ev              = new();
           ev.event_type   = tb_pkg::EVT_PUSH;
           ev.interface_id = i;
@@ -80,7 +80,7 @@ class monitor #(
           event_mb.put(ev);
           $display("[MON] PUSH if=%0d pkt=0x%h @%0t", i, ev.packet, $time);
         end
-
+        // se actualizan los flancos previos para la siguiente iteración
         prev_pop[0][i]  = vif.pop[0][i];
         prev_push[0][i] = vif.push[0][i];
 

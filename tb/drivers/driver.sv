@@ -52,15 +52,15 @@ class driver #(
   task run();
     tx_transaction #(drvrs, pckg_sz) tr;
     bit timed_out;
-
+    // se inicializa porque puede tener Xs
     vif.pndng[0][id] = 1'b0;
     vif.D_pop[0][id] = '0;
-
-    forever begin
-      tx_mb.get(tr);
+    
+    forever begin // forever porque el driver vive siempre
+      tx_mb.get(tr); // bloquea el driver hasta que haya un paquete en el mailbox
 
       // Escribe en negedge: no compite con el DUT que muestrea en posedge.
-      @(negedge vif.clk);
+      @(negedge vif.clk); // es un seguro por el race condition 
       vif.D_pop[0][id] = tr.packet;
       vif.pndng[0][id] = 1'b1;
 
@@ -81,7 +81,7 @@ class driver #(
       join_any
       disable fork;
 
-      // Limpia aunque haya timeout (permite continuar al siguiente paquete)
+      // Limpia aunque haya timeout asi permite continuar al siguiente paquete
       vif.pndng[0][id] = 1'b0;
       @(negedge vif.clk);
     end

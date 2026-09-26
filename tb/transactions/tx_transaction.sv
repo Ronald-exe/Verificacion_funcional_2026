@@ -27,17 +27,17 @@ class tx_transaction #(
   parameter int pckg_sz = tb_pkg::PCKG_SZ_DEFAULT
 );
 
-  // Interfaz/driver que origina la transmisión (0 .. drvrs-1)
+  // Interfaz/driver que origina la transmisión (0 a drvrs-1)
   rand int unsigned interface_id;
 
   // Paquete completo: [pckg_sz-1 -: DEST_FIELD_WIDTH] = destino, resto = payload
   rand logic [pckg_sz-1:0] packet;
 
-  constraint c_interface_id_range {
+  constraint c_interface_id_range { // esto logico para que no se generen interface_id inválidos, aunque el DUT los ignore
     interface_id < drvrs;
   }
 
-  // Distribución de destinos: 70% unicast válido, 20% broadcast, 10% inválido.
+  // Distribución de destinos: 70% unicast válido, 20% broadcast, 10% inválido. como ejemplo de uso
   // El broadcast usa BROADCAST_RTL_ACTUAL porque el RTL real lo ignora.
   constraint c_destination {
     packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] dist {
