@@ -30,15 +30,14 @@
 
 class driver #(
   parameter int drvrs   = tb_pkg::DRVRS_DEFAULT,
-  parameter int pckg_sz = tb_pkg::PCKG_SZ_DEFAULT
+  parameter int pckg_sz = tb_pkg::PCKG_SZ_DEFAULT,
+  parameter int timeout_cycles = tb_pkg::TIMEOUT_CYCLES   // Timeout por paquete, por si queda esperando, despues del pop, y no llega nunca. Se puede ajustar según la simulación.
 );
 
-  int unsigned id;
-  virtual bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz)).driver_mp vif;
-  mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb;
+  int unsigned id;  // se define el id porque cada driver va a manejar una interfaz específica 
+  virtual bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz)).driver_mp vif; // se establece el interface virtualmente en el modport del if
+  mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb; // bloquea el driver hasta que haya un paquete en el mailbox
 
-  // Timeout por paquete (ciclos negedge)
-  localparam int TIMEOUT_CYCLES = 2000;
 
   function new(
     int unsigned                                                  id,
@@ -75,7 +74,7 @@ class driver #(
           $display("[DRV %0d] pop recibido @%0t", id, $time);
         end
         begin
-          repeat (TIMEOUT_CYCLES) @(negedge vif.clk);
+          repeat (timeout_cycles) @(negedge vif.clk);
           timed_out = 1;
           $display("[DRV %0d] TIMEOUT esperando pop @%0t", id, $time);
         end

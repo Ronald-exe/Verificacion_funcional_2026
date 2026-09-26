@@ -45,6 +45,7 @@ package tb_pkg;
 
   parameter int NUM_TRANSACTIONS_DEFAULT = 50;
   parameter logic [7:0] BROADCAST_RTL_ACTUAL = 8'hFF;
+  parameter int TIMEOUT_CYCLES = 2000;  // ciclos de reloj negedge para timeout del driver
 
   // Ancho fijo del campo de destino dentro del paquete (sec. 4 del spec).
   // El destino siempre ocupa los 8 bits superiores, sin importar pckg_sz.
