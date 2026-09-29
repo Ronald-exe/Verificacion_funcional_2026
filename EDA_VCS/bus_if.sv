@@ -1,21 +1,20 @@
-
-// Bus if · SV
 //==============================================================================
-// <NOMBRE DEL CURSO>
-// Integrantes: <Integrante 1> - <Integrante 2>
+// Verificación Funcional
+// Integrantes: Ronald - Eric
 //==============================================================================
 // Archivo   : bus_if.sv
 // Componente: Interfaz física entre el ambiente de verificación y el DUT
 //------------------------------------------------------------------------------
 // Descripción:
 //   Agrupa las señales del bus compartido bs_gnrtr_n_rbtr y expone dos
-//   modports basados en clocking blocks (antes se accedía a las señales
-//   directo, sin CB, y el driver "resolvía" la carrera contra el DUT
-//   conduciendo en negedge):
-//     - driver_mp  (vía cb_drv)  -> el Driver conduce pndng/D_pop y lee pop
-//     - monitor_mp (vía cb_mon)  -> el Monitor solo lee pop/D_pop/push/D_push
+//   modports que acceden a las señales directamente:
+//     - driver_mp  -> el Driver conduce pndng/D_pop (en negedge, para no
+//                     competir con el DUT que muestrea en posedge) y lee pop
+//     - monitor_mp -> solo lectura de pndng/pop/D_pop/push/D_push; lo usan
+//                     el Monitor y el chequeo de Round Robin del Checker
 //
-
+//   Los clocking blocks cb_drv/cb_mon quedan declarados pero los componentes
+//   no los usan.
 //==============================================================================
 
 
@@ -58,8 +57,9 @@ interface bus_if #(
     output pndng, D_pop
   );
  
+  // pndng se incluye (solo lectura) para el chequeo de Round Robin del Checker
   modport monitor_mp (
-    input clk, reset, pop, D_pop, push, D_push
+    input clk, reset, pndng, pop, D_pop, push, D_push
   );
  
 endinterface

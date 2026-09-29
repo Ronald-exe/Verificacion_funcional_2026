@@ -1,6 +1,6 @@
 //==============================================================================
-// <NOMBRE DEL CURSO>
-// Integrantes: <Integrante 1> - <Integrante 2>
+// Verificación Funcional
+// Integrantes: Ronald - Eric
 //==============================================================================
 // Archivo   : driver.sv
 // Componente: Driver (una instancia por interfaz del bus)
@@ -40,6 +40,10 @@ class driver #(
   // Timeout por paquete (ciclos negedge)
   localparam int TIMEOUT_CYCLES = 2000;
 
+  // 1 mientras el Driver tiene un paquete en curso (esperando su retardo o
+  // esperando pop); el test lo consulta para saber si ya terminó el tráfico
+  bit busy = 0;
+
   function new(
     int unsigned                                                  id,
     virtual bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz)).driver_mp  vif,
@@ -59,6 +63,10 @@ class driver #(
 
     forever begin
       tx_mb.get(tr);
+      busy = 1;
+
+      // Retardo antes de ofrecer el paquete (0 = back-to-back)
+      repeat (tr.delay) @(negedge vif.clk);
 
       // Escribe en negedge: no compite con el DUT que muestrea en posedge.
       @(negedge vif.clk);
@@ -85,6 +93,7 @@ class driver #(
       // Limpia aunque haya timeout (permite continuar al siguiente paquete)
       vif.pndng[0][id] = 1'b0;
       @(negedge vif.clk);
+      busy = 0;
     end
   endtask
 

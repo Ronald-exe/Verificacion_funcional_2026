@@ -1,6 +1,6 @@
 //==============================================================================
-// <NOMBRE DEL CURSO>
-// Integrantes: <Integrante 1> - <Integrante 2>
+// Verificación Funcional
+// Integrantes: Ronald - Eric
 //==============================================================================
 // Archivo   : tb_pkg.sv
 // Componente: Paquete central de parámetros por defecto y tipos compartidos
@@ -24,8 +24,8 @@
 //==============================================================================
 
 //==============================================================================
-// <NOMBRE DEL CURSO>
-// Integrantes: <Integrante 1> - <Integrante 2>
+// Verificación Funcional
+// Integrantes: Ronald - Eric
 //==============================================================================
 // Archivo   : tb_pkg.sv
 // Componente: Paquete de verificación (constantes y tipos compartidos)
@@ -54,6 +54,20 @@ package tb_pkg;
     EVT_POP  = 1'b0,
     EVT_PUSH = 1'b1
   } event_type_e;
+
+  // Escenarios de generación (TestplanV3.md sec. 6 y 8). El test elige uno y
+  // el Generator aplica los constraints correspondientes.
+  typedef enum {
+    SC_RANDOM,     // TP11: tráfico mixto (unicast / broadcast / inválido)
+    SC_UNICAST,    // TP03: solo unicast a otra interfaz válida
+    SC_BROADCAST,  // TP04/TP06: solo broadcast
+    SC_INVALID,    // TP05: solo destinos inválidos
+    SC_ADDR_EDGES, // TP03/TP05: bordes de dirección (primer/último válido,
+                   //            primer/último inválido, broadcast)
+    SC_ONE_IF,     // TP02: solo transmite la interfaz src_a (sin contención)
+    SC_TWO_IF,     // TP07: solo transmiten src_a y src_b (contención Round Robin)
+    SC_PATTERNS    // TP12: payload con patrones 0...0, 1...1, 1010..., 0101...
+  } scenario_e;
 
   function automatic logic [DEST_FIELD_WIDTH-1:0] get_destination(
     logic [63:0] packet,

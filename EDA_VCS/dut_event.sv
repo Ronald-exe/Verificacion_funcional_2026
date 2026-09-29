@@ -1,6 +1,6 @@
 //==============================================================================
-// <NOMBRE DEL CURSO>
-// Integrantes: <Integrante 1> - <Integrante 2>
+// Verificación Funcional
+// Integrantes: Ronald - Eric
 //==============================================================================
 // Archivo   : dut_event.sv
 // Componente: Evento observado en el DUT

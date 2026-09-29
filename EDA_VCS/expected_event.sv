@@ -1,6 +1,6 @@
 //==============================================================================
-// <NOMBRE DEL CURSO>
-// Integrantes: <Integrante 1> - <Integrante 2>
+// Verificación Funcional
+// Integrantes: Ronald - Eric
 //==============================================================================
 // Archivo   : expected_event.sv
 // Componente: Evento esperado generado por el Scoreboard
@@ -30,10 +30,16 @@ class expected_event #(
   int unsigned          interface_id;
   logic [pckg_sz-1:0]   packet;      // paquete esperado, cuando aplica
 
+  // Datos para el reporte de retardos (CSV); no se usan en la comparación
+  int unsigned          src_id;      // EVT_PUSH: interfaz que originó el paquete
+  int unsigned          n_rx;        // EVT_POP : cuántos push generará este paquete
+
   function new();
     event_type   = tb_pkg::EVT_POP;
     interface_id = 0;
     packet       = '0;
+    src_id       = 0;
+    n_rx         = 0;
   endfunction
 
   function void print(string tag = "expected_event");
