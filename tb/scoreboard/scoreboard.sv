@@ -1,6 +1,6 @@
 //==============================================================================
-// <NOMBRE DEL CURSO>
-// Integrantes: <Integrante 1> - <Integrante 2>
+// Verificación Funcional
+// Integrantes: Ronald - Eric
 //==============================================================================
 // Archivo   : scoreboard.sv
 // Componente: Scoreboard
@@ -19,15 +19,17 @@
 //                      interfaz i (push[i]).
 //                      Regla: no se retira antes de validar la comparación.
 //
-//   El Checker NO debe manipular estas queues directamente; el acceso debe
-//   realizarse mediante los métodos que esta clase exponga (ver TODO al
-//   final; interfaz exacta pendiente de definición, sec. 22 del spec).
+//   El Checker NO manipula estas queues directamente: confirma el consumo
+//   con confirm_pop(id) / confirm_push(id).
 //
-//   Reglas del modelo a implementar (no en este esqueleto):
+//   Reglas del modelo:
 //     - unicast   -> agregar a rx_expected[destino]
-//     - broadcast -> agregar copia a rx_expected[] de cada interfaz que
-//                     corresponda según el comportamiento de broadcast
+//     - broadcast -> agregar copia a rx_expected[] de cada interfaz,
+//                     EXCEPTO la de origen
 //     - inválido  -> no se agrega a ninguna cola
+//     - destino == origen -> no se agrega a ninguna cola
+//     Regla: una interfaz nunca recibe sus propios paquetes (no se
+//     escucha a sí misma), tanto en broadcast como en unicast.
 //     - push y pop se procesan como eventos independientes (sec. 17)
 //
 // Conexiones:
@@ -37,7 +39,13 @@
 // Parámetros:
 //   drvrs     - cantidad de interfaces (tamaño de las queues por interfaz)
 //   pckg_sz   - ancho en bits del campo packet
-//   broadcast - dirección de broadcast vigente (parametrizable, sec. 5)
+//   broadcast - dirección de broadcast configurada. El modelo usa
+//               tb_pkg::BROADCAST_RTL_ACTUAL (8'hFF) porque el RTL ignora
+//               este parámetro (hallazgo TP16, DUT_BUS_SPEC.md sec. 5) y
+//               avisa con un WARNING si se configura otro valor.
+//
+//   Además, en cada expected_event informa src_id (origen de un push) y
+//   n_rx (cuántos push genera un pop) para el reporte de retardos.
 //==============================================================================
 
 class scoreboard #(
@@ -76,34 +84,41 @@ class scoreboard #(
 
       tx_pending[tr.interface_id].push_back(tr);
 
+      dest = tr.packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH];
+
       exp              = new();
       exp.event_type   = tb_pkg::EVT_POP;
       exp.interface_id = tr.interface_id;
       exp.packet       = tr.packet;
+      // Cantidad de push que generará este paquete (lo usa el reporte CSV)
+      if (dest == tb_pkg::BROADCAST_RTL_ACTUAL)             exp.n_rx = drvrs - 1;
+      else if (dest < drvrs && dest != tr.interface_id)     exp.n_rx = 1;
+      else                                                  exp.n_rx = 0;
       expected_mb.put(exp);  // hacia el Checker: esperado de este pop
-
-      dest = tr.packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH];
 
       if (dest == tb_pkg::BROADCAST_RTL_ACTUAL) begin
         for (int unsigned i = 0; i < drvrs; i++) begin
+          if (i == tr.interface_id) continue;  // el origen no se escucha a sí mismo
           rx_expected[i].push_back(tr);
 
           exp              = new();
           exp.event_type   = tb_pkg::EVT_PUSH;
           exp.interface_id = i;
           exp.packet       = tr.packet;
+          exp.src_id       = tr.interface_id;
           expected_mb.put(exp);  // hacia el Checker: esperado en cada interfaz
         end
-      end else if (dest < drvrs) begin
+      end else if (dest < drvrs && dest != tr.interface_id) begin
         rx_expected[dest].push_back(tr);
 
         exp              = new();
         exp.event_type   = tb_pkg::EVT_PUSH;
         exp.interface_id = dest;
         exp.packet       = tr.packet;
+        exp.src_id       = tr.interface_id;
         expected_mb.put(exp);  // hacia el Checker: esperado en el destino
       end
-      // destino inválido: no se espera ningún push
+      // destino inválido o destino == origen: no se espera ningún push
     end
   endtask
 

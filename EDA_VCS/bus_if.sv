@@ -29,27 +29,15 @@ interface bus_if #(
  
   // Forma 2D [bits-1:0][drvrs-1:0], igual que los puertos reales del DUT
   // (bs_gnrtr_n_rbtr en Library.sv). bits=1 es fijo, pero la dimensión
-  // debe declararse igual para que la conexión de puertos type-matchee.
+  // debe declararse igual para que la conexión de puertos type matchee.
+
   logic               pndng  [bits-1:0][drvrs-1:0];
   logic [pckg_sz-1:0] D_pop  [bits-1:0][drvrs-1:0];
   logic               pop    [bits-1:0][drvrs-1:0];
 
   logic               push   [bits-1:0][drvrs-1:0];
   logic [pckg_sz-1:0] D_push [bits-1:0][drvrs-1:0];
- 
-  // Clocking blocks
-  
-  clocking cb_drv @(posedge clk);
-    default input #1step output #1;
-    output pndng, D_pop;
-    input  pop;
-  endclocking
- 
-  clocking cb_mon @(posedge clk);
-    default input #1step;
-    input pop, D_pop, push, D_push;
-  endclocking
- 
+
   // Modports
 
   modport driver_mp (

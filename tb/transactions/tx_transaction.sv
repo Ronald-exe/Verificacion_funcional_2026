@@ -1,6 +1,6 @@
 //==============================================================================
-// <NOMBRE DEL CURSO>
-// Integrantes: <Integrante 1> - <Integrante 2>
+// Verificación Funcional
+// Integrantes: Ronald - Eric
 //==============================================================================
 // Archivo   : tx_transaction.sv
 // Componente: Transacción de transmisión
@@ -33,8 +33,19 @@ class tx_transaction #(
   // Paquete completo: [pckg_sz-1 -: DEST_FIELD_WIDTH] = destino, resto = payload
   rand logic [pckg_sz-1:0] packet;
 
+  // Retardo (ciclos de reloj) que el Driver espera antes de ofrecer el
+  // paquete (TP09 idle / TP10 back-to-back). El rango lo fija el Generator
+  // antes de randomize(); delay_max = 0 equivale a back-to-back.
+  rand int unsigned delay;
+  int unsigned      delay_min = 0;
+  int unsigned      delay_max = 0;
+
   constraint c_interface_id_range {
     interface_id < drvrs;
+  }
+
+  constraint c_delay {
+    delay inside {[delay_min : delay_max]};
   }
 
   // Distribución de destinos: 70% unicast válido, 20% broadcast, 10% inválido.
@@ -50,6 +61,7 @@ class tx_transaction #(
   function new();
     interface_id = 0;
     packet       = '0;
+    delay        = 0;
   endfunction
 
   // Extrae el campo de destino (8 bits superiores) del paquete
