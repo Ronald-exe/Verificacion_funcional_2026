@@ -1,13 +1,4 @@
-pkg/tb_pkg.sv
-interfaces/bus_if.sv
-transactions/tx_transaction.sv
-transactions/dut_event.sv
-transactions/expected_event.sv
-drivers/driver.sv
-generator/generator.sv
-monitor/monitor.sv
-scoreboard/scoreboard.sv
-checker/checker.sv
-environment/environment.sv
-tests/test_base.sv
-tb_top.sv
+# Invoke VCS from the repository root. testbench.sv includes the RTL and TB
+# components in dependency order; rtl is also the include path for fifo.sv.
++incdir+rtl
+tb/tests/testbench.sv

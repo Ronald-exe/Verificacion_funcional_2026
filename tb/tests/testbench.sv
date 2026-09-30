@@ -25,18 +25,18 @@
 //        + $finish
 //==============================================================================
 
-`include "Library.sv"
-`include "tb_pkg.sv"
-`include "bus_if.sv"
-`include "tx_transaction.sv"
-`include "dut_event.sv"
-`include "expected_event.sv"
-`include "driver.sv"
-`include "monitor.sv"
-`include "generator.sv"
-`include "scoreboard.sv"
-`include "checker.sv"
-`include "environment.sv"
+`include "rtl/Library.sv"
+`include "tb/pkg/tb_pkg.sv"
+`include "tb/interfaces/bus_if.sv"
+`include "tb/transactions/tx_transaction.sv"
+`include "tb/transactions/dut_event.sv"
+`include "tb/transactions/expected_event.sv"
+`include "tb/drivers/driver.sv"
+`include "tb/generator/generator.sv"
+`include "tb/monitor/monitor.sv"
+`include "tb/scoreboard/scoreboard.sv"
+`include "tb/checker/checker.sv"
+`include "tb/environment/environment.sv"
 
 // Configuración del bus (TP14 pckg_sz = 16/32/64, TP15 drvrs = 2/4/8).
 // Se cambia aquí o desde las opciones de compilación, sin tocar el código:

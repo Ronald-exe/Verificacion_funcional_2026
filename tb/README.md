@@ -243,39 +243,27 @@ la creación del test están marcados como TODO).
 
 ---
 
-## 6. Cómo compilar
+## 6. Cómo compilar con VCS
 
-No se usan paquetes para envolver las clases (se mantiene "un archivo = un
-componente" como pide el proyecto), así que **todas las clases dependen de
-estar en la misma unidad de compilación**. Compilar los archivos juntos, en
-el orden indicado en `filelist.f`:
-
-```
-pkg/tb_pkg.sv
-interfaces/bus_if.sv
-transactions/tx_transaction.sv
-transactions/dut_event.sv
-transactions/expected_event.sv
-drivers/driver.sv
-generator/generator.sv
-monitor/monitor.sv
-scoreboard/scoreboard.sv
-checker/checker.sv
-environment/environment.sv
-tests/test_base.sv
-tb_top.sv
-```
-
-Ejemplo con Verilator (chequeo de sintaxis, sin simular):
+La lista selecciona `tests/testbench.sv` como único punto de entrada. Ese
+archivo incluye primero el RTL (`rtl/Library.sv`, que a su vez incluye
+`rtl/fifo.sv`) y luego los componentes de `tb/` en orden de dependencia. No
+agregues esos `.sv` otra vez a `filelist.f`, porque quedarían definidos dos
+veces. Las rutas están escritas desde la raíz del repositorio; ejecuta VCS
+desde esa carpeta:
 
 ```bash
-verilator --lint-only -sv -Wall -f filelist.f <ruta_al_RTL_real>/bs_gnrtr_n_rbtr.sv --top-module tb_top
+vcs -full64 -sverilog -timescale=1ns/1ns -f tb/filelist.f -top tb_top -o simv
+./simv
 ```
 
-Ejemplo con Questa/VCS: pasar los mismos archivos, en el mismo orden, junto
-con el RTL del DUT, en una sola invocación de compilación (`vlog -f
-filelist.f`). Si su flujo trata cada archivo como unidad de compilación
-separada, la alternativa es envolver las clases en un paquete e importarlo.
+`+incdir+rtl` permite resolver el include interno de `fifo.sv`. Para cambiar
+la configuración de la corrida, agrega las opciones `+define` a la invocación
+de `vcs`, por ejemplo:
+
+```bash
+vcs -full64 -sverilog -timescale=1ns/1ns -f tb/filelist.f -top tb_top -o simv +define+DRVRS=8+PCKG_SZ=32
+```
 
 ---
 
