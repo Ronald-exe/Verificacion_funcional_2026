@@ -265,6 +265,21 @@ de `vcs`, por ejemplo:
 vcs -full64 -sverilog -timescale=1ns/1ns -f tb/filelist.f -top tb_top -o simv +define+DRVRS=8+PCKG_SZ=32
 ```
 
+También está disponible `scripts/run_vcs.sh`, un selector legible de modos que
+compila y ejecuta la prueba sin Makefile. Desde la raíz del repositorio:
+
+```bash
+bash scripts/run_vcs.sh --help
+bash scripts/run_vcs.sh broadcast 17
+DRVRS=8 PCKG_SZ=32 bash scripts/run_vcs.sh two_if 17
+```
+
+Cada modo se compila con sus defines y deja el ejecutable, el log de salida,
+`dump.vcd` y el CSV bajo `sim/`. Cambiar `DRVRS` o `PCKG_SZ` requiere compilar
+de nuevo; la semilla sí se cambia en tiempo de ejecución con el segundo
+argumento. En Linux, si se desea invocarlo directamente, darle permiso una vez
+con `chmod +x scripts/run_vcs.sh` y luego usar `scripts/run_vcs.sh MODE [SEED]`.
+
 ---
 
 ## 7. Decisiones de arquitectura tomadas
