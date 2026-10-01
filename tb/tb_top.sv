@@ -35,10 +35,13 @@ module tb_top;
   parameter int pckg_sz           = tb_pkg::PCKG_SZ_DEFAULT;    // 16, 32, 64
   parameter logic [7:0] broadcast = tb_pkg::BROADCAST_DEFAULT;  // p.ej. 8'hFF
 
+  logic clk = 1'b0;
+  always #5 clk = ~clk;
+
   // ---------------------------------------------------------------------
   // Interfaz
   // ---------------------------------------------------------------------
-  bus_if #(.bits(bits), .drvrs(drvrs), .pckg_sz(pckg_sz)) vif ();
+  bus_if #(.bits(bits), .drvrs(drvrs), .pckg_sz(pckg_sz)) vif (.clk(clk));
 
   // ---------------------------------------------------------------------
   // DUT
@@ -57,15 +60,6 @@ module tb_top;
     .push   (vif.push),
     .D_push (vif.D_push)
   );
-
-  // ---------------------------------------------------------------------
-  // Reloj
-  // ---------------------------------------------------------------------
-  // TODO (equipo): definir el periodo real de verificación
-  // initial begin
-  //   vif.clk = 0;
-  //   forever #5 vif.clk = ~vif.clk;
-  // end
 
   // ---------------------------------------------------------------------
   // Reset

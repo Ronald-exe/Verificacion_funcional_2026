@@ -1,5 +1,3 @@
-
-Bus if · SV
 //==============================================================================
 // <NOMBRE DEL CURSO>
 // Integrantes: <Integrante 1> - <Integrante 2>
@@ -8,45 +6,28 @@ Bus if · SV
 // Componente: Interfaz física entre el ambiente de verificación y el DUT
 //------------------------------------------------------------------------------
 // Descripción:
-//   Agrupa las señales del bus compartido bs_gnrtr_n_rbtr y expone dos
-//   modports basados en clocking blocks (antes se accedía a las señales
-//   directo, sin CB, y el driver "resolvía" la carrera contra el DUT
-//   conduciendo en negedge):
-//     - driver_mp  (vía cb_drv)  -> el Driver conduce pndng/D_pop y lee pop
-//     - monitor_mp (vía cb_mon)  -> el Monitor solo lee pop/D_pop/push/D_push
+//   Agrupa las señales del único bus del DUT y expone modports de señales:
+//     - driver_mp  -> el Driver conduce pndng/D_pop y lee pop
+//     - monitor_mp -> el Monitor solo lee pop/D_pop/push/D_push
 //
 
 //==============================================================================
-
+`include "tb_pkg.sv"
 
 interface bus_if #(
   parameter int bits    = tb_pkg::BITS_DEFAULT,
   parameter int drvrs   = tb_pkg::DRVRS_DEFAULT,
   parameter int pckg_sz = tb_pkg::PCKG_SZ_DEFAULT
-);
+)(input logic clk);
  
-  logic clk;
   logic reset;
  
-  logic [drvrs-1:0]   pndng;
-  logic [pckg_sz-1:0] D_pop  [drvrs];
-  logic [drvrs-1:0]   pop;
+  logic                  pndng [bits-1:0][drvrs-1:0];
+  logic [pckg_sz-1:0]    D_pop [bits-1:0][drvrs-1:0];
+  logic                  pop   [bits-1:0][drvrs-1:0];
  
-  logic [drvrs-1:0]   push;
-  logic [pckg_sz-1:0] D_push [drvrs];
- 
-  // Clocking blocks
-  
-  clocking cb_drv @(posedge clk);
-    default input #1step output #1;
-    output pndng, D_pop;
-    input  pop;
-  endclocking
- 
-  clocking cb_mon @(posedge clk);
-    default input #1step;
-    input pop, D_pop, push, D_push;
-  endclocking
+  logic                  push  [bits-1:0][drvrs-1:0];
+  logic [pckg_sz-1:0]    D_push[bits-1:0][drvrs-1:0];
  
   // Modports
 
