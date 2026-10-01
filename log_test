@@ -1,0 +1,13 @@
+Command: vcs -Mupdate testbench.sv -o salida -full64 -sverilog -kdb -lca -debug_acc+all \
+-debug_region+cell+encrypt -l log_test +lint=TFIPC-L
+
+Warning-[LCA_FEATURES_ENABLED] Usage warning
+  LCA features enabled by '-lca' argument on the command line.  For more 
+  information regarding list of LCA features please refer to Chapter "LCA 
+  features" in the VCS Release Notes
+
+
+Error-[FILE_CANT_FIND_ERR] File not found
+  File "testbench.sv" does not exist or read permission denied
+  Make sure the file "testbench.sv" exists and has read permissions.
+
