@@ -1,0 +1,218 @@
+# Ambiente de verificacion objetivo
+
+## 1. Proposito
+
+Este documento define el estado objetivo del ambiente de verificacion funcional para `bs_gnrtr_n_rbtr`. Es la referencia para adaptar el ambiente existente en `EDA_VCS/` por modulos, revisar cada cambio y organizarlo en commits pequenos.
+
+Este documento no reemplaza todavia [TestplanV3.md](TestplanV3.md) ni afirma que la arquitectura descrita ya este implementada. El plan vigente se conserva como registro de la version anterior hasta que la nueva referencia y sus casos de uso sean revisados.
+
+## 2. Alcance
+
+El ambiente verificara el DUT usando SystemVerilog orientado a objetos, sin UVM. Se conservaran las responsabilidades separadas de Generator, Driver, Monitor, Scoreboard y Checker.
+
+El reset se utilizara unicamente para inicializar el DUT antes del trafico. El reset durante actividad y los casos asociados quedan fuera del alcance.
+
+La generacion sera constrained-random y reproducible mediante semillas. No se implementara cobertura funcional en esta etapa. Se usaran contadores de ejecucion y resultados para informar si un perfil llego a ejercitar el tipo de trafico que declara.
+
+## 3. Responsabilidades
+
+| Componente | Responsabilidad objetivo |
+|---|---|
+| `tb_pkg` | Fuente central de tipos, constantes, parametros por defecto, perfiles y funciones compartidas. |
+| `tx_transaction` | Representar una solicitud de transmision, sus campos de protocolo y metadata del testbench. |
+| Generator | Crear transacciones constrained-random, aplicar la politica del perfil y enviarlas al Driver y al Scoreboard por canales independientes. |
+| Driver | Mantener una FIFO de solicitudes por interfaz, respetar el calendario del estimulo y conducir `pndng` y `D_pop` desde el frente de la FIFO. Retirar la solicitud al observar su handshake `pop`. No publica eventos al Scoreboard. |
+| Monitor | Observar pasivamente las señales del DUT y publicar los eventos observados, incluidos `POP` y `PUSH`, al Checker. |
+| Scoreboard | Construir y conservar los eventos esperados a partir de las transacciones generadas. No realiza el matching principal ni determina el resultado final. |
+| Checker | Recibir eventos observados del Monitor y eventos esperados del Scoreboard; realizar el matching, contar errores y determinar `PASS`/`FAIL`. |
+| Environment | Construir y conectar los componentes, mailboxes y procesos concurrentes. |
+| Test / TB Top | Seleccionar el perfil, leer opciones de ejecucion, configurar DUT y ambiente, aplicar reset inicial y controlar el cierre de la simulacion. |
+| Script / Makefile | Compilar las configuraciones estructurales y ejecutar perfiles/seeds, guardar logs y reunir los resultados de regresion. |
+
+### 3.1 FIFO del Driver y observacion de `pop`
+
+La FIFO pertenece al camino activo de estimulo. El Driver la utiliza para mantener solicitudes pendientes y conducir de forma estable:
+
+```text
+pndng[i] = 1 cuando la FIFO de i tiene una solicitud pendiente
+D_pop[i] = paquete al frente de la FIFO de i
+```
+
+El Driver puede muestrear `pop[i]` para retirar el frente y avanzar el protocolo de entrada. Esa operacion no genera un `dut_event`, no comunica el `pop` al Scoreboard y no reemplaza la observacion independiente del Monitor. El Monitor es la fuente de eventos observados para el Checker.
+
+La implementacion debera definir una sola convencion de muestreo para evitar carreras entre Driver, Monitor y DUT. La topologia concreta (un objeto Driver con un arreglo de FIFOs o Drivers por interfaz con una FIFO cada uno) se decidira al adaptar el modulo, manteniendo una FIFO logica por interfaz.
+
+## 4. Flujo de transacciones
+
+```text
+                              +--> mailbox --> Driver --> tx_fifo[i] --> DUT
+Generator --> tx_transaction-+                              ^             |
+                              +--> mailbox --> Scoreboard   +--- pop -----+
+                                                               |
+DUT --> Monitor --> dut_event --> Checker <-- expected_event <-- Scoreboard
+                                      |
+                                      +--> resumen PASS/FAIL
+```
+
+El Generator conserva una copia independiente de la transaccion que entrega a cada consumidor; los componentes no deben compartir un mismo handle mutable entre procesos concurrentes.
+
+El Driver ejecuta el calendario de llegada de las transacciones y mantiene las señales de entrada hasta el `pop` correspondiente. No informa al Scoreboard de ese handshake. El Monitor observa `pop` y `push` en la interfaz y entrega esos eventos al Checker. El Scoreboard predice los eventos esperados desde la transaccion generada, y el Checker los compara con los eventos observados.
+
+`pop` y `push` son eventos independientes; si aparecen en el mismo ciclo, ambos se reportan y procesan.
+
+## 5. Transacciones y trazabilidad
+
+La transaccion podra ampliarse para identificar y clasificar estimulos. Campos candidatos:
+
+| Campo | Uso |
+|---|---|
+| `tx_id` | Identificador local del testbench para logs y diagnostico; no es parte del paquete del DUT. |
+| `source` | Interfaz origen, tambien conocida por el mailbox/Driver destino. |
+| `destination` | Direccion logica extraida o almacenada para construir el paquete. |
+| `payload` | Datos transportados, dimensionados segun `pckg_sz`. |
+| `arrival_delta` o `arrival_time` | Instante o intervalo de llegada al Driver. Se elegira una unica representacion temporal. |
+| `traffic_type` | Clase de trafico seleccionada por el perfil. |
+| `payload_type` | Clasificacion del patron de payload cuando aplique. |
+
+`tx_id` facilita la trazabilidad interna, pero no permite recuperar inequívocamente una identidad desde el DUT, porque el identificador no se transmite en el paquete. Los paquetes duplicados se deben comparar respetando su multiplicidad; cualquier atribucion individual de origen o latencia debera considerar esa limitacion.
+
+## 6. Modelo funcional y matching
+
+El Scoreboard construye los eventos esperados a partir de las transacciones del Generator. El Checker consume tanto esos esperados como los eventos observados por el Monitor y es el unico responsable del matching principal y del resultado `PASS`/`FAIL`.
+
+Reglas funcionales candidatas, pendientes de confirmacion contra la especificacion acordada:
+
+- destino igual al origen: descarte, sin recepcion;
+- destino valido distinto del origen: unicast al destino;
+- destino de broadcast: recepcion en todas las interfaces excepto el origen;
+- destino invalido distinto de broadcast: descarte, sin recepcion.
+
+El orden de recepcion no se exigira inicialmente. El Checker buscara una coincidencia por contenido y debera respetar la multiplicidad de paquetes repetidos. El matching no puede usar `tx_id` como dato observado, ya que el DUT no transporta ese campo.
+
+El parametro `broadcast` merece tratamiento separado: el RTL actual presenta una divergencia conocida y utiliza `8'hFF` internamente. La prueba funcional normal debera usar valores compatibles con el comportamiento esperado; una prueba que evidencie la divergencia debe identificarse como diagnostica y tener un resultado esperado definido, no invertir PASS/FAIL.
+
+## 7. Perfiles de trafico
+
+Se reduciran los escenarios especificos actuales y se usaran pocos perfiles generales que controlen la aleatorizacion. El conjunto final y los nombres quedan por aprobar; la propuesta de trabajo es:
+
+| Perfil candidato | Politica principal |
+|---|---|
+| `RANDOM` | Combinacion ponderada de fuentes, destinos, payload y tiempos. |
+| `BURST` | Rachas de transacciones con pausas controladas entre ellas. |
+| `CONCURRENT` | Llegadas coordinadas desde varias interfaces para crear contencion. |
+| `BOUNDARY` | Mayor peso en destinos limite, casos self-addressed, payload minimo/maximo y direcciones invalidas. |
+| `MIXED` | Mezcla de politicas y clases de trafico en una misma corrida. |
+
+Los perfiles no seran una prueba independiente por cada funcionalidad. Mediante constraints y pesos podran generar unicast, self-addressed, broadcast, destinos invalidos, back-to-back, bursts, concurrencia, varias fuentes hacia un destino, cross traffic y extremos del payload.
+
+No se debe asumir que un caso aparecio solo porque el perfil podia generarlo. Los contadores de ejecucion informaran las clases generadas y los eventos observados; inicialmente estos contadores diagnostican y no sustituyen un criterio de PASS/FAIL.
+
+## 8. Constraints y aleatorizacion
+
+Las variables principales de aleatorizacion seran:
+
+```text
+source
+ destination
+payload
+arrival_delta
+burst_length
+traffic_type
+payload_type
+```
+
+Cada constraint debe expresar el dominio valido y evitar combinaciones contradictorias. Los perfiles aplicaran constraints adicionales o distribuciones `dist` sin duplicar reglas comunes de `tb_pkg`.
+
+Los pesos iniciales se centralizaran y documentaran. Sus valores concretos se ajustaran despues de revisar el espacio de direcciones, las restricciones del DUT y resultados de simulacion. Una falla de `randomize()` debe detener o marcar la corrida como fallida; no se debe continuar con campos sin aleatorizar.
+
+No se implementara cobertura funcional en esta etapa. La exploracion se hara con volumen de transacciones, variedad de seeds y contadores informativos.
+
+## 9. Parametrizacion y ejecucion
+
+Los parametros estructurales se fijan al compilar cada configuracion del DUT y no se cambian durante una simulacion:
+
+```text
+BITS
+DRVRS
+PCKG_SZ
+BROADCAST
+```
+
+Los valores soportados y sus restricciones se documentaran. `bits` no se aleatoriza. Los estimulos y controles de regresion se seleccionan en ejecucion mediante plusargs, como minimo:
+
+```text
++SEED=<entero>
++NUM=<cantidad>
++SCENARIO=<perfil>
+```
+
+Se podran agregar opciones de verbosidad y limite de errores si la salida de la regresion lo requiere. El script y el Makefile (si se agrega) deberan exponer una interfaz coherente y permitir pasar configuracion estructural, perfil, cantidad y seed sin editar el testbench.
+
+La forma de pasar parametros de elaboracion depende de VCS y se definira junto con el comando de compilacion probado; no se mezclaran parametros estructurales con plusargs de simulacion.
+
+## 10. Reset, finalizacion y watchdog
+
+El TB aplicara el reset inicial, esperara la liberacion y comenzara el trafico. No habra reset durante actividad ni logica para descartar paquetes en vuelo por reset.
+
+La finalizacion esperara a que el Generator termine, que los Drivers no tengan solicitudes por presentar y que los eventos esperados/observados hayan podido drenarse. El watchdog marcara la corrida como `FAIL` o `TIMEOUT`; nunca debe permitir que una simulacion detenida se reporte como `PASS`.
+
+Los margenes del watchdog se definiran con mediciones en las configuraciones soportadas, evitando depender de un ciclo fijo que no escale con `NUM`, `DRVRS` o `PCKG_SZ`.
+
+## 11. Resultado por corrida y regresion
+
+Cada simulacion registrara como minimo:
+
+```text
+Seed
+Configuracion DUT: BITS, DRVRS, PCKG_SZ, BROADCAST
+Scenario
+NUM_TX
+PASS / FAIL / TIMEOUT
+Conteos de errores y eventos
+```
+
+La seed aplicada debe aparecer en el log y en el resumen de regresion. Repetir la misma configuracion, perfil, cantidad y seed debe reproducir el estimulo aleatorio.
+
+Una regresion ejecutara varias seeds y, cuando corresponda, varias configuraciones de compilacion. El resumen agregado identificara cada combinacion que fallo y conservara la seed necesaria para reproducirla. Los logs individuales no se sobrescribiran entre corridas.
+
+## 12. Criterios de PASS/FAIL
+
+Una corrida sera `PASS` unicamente si:
+
+- todos los eventos observados que requieren correspondencia encuentran un esperado compatible;
+- no hay eventos esperados pendientes al cierre;
+- no hay eventos espurios, datos corruptos o entregas a interfaces incorrectas;
+- la generacion aleatoria no falla;
+- no expira el watchdog;
+- la corrida termina normalmente.
+
+Los contadores de alcance se imprimiran por perfil y serviran para diagnostico. Hasta que se acuerden requisitos de alcance obligatorios, un contador en cero generara una advertencia, no cambiara por si solo el veredicto funcional.
+
+## 13. Plan de adaptacion por cambios pequenos
+
+Cada etapa se revisara y podra cerrarse como un commit independiente, despues de validar su documentacion y pruebas locales.
+
+| Etapa | Alcance |
+|---|---|
+| 1. Referencia documental | Acordar arquitectura, perfiles, parametros, criterios y pendientes en este documento. |
+| 2. Tipos y paquete | Actualizar `tb_pkg` y `tx_transaction`; agregar metadata/enum de perfiles y reglas comunes. |
+| 3. Driver | Incorporar FIFO por interfaz, calendario de llegada y protocolo de `pndng`/`D_pop`/`pop`, sin canal Driver → Scoreboard. |
+| 4. Generator | Reducir escenarios a perfiles generales y definir constraints, distribuciones y semillas reproducibles. |
+| 5. Scoreboard y Checker | Conservar Scoreboard como constructor de esperados y Checker como responsable de matching/veredicto; adaptar colas/eventos para transacciones ampliadas. |
+| 6. Monitor y Environment | Confirmar muestreo de eventos, conexiones, construccion de componentes y cierre de procesos. |
+| 7. Test y TB Top | Leer plusargs, validar configuracion, inicializar DUT y producir resultado por corrida. |
+| 8. Scripts y regresion | Automatizar compilaciones estructurales, ejecuciones multi-seed, almacenamiento de logs y resumen agregado. |
+| 9. Documentacion final | Actualizar el plan de pruebas y documentar comandos y resultados medidos. |
+
+## 14. Decisiones pendientes
+
+Antes de fijar las interfaces entre modulos, se deben confirmar:
+
+1. Si el tiempo de llegada se representa como `arrival_delta` por transaccion o como `arrival_time` absoluto, y si el Generator agenda las llegadas o el Driver espera para ejecutarlas.
+2. El matching exacto cuando hay paquetes identicos de distintas fuentes. El DUT no transporta `tx_id`; el modelo puede comprobar contenido y multiplicidad, pero no reconstruir identidad individual si las observaciones son indistinguibles.
+3. Las reglas funcionales definitivas para self-addressed, broadcast e invalid destination, incluyendo la divergencia conocida del parametro `broadcast`.
+4. Los valores validos de `BITS`, `DRVRS`, `PCKG_SZ` y `BROADCAST`, y cuales combinaciones se compilaran en regresion.
+5. Los nombres y conjunto definitivo de perfiles, y si se permite un modo `ALL` para recorrerlos.
+6. La derivacion de seeds por perfil y el numero de seeds que ejecutara el script en modo regresion.
+7. Los valores por defecto de `NUM`, pesos `dist`, limites de error, verbosidad y margenes del watchdog.
+8. Como reportar paquetes que el Driver conserva en su FIFO al cierre y si el backlog constituye siempre `FAIL`.
