@@ -21,7 +21,7 @@ vcs -Mupdate \
     -debug_region+cell+encrypt \
     -l log_test \
     +lint=TFIPC-L \
-    -top testbench
+    -top tb_top
 
 if [ $? -eq 0 ]; then
     echo "Compilación exitosa. Ejecutando simulación... "
