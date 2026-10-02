@@ -31,14 +31,18 @@ La generacion sera constrained-random y reproducible mediante semillas. No se im
 
 ### 3.1 FIFO del Driver y observacion de `pop`
 
-La FIFO pertenece al camino activo de estimulo. El Driver la utiliza para mantener solicitudes pendientes y conducir de forma estable:
+La FIFO pertenece al camino activo de estimulo. Cada instancia del Driver mantiene su cola `tx_fifo`; el arreglo de Drivers del Environment equivale a una FIFO por interfaz. Un proceso del Driver recibe transacciones del mailbox mientras otro procesa el frente de la cola.
+
+Se conserva el significado actual de `delay`: ciclos de espera antes de ofrecer ese paquete al DUT. El retardo se aplica cuando la transaccion llega al frente de `tx_fifo`, de modo que las transacciones posteriores pueden acumularse mientras una solicitud espera o se procesa. No se renombra a `arrival_delta` ni se interpreta como tiempo absoluto.
+
+Cuando el frente esta listo para ofrecerse, el Driver utiliza la FIFO para conducir de forma estable:
 
 ```text
 pndng[i] = 1 cuando la FIFO de i tiene una solicitud pendiente
 D_pop[i] = paquete al frente de la FIFO de i
 ```
 
-El Driver puede muestrear `pop[i]` para retirar el frente y avanzar el protocolo de entrada. Esa operacion no genera un `dut_event`, no comunica el `pop` al Scoreboard y no reemplaza la observacion independiente del Monitor. El Monitor es la fuente de eventos observados para el Checker.
+El Driver puede muestrear `pop[i]` para retirar el frente y avanzar el protocolo de entrada. Esa operacion no genera un `dut_event`, no comunica el `pop` al Scoreboard y no reemplaza la observacion independiente del Monitor. El Monitor es la fuente de eventos observados para el Checker. El estado `busy` debe permanecer activo mientras haya transacciones recibidas pendientes, incluidas las que esperan su `delay`.
 
 La implementacion debera definir una sola convencion de muestreo para evitar carreras entre Driver, Monitor y DUT. La topologia concreta (un objeto Driver con un arreglo de FIFOs o Drivers por interfaz con una FIFO cada uno) se decidira al adaptar el modulo, manteniendo una FIFO logica por interfaz.
 
