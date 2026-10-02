@@ -76,6 +76,29 @@ La transaccion podra ampliarse para identificar y clasificar estimulos. Campos c
 
 `tx_id` facilita la trazabilidad interna, pero no permite recuperar inequívocamente una identidad desde el DUT, porque el identificador no se transmite en el paquete. Los paquetes duplicados se deben comparar respetando su multiplicidad; cualquier atribucion individual de origen o latencia debera considerar esa limitacion.
 
+### 5.1 Convencion de nombres
+
+Cuando un nombre del prompt represente un dato que ya existe en el ambiente, se conservara el nombre del ambiente actual. No se agregaran campos duplicados solo para adoptar otro vocabulario.
+
+| Concepto | Nombre del prompt | Nombre actual a conservar | Tratamiento |
+|---|---|---|---|
+| Interfaz origen | `source` | `interface_id` | Mantener `interface_id` en `tx_transaction`; es el origen de la solicitud. |
+| Paquete completo | `destination` + `payload` | `packet` | Mantener `packet` como dato aleatorio completo. Usar funciones de acceso para destino y payload cuando se necesiten; no aleatorizar copias independientes. |
+| Destino | `destination` | `get_destination()` / campo superior de `packet` | Mantener la funcion de acceso existente y centralizar el ancho en `DEST_FIELD_WIDTH`. |
+| Tiempo entre solicitudes | `arrival_delta` | `delay` | Mantener `delay` si conserva el significado de ciclos de espera antes de ofrecer esa transaccion. Si se decide usar tiempo absoluto, documentar el cambio semantico antes de reutilizar el nombre. |
+| Perfil | `SCENARIO` | `scenario` y `scenario_e` | Mantener `scenario` como variable y `scenario_e` como tipo; reducir los valores del enum, sin renombrar la variable. |
+| Cantidad de transacciones | `NUM` | `num_transactions` | `NUM` sera el nombre del plusarg; dentro del testbench se conserva `num_transactions`. |
+| Interfaces del DUT | `DRVRS` | `drvrs` / `DRVRS_DEFAULT` | `DRVRS` puede ser la opcion de compilacion; se conservan los nombres SystemVerilog existentes. Aplicar igual criterio a `PCKG_SZ`/`pckg_sz` y `BITS`/`bits`. |
+| Broadcast | `BROADCAST` | `broadcast` / `BROADCAST_DEFAULT` / `BROADCAST_RTL_ACTUAL` | Conservar los nombres existentes y aclarar en cada uso si es el parametro configurado o el valor que actualmente compara el RTL. |
+| Esperados pendientes de POP | No tiene equivalente directo | `tx_pending` | No renombrar a `tx_fifo`: `tx_pending` es estado del modelo; la FIFO nueva del Driver contiene estimulos activos y tiene otra responsabilidad. |
+| Identificador de transaccion | `tx_id` | No existe actualmente | Campo nuevo de metadata del testbench, asignado por el Generator; no se agrega al paquete del DUT. |
+| Longitud de burst | `burst_length` | No existe actualmente | Campo nuevo, solo necesario para perfiles que generen rachas. |
+| Tipo de trafico | `traffic_type` | No existe actualmente | Campo o variable nueva si clasifica una transaccion individual. No debe confundirse con `scenario`, que selecciona la politica global de la corrida. |
+| Tipo de payload | `payload_type` | No existe actualmente | Metadata nueva opcional para identificar la politica de payload aplicada. |
+| Seed | `SEED` | No hay variable propia; actualmente se consulta la seed del simulador | `SEED` sera el nombre del plusarg. Se agregara una variable local `seed` solo si se requiere derivar o reportar la semilla efectiva. |
+
+La misma convencion se aplicara a los nombres de parametros y eventos de SystemVerilog: se conservaran `drvrs`, `pckg_sz`, `interface_id`, `packet`, `delay`, `scenario`, `num_transactions`, `event_mb` y `expected_mb` cuando sigan representando la misma interfaz o dato. Un cambio de nombre se justificara solo si cambia el significado o elimina una ambiguedad real.
+
 ## 6. Modelo funcional y matching
 
 El Scoreboard construye los eventos esperados a partir de las transacciones del Generator. El Checker consume tanto esos esperados como los eventos observados por el Monitor y es el unico responsable del matching principal y del resultado `PASS`/`FAIL`.
@@ -113,7 +136,7 @@ Las variables principales de aleatorizacion seran:
 
 ```text
 source
- destination
+destination
 payload
 arrival_delta
 burst_length
