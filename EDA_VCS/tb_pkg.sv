@@ -41,31 +41,11 @@ package tb_pkg;
   parameter int BITS_DEFAULT              = 1;    // fijo, no varía entre configs
   parameter int DRVRS_DEFAULT             = 4;    // configs previstas: 2, 4, 8
   parameter int PCKG_SZ_DEFAULT           = 16;   // configs previstas: 16, 32, 64
+  parameter logic [7:0] BROADCAST_DEFAULT = 8'hFF;
 
-  // Dirección de broadcast (TP16). Se elige con +define+BROADCAST=N
-  // (ej. +define+BROADCAST=240 -> 0xF0); por defecto 8'hFF.
-  //   BROADCAST_DEFAULT    -> parámetro broadcast que recibe el DUT
-  //   BROADCAST_RTL_ACTUAL -> dirección que usa el modelo (Generator,
-  //                           Scoreboard, Checker). Sigue la especificación:
-  //                           el ambiente no asume que siempre es 8'hFF.
-  //   BROADCAST_RTL_FIJO   -> valor que el RTL compara realmente: Library.sv
-  //                           líneas 388 y 716 usan {8{1'b1}} e ignoran el
-  //                           parámetro. Con BROADCAST != 8'hFF el DUT no
-  //                           cumple la especificación (hallazgo TP16).
-`ifndef BROADCAST
-  `define BROADCAST 8'hFF
-`endif
-  parameter logic [7:0] BROADCAST_DEFAULT    = `BROADCAST;
-  parameter logic [7:0] BROADCAST_RTL_ACTUAL = `BROADCAST;
-  parameter logic [7:0] BROADCAST_RTL_FIJO   = 8'hFF;
-
-<<<<<<< HEAD
-  parameter int NUM_TRANSACTIONS_DEFAULT = 50;
-=======
   parameter int NUM_TRANSACTIONS_DEFAULT = 50; // Por interfaz/source
   parameter int SEED_BASE_DEFAULT = 1;
   parameter logic [7:0] BROADCAST_RTL_ACTUAL = 8'hFF;
->>>>>>> eae310daa7954b60ed44cddc35e3c03971cdfdc0
 
   parameter int TRAFFIC_UNICAST_WEIGHT    = 60;
   parameter int TRAFFIC_SELF_WEIGHT       = 10;
@@ -88,25 +68,11 @@ package tb_pkg;
   // Perfiles de generación: el Generator combina cada perfil con los
   // constraints de traffic_type, payload_type y delay.
   typedef enum {
-<<<<<<< HEAD
-    SC_RANDOM,     // TP11: tráfico mixto (unicast / broadcast / inválido)
-    SC_UNICAST,    // TP03: solo unicast a otra interfaz válida
-    SC_BROADCAST,  // TP04/TP06: solo broadcast
-    SC_INVALID,    // TP05: solo destinos inválidos
-    SC_ADDR_EDGES, // TP03/TP05: bordes de dirección (primer/último válido,
-                   //            primer/último inválido, broadcast)
-    SC_ONE_IF,     // TP02: solo transmite la interfaz src_a (sin contención)
-    SC_TWO_IF,     // TP07: solo transmiten src_a y src_b (contención Round Robin)
-    SC_PATTERNS,   // TP12: payload con patrones 0...0, 1...1, 1010..., 0101...
-    SC_BCAST_PARAM // TP16: destinos BROADCAST configurado y 8'hFF (evidencia
-                   //       que el RTL ignora el parámetro broadcast)
-=======
     SC_RANDOM,
     SC_BURST,
     SC_CONCURRENT,
     SC_BOUNDARY,
     SC_MIXED
->>>>>>> eae310daa7954b60ed44cddc35e3c03971cdfdc0
   } scenario_e;
 
   typedef enum {
@@ -144,4 +110,3 @@ package tb_pkg;
   endfunction
 
 endpackage : tb_pkg
-

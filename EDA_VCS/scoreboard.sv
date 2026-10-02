@@ -40,10 +40,9 @@
 //   drvrs     - cantidad de interfaces (tamaño de las queues por interfaz)
 //   pckg_sz   - ancho en bits del campo packet
 //   broadcast - dirección de broadcast configurada. El modelo usa
-//               tb_pkg::BROADCAST_RTL_ACTUAL (+define+BROADCAST, default
-//               8'hFF), como pide la especificación. El RTL compara contra
-//               8'hFF fijo (hallazgo TP16, DUT_BUS_SPEC.md sec. 5), por lo
-//               que avisa con un WARNING si se configura otro valor.
+//               tb_pkg::BROADCAST_RTL_ACTUAL (8'hFF) porque el RTL ignora
+//               este parámetro (hallazgo TP16, DUT_BUS_SPEC.md sec. 5) y
+//               avisa con un WARNING si se configura otro valor.
 //
 //   Además, en cada expected_event informa src_id (origen de un push) y
 //   n_rx (cuántos push genera un pop) para el reporte de retardos.
@@ -75,9 +74,9 @@ class scoreboard #(
     expected_event    #(drvrs, pckg_sz) exp;
     logic [tb_pkg::DEST_FIELD_WIDTH-1:0] dest;
 
-    if (tb_pkg::BROADCAST_RTL_ACTUAL !== tb_pkg::BROADCAST_RTL_FIJO) begin
-      $display("T=%0t [Scoreboard] WARNING TP16: broadcast=0x%0h configurado, pero el RTL compara contra 0x%0h fijo (Library.sv lineas 388 y 716). Se esperan errores.",
-                $time, tb_pkg::BROADCAST_RTL_ACTUAL, tb_pkg::BROADCAST_RTL_FIJO);
+    if (broadcast !== tb_pkg::BROADCAST_RTL_ACTUAL) begin
+      $display("T=%0t [Scoreboard] WARNING: broadcast=0x%0h configurado, pero el RTL siempre usa 0x%0h.",
+                $time, broadcast, tb_pkg::BROADCAST_RTL_ACTUAL);
     end
 
     forever begin
@@ -146,4 +145,3 @@ class scoreboard #(
   endfunction
 
 endclass : scoreboard
-

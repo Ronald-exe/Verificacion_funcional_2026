@@ -103,26 +103,6 @@ class generator #(
               burst_length == burst_size;
               arrival_delta == ((burst_remaining == burst_size) ? burst_gap : 0);
             };
-<<<<<<< HEAD
-          };
-        // TP16: mitad de los paquetes al broadcast configurado y mitad a
-        // 8'hFF. Con +define+BROADCAST distinto de 8'hFF el modelo espera
-        // que el primero se reparta y el segundo se descarte (inválido); el
-        // RTL hace lo contrario porque compara contra 8'hFF fijo. Se apaga
-        // el dist de tx_transaction porque no incluye 8'hFF en ese caso.
-        tb_pkg::SC_BCAST_PARAM: begin
-          tr.c_destination.constraint_mode(0);
-          ok = tr.randomize() with {
-            packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] dist {
-              tb_pkg::BROADCAST_RTL_ACTUAL := 1,
-              tb_pkg::BROADCAST_RTL_FIJO   := 1
-            };
-          };
-        end
-        default:  // SC_RANDOM: solo los constraints de tx_transaction
-          ok = tr.randomize();
-      endcase
-=======
           end
           tb_pkg::SC_CONCURRENT: begin
             tr.c_arrival_delta.constraint_mode(0);
@@ -159,7 +139,6 @@ class generator #(
           default:
             ok = 0;
         endcase
->>>>>>> eae310daa7954b60ed44cddc35e3c03971cdfdc0
 
         if (!ok)
           $fatal(1, "T=%0t [Generator] randomize() fallo en tx#%0d (scenario=%s)",
@@ -185,4 +164,3 @@ class generator #(
   endtask
 
 endclass : generator
-

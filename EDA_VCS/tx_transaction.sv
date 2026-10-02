@@ -60,22 +60,12 @@ class tx_transaction #(
     arrival_delta inside {[delay_min : delay_max]};
   }
 
-<<<<<<< HEAD
-  // Distribución de destinos: 70% unicast válido, 20% broadcast, 10% inválido.
-  // El broadcast usa BROADCAST_RTL_ACTUAL (+define+BROADCAST, default 8'hFF).
-  constraint c_destination {
-    packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] dist {
-      [0 : drvrs-1]                              :/ 70,
-      tb_pkg::BROADCAST_RTL_ACTUAL               :/ 20,
-      [drvrs : tb_pkg::BROADCAST_RTL_ACTUAL - 1] :/ 10
-=======
   constraint c_traffic_distribution {
     traffic_type dist {
       tb_pkg::TR_UNICAST   := tb_pkg::TRAFFIC_UNICAST_WEIGHT,
       tb_pkg::TR_SELF      := tb_pkg::TRAFFIC_SELF_WEIGHT,
       tb_pkg::TR_BROADCAST := tb_pkg::TRAFFIC_BROADCAST_WEIGHT,
       tb_pkg::TR_INVALID   := tb_pkg::TRAFFIC_INVALID_WEIGHT
->>>>>>> eae310daa7954b60ed44cddc35e3c03971cdfdc0
     };
   }
 
