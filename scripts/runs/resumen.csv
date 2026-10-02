@@ -1,2 +1,0 @@
-caso,defines,seed,num_tx,correctas,errores,pendientes,lat_min_ns,lat_max_ns,lat_prom_ns,rr_violaciones,resultado
-broadcast,SCENARIO=SC_BROADCAST,,,,,,,,,,COMPILACION
