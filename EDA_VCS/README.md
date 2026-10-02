@@ -166,11 +166,27 @@ Genera `histograma_retardos.png` con N, mínimo, máximo y promedio en el títul
 3. El comportamiento de reset durante actividad fue explorado en la version
    anterior, pero queda fuera del alcance de los nuevos perfiles.
 
-## 8. Resultados historicos (seed = 1)
+## 8. Primera corrida reportada en EDA Playground
 
-Los resultados siguientes corresponden a la version anterior del ambiente y a
-sus escenarios dedicados. No validan los perfiles nuevos; la regresion nueva
-queda pendiente de ejecucion con VCS.
+Configuracion reportada: `DRVRS=4`, `PCKG_SZ=16`, `BROADCAST=0xFF`,
+`SCENARIO=SC_MIXED`, `NUM=50`, `SEED=1`.
+
+| Metrica | Resultado |
+|---|---|
+| Resultado final | PASS |
+| Eventos correctos | 106 (50 POP y 56 PUSH) |
+| Errores / pendientes | 0 / 0 |
+| Round Robin | 123 verificaciones, 0 violaciones |
+| Retardo POP->PUSH | min=190 ns, max=770 ns, promedio=699.6 ns |
+| Filas CSV | 56 |
+
+Esta corrida valida el perfil `SC_MIXED` con esa configuracion y seed. No
+valida aun los otros perfiles ni las demas combinaciones estructurales.
+
+## 9. Resultados historicos del ambiente anterior (seed = 1)
+
+Los resultados siguientes corresponden a los escenarios dedicados anteriores;
+se conservan como referencia y no como evidencia de los perfiles nuevos.
 
 | Corrida | Resultado |
 |---|---|
