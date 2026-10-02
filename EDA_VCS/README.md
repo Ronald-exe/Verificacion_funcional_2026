@@ -51,14 +51,16 @@ Los parámetros estructurales se agregan a Compile Options como `+define`:
 | Plusarg | Default | Efecto |
 |---|---|
 | `+SCENARIO=SC_MIXED` | `SC_MIXED` | Perfil de generación; admite los cinco perfiles de la sección 4 |
-| `+NUM=100` | `50` | Cantidad exacta de transacciones |
+| `+NUM=100` | `50` | Transacciones por source; el total es `NUM * DRVRS` |
 | `+SEED=21` | `1` | Seed reproducible del Generator |
 
 En Run Options ingresar, por ejemplo:
 
 ```sh
-+SCENARIO=SC_CONCURRENT +NUM=100 +SEED=21
++SCENARIO=SC_CONCURRENT +NUM=10 +SEED=21
 ```
+
+Con `DRVRS=4`, `+NUM=10` genera 10 transacciones por interfaz y 40 en total.
 
 Repetir los mismos Compile Options y Run Options debe reproducir el mismo
 estímulo. Para cambiar entre perfiles, usar `SC_RANDOM`, `SC_BURST`,
@@ -78,7 +80,7 @@ Para descargar el CSV, marcar **"Download files after run"** en el panel izquier
 | `DRVRS` | 4 | Cantidad de interfaces (2, 4, 8) |
 | `PCKG_SZ` | 16 | Tamaño del paquete en bits (16, 32, 64) |
 | `BROADCAST` | 255 | Direccion broadcast pasada al DUT (0 a 255) |
-| `DELAY_MIN`, `DELAY_MAX` | 0, 10 | Retardo aleatorio (ciclos) antes de ofrecer cada paquete |
+| `DELAY_MIN`, `DELAY_MAX` | 0, 10 | Rango de `arrival_delta` en ciclos antes de ofrecer cada paquete |
 | `CSV_FILE` | `"reporte_paquetes.csv"` | Nombre del archivo de retardos |
 
 `BITS` permanece fijo en 1. `SCENARIO`, `NUM` y `SEED` son plusargs de simulación, no `+define`.
@@ -88,8 +90,8 @@ Para descargar el CSV, marcar **"Download files after run"** en el panel izquier
 | Perfil | Política |
 |---|---|
 | `SC_RANDOM` | Selección uniforme entre unicast, self-addressed, broadcast e inválido |
-| `SC_BURST` | Rachas de 1 a 4 transacciones de una misma fuente |
-| `SC_CONCURRENT` | Solicitudes iniciales coordinadas entre interfaces, con `delay=0` |
+| `SC_BURST` | Rachas de 1 a 4 transacciones de una misma fuente; las siguientes llegan con `arrival_delta=0` |
+| `SC_CONCURRENT` | Solicitudes iniciales coordinadas entre interfaces, con `arrival_delta=0` |
 | `SC_BOUNDARY` | Destinos `0`, `drvrs-1`, `drvrs`, `0xFE` y `0xFF`, con clase coherente |
 | `SC_MIXED` | Tráfico ponderado; perfil predeterminado |
 
@@ -99,11 +101,11 @@ Los patrones de payload se seleccionan mediante constraints en todos los perfile
 
 ## 5. Cómo leer el log
 
-Encabezado: configuración de la corrida (`drvrs`, `pckg_sz`, `num_transactions`,
-`seed`, `scenario` y `delay`).
+Encabezado: configuración de la corrida (`drvrs`, `pckg_sz`, `num/source`,
+`total`, `seed`, `scenario` y `arrival_delta`).
 
 Durante la corrida:
-- `[Generator] tx#N if=… packet=… delay=…` — transacción generada
+- `[Generator] tx#N if=… packet=… arrival_delta=…` — transacción generada
 - `[DRV i] ofrecido / pop recibido` — actividad del Driver
 - `[MON] POP / PUSH` — evento observado en el DUT
 - `[Checker] PASS / ERROR` — resultado de cada comparación
@@ -117,40 +119,57 @@ Reporte final:
 | Transacciones correctas | pop + push que coincidieron con lo esperado |
 | Transacciones con error | eventos observados que no coinciden (paquete corrupto, destino equivocado, push inesperado) |
 | Esperados no observados | eventos que el modelo esperaba y el DUT nunca produjo (paquetes perdidos) |
-| Retardo pop->push | mínimo / máximo / promedio en ns, y cantidad de paquetes recibidos |
-| Reporte CSV | cantidad de filas escritas (una por push) |
+| Transacciones PASS/FAIL | resultado por `tx_id`; un broadcast se considera PASS si completan sus entregas esperadas |
+| Retardo send->receive | mínimo / máximo / promedio en ns por entrega recibida |
+| Reporte CSV | cantidad total de filas, incluyendo drops esperados y resultados FAIL |
 | Round Robin | verificaciones realizadas y violaciones encontradas |
 | RESULTADO | PASS solo si errores = 0, pendientes = 0 y violaciones RR = 0 |
 
-Chequeo: `correctas = num_transactions (pop) + filas del CSV (push)`.
+El total esperado de transacciones es `NUM * DRVRS`; los eventos POP/PUSH y las
+filas CSV no son equivalentes a cantidad de transacciones (broadcast genera
+varias filas de recepción).
 
 ---
 
 ## 6. CSV e histograma
 
-`reporte_paquetes.csv` — una fila por paquete **recibido** (un broadcast con
-`drvrs=4` genera 3 filas):
+`reporte_paquetes.csv` contiene una fila por entrega esperada/observada. Un
+broadcast genera una fila por interfaz receptora. Un drop self/invalid genera
+una fila PASS sin `receive_time` ni `delay`; una entrega no observada genera una
+fila FAIL.
 
 ```
-t_envio_ns,origen,destino,t_recepcion_ns,retardo_ns,tipo,paquete
-175,2,1,535,360,unicast,0x138
+tx_id,source,destination,send_time,receive_time,delay,packet,result
+1,0,2,15,18,3,0x1234,PASS
 ```
 
 | Columna | Descripción |
 |---|---|
-| `t_envio_ns` | tiempo del `pop` (el DUT tomó el paquete) |
-| `origen` / `destino` | interfaz que envió / que recibió |
-| `t_recepcion_ns` | tiempo del `push` en el destino |
-| `retardo_ns` | `t_recepcion_ns - t_envio_ns` |
-| `tipo` | `unicast` o `broadcast` |
-| `paquete` | paquete completo en hex |
+| `tx_id` | Identificador local; no forma parte de `packet` |
+| `source` | Interfaz origen (`interface_id`) |
+| `destination` | Receptor para PUSH; dirección solicitada para drop sin recepción |
+| `send_time` | Primer `posedge` donde el Monitor observa `pndng` activo |
+| `receive_time` | `posedge` donde el Monitor observa `push` |
+| `delay` | `receive_time - send_time`, en ns según `-timescale=1ns/1ns` |
+| `packet` | Paquete completo en hexadecimal |
+| `result` | `PASS` o `FAIL` para esa entrega/evento esperado |
 
-Histograma (fuera de EDA Playground, con el CSV descargado en la misma carpeta):
+`tx_id` es metadata del testbench, no viaja en el DUT. Si dos fuentes generan
+paquetes idénticos para el mismo destino, el Checker valida contenido y
+multiplicidad; la atribución individual de `tx_id`/source en las filas
+indistinguibles no puede garantizarse.
+
+En EDA Playground, descargar el CSV y ejecutar GNUplot en un entorno que lo
+tenga instalado. Para una corrida local, reutilizar `make plot` con los mismos
+parámetros de configuración:
+
 ```
-gnuplot histograma.gp
-gnuplot -e "archivo='idle.csv'; salida='hist_idle.png'; ancho=100" histograma.gp
+make plot SCENARIO=SC_MIXED NUM=10 SEED=1
+make plot CSV=reporte_paquetes.csv PLOT=histograma.png
 ```
-Genera `histograma_retardos.png` con N, mínimo, máximo y promedio en el título.
+
+El script `histograma.gp` usa únicamente la columna `delay` del CSV; las filas
+sin recepción y sin delay se omiten. El histograma no genera datos sintéticos.
 
 ---
 
@@ -166,7 +185,30 @@ Genera `histograma_retardos.png` con N, mínimo, máximo y promedio en el títul
 3. El comportamiento de reset durante actividad fue explorado en la version
    anterior, pero queda fuera del alcance de los nuevos perfiles.
 
-## 8. Primera corrida reportada en EDA Playground
+## 8. Primera validacion de entregables pendientes
+
+Corrida reportada en EDA Playground: `DRVRS=4`, `PCKG_SZ=16`,
+`BROADCAST=255`, `SCENARIO=SC_MIXED`, `NUM=10`, `SEED=1`.
+
+| Metrica | Resultado |
+|---|---|
+| Resultado final | PASS |
+| Transacciones generadas | 40, diez por source (`tx#0` a `tx#39`) |
+| Transacciones PASS/FAIL | 40 / 0 |
+| Errores de eventos | 0 |
+| Round Robin | 105 verificaciones, 0 violaciones |
+| Entregas con latencia | 39 |
+| Delay | min=210 ns, max=1570 ns, promedio=1359.5 ns |
+| Filas CSV reportadas | 48 |
+
+Esta corrida valida en EDA Playground `NUM` por source, el resumen, el flujo
+timestamps/Checker y la generacion del CSV para esta configuracion. GNUplot y
+los otros perfiles/configuraciones aun no se han validado.
+
+## 9. Corrida historica de `SC_MIXED`
+
+Esta corrida se ejecuto antes de cambiar `NUM` a transacciones por source y
+antes del nuevo esquema CSV; no valida esos cambios.
 
 Configuracion reportada: `DRVRS=4`, `PCKG_SZ=16`, `BROADCAST=0xFF`,
 `SCENARIO=SC_MIXED`, `NUM=50`, `SEED=1`.
@@ -180,10 +222,11 @@ Configuracion reportada: `DRVRS=4`, `PCKG_SZ=16`, `BROADCAST=0xFF`,
 | Retardo POP->PUSH | min=190 ns, max=770 ns, promedio=699.6 ns |
 | Filas CSV | 56 |
 
-Esta corrida valida el perfil `SC_MIXED` con esa configuracion y seed. No
-valida aun los otros perfiles ni las demas combinaciones estructurales.
+El resultado solo es evidencia de la version anterior del perfil `SC_MIXED`.
 
-## 9. Verificacion de concurrencia y `+NUM`
+## 10. Corrida historica de concurrencia
+
+Esta corrida tambien precede la semantica `NUM` por source y el CSV nuevo.
 
 Configuracion reportada: `DRVRS=4`, `PCKG_SZ=16`, `BROADCAST=0xFF`,
 `SCENARIO=SC_CONCURRENT`, `NUM=12`, `SEED=3`.
@@ -199,11 +242,12 @@ Configuracion reportada: `DRVRS=4`, `PCKG_SZ=16`, `BROADCAST=0xFF`,
 | Filas CSV | 14 |
 | Solicitudes iniciales concurrentes | 4 POP observados en el mismo ciclo |
 
-El encabezado y los 12 identificadores confirman que `+NUM=12` sobreescribe el
-default. La corrida valida `SC_CONCURRENT` en esta configuracion; repetir la
-misma seed y comparar la secuencia sigue pendiente para verificar reproduccion.
+El encabezado y los 12 identificadores confirman el override de `+NUM` en la
+version anterior, donde `NUM` era el total global. No valida el requisito actual
+de 12 transacciones por source ni el nuevo CSV. La repetibilidad de seed tambien
+requiere repetir una misma configuracion.
 
-## 10. Resultados historicos del ambiente anterior (seed = 1)
+## 11. Resultados historicos del ambiente anterior (seed = 1)
 
 Los resultados siguientes corresponden a los escenarios dedicados anteriores;
 se conservan como referencia y no como evidencia de los perfiles nuevos.

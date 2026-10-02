@@ -41,6 +41,8 @@ class monitor #(
   // Detección de flanco. Dimensionado con drvrs, no hardcodeado.
   logic prev_pop  [0:0][drvrs-1:0];
   logic prev_push [0:0][drvrs-1:0];
+  bit   pndng_seen [drvrs];
+  time  request_time [drvrs];
 
   function new(
     virtual bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz)).monitor_mp vif,
@@ -56,10 +58,17 @@ class monitor #(
     for (int i = 0; i < drvrs; i++) begin
       prev_pop[0][i]  = 1'b0;
       prev_push[0][i] = 1'b0;
+      pndng_seen[i] = 0;
+      request_time[i] = 0;
     end
 
     forever @(posedge vif.clk) begin
       for (int i = 0; i < drvrs; i++) begin
+
+        if (vif.pndng[0][i] === 1'b1 && !pndng_seen[i]) begin
+          pndng_seen[i] = 1;
+          request_time[i] = $time;
+        end
 
         // POP: flanco de subida
         if (vif.pop[0][i] === 1'b1 && prev_pop[0][i] === 1'b0) begin
@@ -67,8 +76,10 @@ class monitor #(
           ev.event_type   = tb_pkg::EVT_POP;
           ev.interface_id = i;
           ev.packet       = vif.D_pop[0][i];
+          ev.send_time    = request_time[i];
+          ev.event_time   = $time;
           event_mb.put(ev);
-          $display("[MON] POP  if=%0d pkt=0x%h @%0t", i, ev.packet, $time);
+          $display("[MON] POP  if=%0d pkt=0x%h @%0t", i, ev.packet, ev.event_time);
         end
 
         // PUSH: flanco de subida (evento independiente)
@@ -77,12 +88,15 @@ class monitor #(
           ev.event_type   = tb_pkg::EVT_PUSH;
           ev.interface_id = i;
           ev.packet       = vif.D_push[0][i];
+          ev.event_time   = $time;
           event_mb.put(ev);
-          $display("[MON] PUSH if=%0d pkt=0x%h @%0t", i, ev.packet, $time);
+          $display("[MON] PUSH if=%0d pkt=0x%h @%0t", i, ev.packet, ev.event_time);
         end
 
         prev_pop[0][i]  = vif.pop[0][i];
         prev_push[0][i] = vif.push[0][i];
+        if (vif.pndng[0][i] !== 1'b1)
+          pndng_seen[i] = 0;
 
       end
     end

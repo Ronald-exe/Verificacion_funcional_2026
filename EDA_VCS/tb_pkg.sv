@@ -43,7 +43,7 @@ package tb_pkg;
   parameter int PCKG_SZ_DEFAULT           = 16;   // configs previstas: 16, 32, 64
   parameter logic [7:0] BROADCAST_DEFAULT = 8'hFF;
 
-  parameter int NUM_TRANSACTIONS_DEFAULT = 50;
+  parameter int NUM_TRANSACTIONS_DEFAULT = 50; // Por interfaz/source
   parameter int SEED_BASE_DEFAULT = 1;
   parameter logic [7:0] BROADCAST_RTL_ACTUAL = 8'hFF;
 

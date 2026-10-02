@@ -58,7 +58,7 @@ mkdir -p "$RUN_DIR"
 cd "$RUN_DIR"
 
 echo "Compilando EDA_VCS: BITS=$BITS DRVRS=$DRVRS PCKG_SZ=$PCKG_SZ BROADCAST=$BROADCAST"
-echo "Ejecutando: SCENARIO=$SCENARIO NUM=$NUM SEED=$SEED"
+echo "Ejecutando: SCENARIO=$SCENARIO NUM=$NUM/source SEED=$SEED"
 echo "Resultados: $RUN_DIR"
 
 if ! vcs -Mupdate \

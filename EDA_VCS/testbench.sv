@@ -8,13 +8,12 @@
 // Descripción:
 //   Integra DUT + bus_if + environment (Generator + driver[] + Monitor +
 //   Scoreboard + Checker + mailboxes) y define la configuración de la
-//   corrida. Todo se elige desde las opciones de compilación con +define
-//   (ver EDA_VCS/README.md): drvrs, pckg_sz, escenario, retardos, cantidad
-//   de transacciones, reset en actividad y archivo CSV.
+//   corrida. Los parámetros estructurales usan +define; SCENARIO, NUM y SEED
+//   son plusargs. NUM indica transacciones por interfaz.
 //
 //   Flujo:
 //     1. Reset inicial
-//     2. Sorteo de num_transactions (con la semilla de la corrida)
+//     2. Lectura de escenario, NUM transacciones/source y seed
 //     3. env.build(): construcción de todos los componentes y mailboxes
 //     4. env.run(): fork paralelo de Generator, Driver[i], Monitor,
 //        Scoreboard, Checker y chequeo de Round Robin
@@ -49,7 +48,7 @@
 `ifndef BROADCAST
   `define BROADCAST tb_pkg::BROADCAST_DEFAULT
 `endif
-// Retardo aleatorio (ciclos) antes de cada paquete, p. ej.:
+// Rango de arrival_delta (ciclos) antes de cada paquete, p. ej.:
 //   back-to-back (TP10): +define+DELAY_MAX=0
 //   idle         (TP09): +define+DELAY_MIN=50+DELAY_MAX=100
 `ifndef DELAY_MIN
@@ -82,8 +81,9 @@ module tb_top;
   localparam int DRAIN_CYCLES = 4*pckg_sz + 50;
 
   int unsigned num_transactions;
+  int unsigned total_transactions;
 
-  localparam int SIM_CYCLES = 20000;        // watchdog: tiempo máximo de la prueba
+  longint unsigned SIM_CYCLES;
 
   // Reloj
   logic clk;
@@ -137,6 +137,13 @@ module tb_top;
     void'($value$plusargs("NUM=%d", num_transactions));
     void'($value$plusargs("SEED=%d", seed));
 
+    if (drvrs == 0 || num_transactions > (32'hFFFF_FFFF / drvrs))
+      $fatal(1, "[TB] NUM=%0d por terminal excede el rango para drvrs=%0d", num_transactions, drvrs);
+    total_transactions = num_transactions * drvrs;
+    SIM_CYCLES = (longint'(total_transactions) * (pckg_sz + 16) * 3) +
+                 (longint'(total_transactions) * (DELAY_MAX + 1)) +
+                 DRAIN_CYCLES + 1000;
+
     // Ondas
     $dumpfile("dump.vcd");
     $dumpvars(0, dut);
@@ -149,13 +156,13 @@ module tb_top;
     $display("================================================================");
     $display("  PRUEBA DE INTEGRACION COMPLETA");
     $display("  Generator + Driver + Monitor + Scoreboard + Checker + DUT");
-    $display("  drvrs=%0d  pckg_sz=%0d  broadcast=0x%h  num_transactions=%0d",
-          drvrs, pckg_sz, broadcast, num_transactions);
+      $display("  drvrs=%0d  pckg_sz=%0d  broadcast=0x%h  num/source=%0d  total=%0d",
+          drvrs, pckg_sz, broadcast, num_transactions, total_transactions);
     $display("  seed=%0d", seed);
     $display("  scenario=%s", scenario.name());
     if (DELAY_MIN > DELAY_MAX)
       $fatal(1, "[TB] DELAY_MIN=%0d > DELAY_MAX=%0d", DELAY_MIN, DELAY_MAX);
-    $display("  delay=[%0d:%0d] ciclos", DELAY_MIN, DELAY_MAX);
+    $display("  arrival_delta=[%0d:%0d] ciclos", DELAY_MIN, DELAY_MAX);
     $display("================================================================");
 
     // Construcción y arranque del ambiente
@@ -193,7 +200,25 @@ module tb_top;
     join
 
     // Reporte final del Checker (PASS/FAIL real, no solo actividad)
-    env.chk.reporte_final();
+    env.chk.reporte_final(total_transactions);
+
+    $display("");
+    $display("========================================");
+    $display("VERIFICATION SUMMARY");
+    $display("========================================");
+    $display("SEED        : %0d", seed);
+    $display("SCENARIO    : %s", scenario.name());
+    $display("DRVRS       : %0d", drvrs);
+    $display("PCKG_SZ     : %0d", pckg_sz);
+    $display("BROADCAST   : %0d", broadcast);
+    $display("NUM/TERM    : %0d", num_transactions);
+    $display("TOTAL       : %0d", total_transactions);
+    $display("PASS        : %0d", env.chk.tx_passed_count);
+    $display("FAIL        : %0d", env.chk.tx_failed_count);
+    $display("EVENT ERRORS: %0d", env.chk.transacciones_error +
+         env.chk.transacciones_pendientes + env.chk.rr_errores);
+    $display("RESULT      : %s", env.chk.final_pass ? "PASS" : "FAIL");
+    $display("========================================");
 
     $display("[TB] fin de simulacion @%0t", $time);
     $finish;

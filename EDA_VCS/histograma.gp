@@ -1,12 +1,11 @@
 #==============================================================================
-# histograma.gp - Histograma de retardos de paquetes (pop -> push)
+# histograma.gp - Histograma de retardos de paquetes (receive_time-send_time)
 #------------------------------------------------------------------------------
-# Lee el CSV que genera el Checker (reporte_paquetes.csv) y dibuja la
-# distribución de la columna retardo_ns.
+# Lee el CSV que genera el Checker y dibuja la distribución de la columna delay.
 #
 # Formato del CSV (una fila por paquete recibido; un broadcast genera una fila
 # por cada interfaz que lo recibe):
-#   t_envio_ns,origen,destino,t_recepcion_ns,retardo_ns,tipo,paquete
+#   tx_id,source,destination,send_time,receive_time,delay,packet,result
 #
 # Uso:
 #   gnuplot histograma.gp
@@ -24,16 +23,16 @@ if (!exists("ancho"))   ancho   = 50
 
 set datafile separator ","
 
-# Estadísticas de la columna 5 (retardo_ns), saltando el encabezado
-stats archivo every ::1 using 5 nooutput name "R"
+# Estadísticas de la columna 6 (delay), saltando el encabezado y filas sin PUSH.
+stats archivo every ::1 using 6 nooutput name "R"
 
 set terminal pngcairo size 1000,600 enhanced font "Arial,11"
 set output salida
 
-set title sprintf("Histograma de retardos pop -> push  (N=%d, min=%d ns, max=%d ns, prom=%.1f ns)", \
+set title sprintf("Histograma de delay  (N=%d, min=%d ns, max=%d ns, prom=%.1f ns)", \
                   R_records, R_min, R_max, R_mean)
-set xlabel "Retardo (ns)"
-set ylabel "Cantidad de paquetes"
+set xlabel "Delay (ns)"
+set ylabel "Numero de paquetes"
 set grid ytics
 set key off
 set style fill solid 0.7 border -1
@@ -42,6 +41,6 @@ set boxwidth ancho * 0.9
 # Agrupa cada retardo en su intervalo [k*ancho, (k+1)*ancho) y cuenta
 bin(x) = ancho * floor(x / ancho) + ancho / 2.0
 
-plot archivo every ::1 using (bin($5)):(1.0) smooth frequency with boxes lc rgb "#3b75af"
+plot archivo every ::1 using (bin($6)):(1.0) smooth frequency with boxes lc rgb "#3b75af"
 
 print sprintf("Histograma generado: %s  (%d paquetes)", salida, R_records)

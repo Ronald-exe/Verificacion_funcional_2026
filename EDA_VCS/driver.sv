@@ -89,8 +89,8 @@ class driver #(
 
       tr = tx_fifo[0];
 
-      // Retardo antes de ofrecer el paquete (0 = back-to-back)
-      repeat (tr.delay) @(negedge vif.clk);
+      // arrival_delta ciclos antes de ofrecer el paquete (0 = back-to-back)
+      repeat (tr.arrival_delta) @(negedge vif.clk);
 
       // Escribe en negedge: no compite con el DUT que muestrea en posedge.
       @(negedge vif.clk);

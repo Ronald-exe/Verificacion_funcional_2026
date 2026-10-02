@@ -40,12 +40,15 @@ class tx_transaction #(
   // Paquete completo: [pckg_sz-1 -: DEST_FIELD_WIDTH] = destino, resto = payload
   rand logic [pckg_sz-1:0] packet;
 
-  // Retardo (ciclos de reloj) que el Driver espera antes de ofrecer el
-  // paquete (TP09 idle / TP10 back-to-back). El rango lo fija el Generator
-  // antes de randomize(); delay_max = 0 equivale a back-to-back.
-  rand int unsigned delay;
+  // Tiempo de espera en ciclos antes de presentar el paquete al DUT.
+  rand int unsigned arrival_delta;
   int unsigned      delay_min = 0;
   int unsigned      delay_max = 0;
+
+  // Tiempos de aceptación y recepción, en unidades de $time.
+  time send_time;
+  time receive_time;
+  time delay;
 
   localparam int PAYLOAD_W = pckg_sz - tb_pkg::DEST_FIELD_WIDTH;
 
@@ -53,8 +56,8 @@ class tx_transaction #(
     interface_id < drvrs;
   }
 
-  constraint c_delay {
-    delay inside {[delay_min : delay_max]};
+  constraint c_arrival_delta {
+    arrival_delta inside {[delay_min : delay_max]};
   }
 
   constraint c_traffic_distribution {
@@ -109,6 +112,9 @@ class tx_transaction #(
     tx_id        = 0;
     interface_id = 0;
     packet       = '0;
+    arrival_delta = 0;
+    send_time    = 0;
+    receive_time = 0;
     delay        = 0;
     traffic_type = tb_pkg::TR_UNICAST;
     payload_type = tb_pkg::PT_RANDOM;
@@ -120,6 +126,10 @@ class tx_transaction #(
     return packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH];
   endfunction
 
+  function logic [PAYLOAD_W-1:0] get_payload();
+    return packet[PAYLOAD_W-1:0];
+  endfunction
+
   // Utilidades de depuración 
 
   function void print(string tag = "tx_transaction");
@@ -128,8 +138,8 @@ class tx_transaction #(
   endfunction
 
   function string sprint();
-    return $sformatf("tx{id=%0d, if=%0d, dest=0x%h, pkt=0x%h}",
-                     tx_id, interface_id, get_destination(), packet);
+    return $sformatf("tx{id=%0d, if=%0d, dest=0x%h, pkt=0x%h, arrival_delta=%0d}",
+             tx_id, interface_id, get_destination(), packet, arrival_delta);
   endfunction
 
 endclass : tx_transaction
