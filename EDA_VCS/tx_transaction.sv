@@ -49,7 +49,7 @@ class tx_transaction #(
   }
 
   // Distribución de destinos: 70% unicast válido, 20% broadcast, 10% inválido.
-  // El broadcast usa BROADCAST_RTL_ACTUAL porque el RTL real lo ignora.
+  // El broadcast usa BROADCAST_RTL_ACTUAL (+define+BROADCAST, default 8'hFF).
   constraint c_destination {
     packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] dist {
       [0 : drvrs-1]                              :/ 70,

@@ -1,0 +1,17 @@
+logDir = /mnt/vol_NFS_rh003/Est_Veri_II2026/CASTRO_VELASQUEZ_ERIC_VeriII26/P1/Verificacion_funcional_2026/EDA_VCS/sim/unicast/verdiLog
+
+
+                                   Verdi (R)
+
+               Version R-2020.12-SP2 for linux64 - May 23, 2021 
+
+                    Copyright (c) 1999 - 2021 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+            or distribution of this software is strictly prohibited.
+rcfile = /mnt/vol_NFS_rh003/tools/verdi/R-2020.12-SP2/etc/novas.rc
+*WARN* Cannot open /mnt/vol_NFS_rh003/Est_Veri_II2026/CASTRO_VELASQUEZ_ERIC_VeriII26/P1/Verificacion_funcional_2026/EDA_VCS/sim/unicast/novas.conf for read access. No such file or directory
+*WARN* Cannot open /home/CASTRO_VELASQUEZ_ERIC_VeriII26/novas.conf for read access. No such file or directory
+guiConfFile (read)= N/A (default)
+guiConfFile (write)= /mnt/vol_NFS_rh003/Est_Veri_II2026/CASTRO_VELASQUEZ_ERIC_VeriII26/P1/Verificacion_funcional_2026/EDA_VCS/sim/unicast/novas.conf (working directory)

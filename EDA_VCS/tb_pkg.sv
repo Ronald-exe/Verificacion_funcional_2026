@@ -41,10 +41,25 @@ package tb_pkg;
   parameter int BITS_DEFAULT              = 1;    // fijo, no varía entre configs
   parameter int DRVRS_DEFAULT             = 4;    // configs previstas: 2, 4, 8
   parameter int PCKG_SZ_DEFAULT           = 16;   // configs previstas: 16, 32, 64
-  parameter logic [7:0] BROADCAST_DEFAULT = 8'hFF;
+
+  // Dirección de broadcast (TP16). Se elige con +define+BROADCAST=N
+  // (ej. +define+BROADCAST=240 -> 0xF0); por defecto 8'hFF.
+  //   BROADCAST_DEFAULT    -> parámetro broadcast que recibe el DUT
+  //   BROADCAST_RTL_ACTUAL -> dirección que usa el modelo (Generator,
+  //                           Scoreboard, Checker). Sigue la especificación:
+  //                           el ambiente no asume que siempre es 8'hFF.
+  //   BROADCAST_RTL_FIJO   -> valor que el RTL compara realmente: Library.sv
+  //                           líneas 388 y 716 usan {8{1'b1}} e ignoran el
+  //                           parámetro. Con BROADCAST != 8'hFF el DUT no
+  //                           cumple la especificación (hallazgo TP16).
+`ifndef BROADCAST
+  `define BROADCAST 8'hFF
+`endif
+  parameter logic [7:0] BROADCAST_DEFAULT    = `BROADCAST;
+  parameter logic [7:0] BROADCAST_RTL_ACTUAL = `BROADCAST;
+  parameter logic [7:0] BROADCAST_RTL_FIJO   = 8'hFF;
 
   parameter int NUM_TRANSACTIONS_DEFAULT = 50;
-  parameter logic [7:0] BROADCAST_RTL_ACTUAL = 8'hFF;
 
   // Ancho fijo del campo de destino dentro del paquete (sec. 4 del spec).
   // El destino siempre ocupa los 8 bits superiores, sin importar pckg_sz.
@@ -66,7 +81,9 @@ package tb_pkg;
                    //            primer/último inválido, broadcast)
     SC_ONE_IF,     // TP02: solo transmite la interfaz src_a (sin contención)
     SC_TWO_IF,     // TP07: solo transmiten src_a y src_b (contención Round Robin)
-    SC_PATTERNS    // TP12: payload con patrones 0...0, 1...1, 1010..., 0101...
+    SC_PATTERNS,   // TP12: payload con patrones 0...0, 1...1, 1010..., 0101...
+    SC_BCAST_PARAM // TP16: destinos BROADCAST configurado y 8'hFF (evidencia
+                   //       que el RTL ignora el parámetro broadcast)
   } scenario_e;
 
   function automatic logic [DEST_FIELD_WIDTH-1:0] get_destination(
@@ -89,3 +106,4 @@ package tb_pkg;
   endfunction
 
 endpackage : tb_pkg
+

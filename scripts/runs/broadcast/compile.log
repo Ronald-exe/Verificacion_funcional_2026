@@ -1,0 +1,24 @@
+Command: vcs -full64 -sverilog -timescale=1ns/1ns +vcs+flush+all +warn=all +lint=TFIPC-L \
++incdir+/mnt/vol_NFS_rh003/Est_Veri_II2026/CASTRO_VELASQUEZ_ERIC_VeriII26/P1/Verificacion_funcional_2026/scripts \
++define+SCENARIO=SC_BROADCAST /mnt/vol_NFS_rh003/Est_Veri_II2026/CASTRO_VELASQUEZ_ERIC_VeriII26/P1/Verificacion_funcional_2026/scripts/testbench.sv \
+-o simv -l compile.log
+                         Chronologic VCS (TM)
+       Version R-2020.12-SP2_Full64 -- Wed Sep 30 22:28:16 2026
+
+                    Copyright (c) 1991 - 2021 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+            or distribution of this software is strictly prohibited.
+
+
+Error-[SFCOR] Source file cannot be opened
+  Source file 
+  "/mnt/vol_NFS_rh003/Est_Veri_II2026/CASTRO_VELASQUEZ_ERIC_VeriII26/P1/Verificacion_funcional_2026/scripts/testbench.sv"
+  cannot be opened for reading due to 'No such file or directory'.
+  Please fix above issue and compile again.
+  
+  
+
+1 error
+CPU time: .386 seconds to compile

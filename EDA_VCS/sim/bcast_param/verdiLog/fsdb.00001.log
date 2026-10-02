@@ -1,0 +1,17 @@
+#######################################################################################
+# fsdb.xxxxx.log : log primitive debug message of FSDB Reader
+# This is for R&D to analyze when there are issues happening when FSDB reading
+# The corresponding FSDB file is /mnt/vol_NFS_rh003/Est_Veri_II2026/CASTRO_VELASQUEZ_ERIC_VeriII26/P1/Verificacion_funcional_2026/EDA_VCS/sim/bcast_param/waves.fsdb
+#######################################################################################
+[BASIC]Reader version : Chronologic Simulation VCS Release R-2020.12-SP2_Full64
+[BASIC]simulator version : Chronologic Simulation VCS Release R-2020.12-SP2_Full64
+[BASIC]dumper version : FSDB Dumper for VCS, Release Verdi_R-2020.12-SP2, Linux x86_64/64bit, 05/23/2021
+[THREAD]The MTR thread count is 9
+[READSCOPE]ReadScopeTree calling time is 1
+[READSCOPE]ReadScope_PartialLoad calling time is 0
+[READSCOPE]Scope read by partial load count is 0
+[READSCOPE]Scope read count is 2
+[READSCOPE]Decompressed blk is 1
+[FSDBGate Info] start
+[FSDBGate Info] Total fhdb_compute_count = 11782
+[FSDBGate Info] end

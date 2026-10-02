@@ -132,6 +132,20 @@ class generator #(
               PAT_0101  := 1
             };
           };
+        // TP16: mitad de los paquetes al broadcast configurado y mitad a
+        // 8'hFF. Con +define+BROADCAST distinto de 8'hFF el modelo espera
+        // que el primero se reparta y el segundo se descarte (inválido); el
+        // RTL hace lo contrario porque compara contra 8'hFF fijo. Se apaga
+        // el dist de tx_transaction porque no incluye 8'hFF en ese caso.
+        tb_pkg::SC_BCAST_PARAM: begin
+          tr.c_destination.constraint_mode(0);
+          ok = tr.randomize() with {
+            packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] dist {
+              tb_pkg::BROADCAST_RTL_ACTUAL := 1,
+              tb_pkg::BROADCAST_RTL_FIJO   := 1
+            };
+          };
+        end
         default:  // SC_RANDOM: solo los constraints de tx_transaction
           ok = tr.randomize();
       endcase
@@ -154,3 +168,4 @@ class generator #(
   endtask
 
 endclass : generator
+

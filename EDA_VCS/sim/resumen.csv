@@ -1,0 +1,2 @@
+caso,defines,seed,num_tx,correctas,errores,pendientes,lat_min_ns,lat_max_ns,lat_prom_ns,rr_violaciones,resultado
+unicast,SCENARIO=SC_UNICAST,1010,41,82,0,0,200,780,642.9,0,PASS

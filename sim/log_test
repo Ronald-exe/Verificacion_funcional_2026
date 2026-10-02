@@ -1,7 +1,7 @@
 Command: vcs -Mupdate -f files.f -o salida -full64 -sverilog -kdb -lca -debug_acc+all \
 -debug_region+cell+encrypt -l log_test +lint=TFIPC-L -top testbench
                          Chronologic VCS (TM)
-       Version R-2020.12-SP2_Full64 -- Wed Sep 30 19:28:31 2026
+       Version R-2020.12-SP2_Full64 -- Wed Sep 30 20:34:50 2026
 
                     Copyright (c) 1991 - 2021 Synopsys, Inc.
    This software and the associated documentation are proprietary to Synopsys,
@@ -15,23 +15,46 @@ Warning-[LCA_FEATURES_ENABLED] Usage warning
   information regarding list of LCA features please refer to Chapter "LCA 
   features" in the VCS Release Notes
 
+Parsing design file '../tb/tests/testbench.sv'
+Parsing included file '../rtl/Library.sv'.
+Parsing included file '../rtl/fifo.sv'.
+Back to file '../rtl/Library.sv'.
+Back to file '../tb/tests/testbench.sv'.
+Parsing included file '../tb/pkg/tb_pkg.sv'.
+Back to file '../tb/tests/testbench.sv'.
+Parsing included file '../tb/interfaces/bus_if.sv'.
+Back to file '../tb/tests/testbench.sv'.
+Parsing included file '../tb/transactions/tx_transaction.sv'.
+Back to file '../tb/tests/testbench.sv'.
+Parsing included file '../tb/transactions/dut_event.sv'.
+Back to file '../tb/tests/testbench.sv'.
+Parsing included file '../tb/transactions/expected_event.sv'.
+Back to file '../tb/tests/testbench.sv'.
+Parsing included file '../tb/drivers/driver.sv'.
+Back to file '../tb/tests/testbench.sv'.
+Parsing included file '../tb/generator/generator.sv'.
+Back to file '../tb/tests/testbench.sv'.
+Parsing included file '../tb/monitor/monitor.sv'.
+Back to file '../tb/tests/testbench.sv'.
+Parsing included file '../tb/scoreboard/scoreboard.sv'.
+Back to file '../tb/tests/testbench.sv'.
+Parsing included file '../tb/checker/checker.sv'.
+Back to file '../tb/tests/testbench.sv'.
+Parsing included file '../tb/environment/environment.sv'.
+Back to file '../tb/tests/testbench.sv'.
 
-Warning-[PMFO] Potential misusage of '-f/-F' option
-  Potential misusage of '-f/-F' option, which can only be used in non-UUM 
-  flow.
-  The option '-f/-F' cannot be used in UUM flow.It could cause an error saying
-  that the top unit is treated as source file in the UUM flow.If VCS is 
-  intended to be run in non-UUM flow, please check if source files are 
-  specified correctly.Otherwise please use '-file' option for UUM flow.
+Error-[TMENF-ILL] Top Module/Entity not found
+  Top module/entity/config "testbench" is not found in the following library 
+  list.
+  Liblist: work
 
 
-Error-[SFCOR] Source file cannot be opened
-  Source file "../tb/pkg/bus_pkg.sv" cannot be opened for reading due to 'No 
-  such file or directory'.
-  Please fix above issue and compile again.
-  
-  
+Error-[IRMINTM] Illegal module instantiations
+  Illegal to have recursive module instantiations.
+  No Top Modules Defined
+  There should be at least one top module that is not instantiated by any 
+  other module.
 
-2 warnings
-1 error
-CPU time: .462 seconds to compile
+1 warning
+2 errors
+CPU time: .725 seconds to compile
