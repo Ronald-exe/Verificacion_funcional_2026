@@ -32,11 +32,15 @@ class dut_event #(
   tb_pkg::event_type_e event_type;   // EVT_POP o EVT_PUSH
   int unsigned          interface_id;
   logic [pckg_sz-1:0]   packet;
+  time                  send_time;
+  time                  event_time;
 
   function new();
     event_type   = tb_pkg::EVT_POP;
     interface_id = 0;
     packet       = '0;
+    send_time    = 0;
+    event_time   = 0;
   endfunction
 
   function void print(string tag = "dut_event");

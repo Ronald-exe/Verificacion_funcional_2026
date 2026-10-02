@@ -2,9 +2,9 @@
 
 **Curso:** Verificación Funcional · **Integrantes:** Ronald - Eric
 
-Esta carpeta contiene el ambiente que corre en EDA Playground con Synopsys VCS.
-Esta guía explica cómo correr cada prueba del plan (`docs/TestplanV3.md`), cómo
-leer el reporte y cómo generar el histograma de retardos para el análisis.
+Esta carpeta contiene el ambiente destinado inicialmente a EDA Playground con
+Synopsys VCS. Esta guía explica cómo configurar una corrida, leer el reporte y
+generar el histograma de retardos.
 
 ---
 
@@ -12,13 +12,13 @@ leer el reporte y cómo generar el histograma de retardos para el análisis.
 
 | Archivo | Rol |
 |---|---|
-| `testbench.sv` | **Test** (módulo `tb_top`): configuración por `+define`, reset, DUT, fin de prueba |
+| `testbench.sv` | **Test** (módulo `tb_top`): lee plusargs, inicializa DUT y controla el fin de prueba |
 | `environment.sv` | Construye y conecta todos los componentes y mailboxes |
 | `generator.sv` | Genera las transacciones según el escenario y los retardos |
 | `driver.sv` | Una instancia por interfaz: ofrece paquetes (`pndng`/`D_pop`) y espera `pop` |
 | `monitor.sv` | Observa `pop`/`push` y los convierte en `dut_event` |
 | `scoreboard.sv` | Modelo funcional: calcula qué `pop`/`push` deben ocurrir |
-| `checker.sv` | Compara observado vs esperado, pendientes, retardos (CSV), Round Robin, reset |
+| `checker.sv` | Compara observado vs esperado, pendientes, retardos (CSV) y Round Robin |
 | `tx_transaction.sv`, `dut_event.sv`, `expected_event.sv` | Transacciones entre componentes |
 | `tb_pkg.sv` | Parámetros por defecto y tipos compartidos (`scenario_e`, `event_type_e`) |
 | `bus_if.sv` | Interfaz con el DUT |
@@ -32,79 +32,83 @@ demás `.sv` como archivos adicionales (`testbench.sv` los incluye con `` `inclu
 
 ## 2. Cómo correr
 
-**Compile Options** (base, siempre):
+### EDA Playground
+
+Seleccionar Synopsys VCS. Usar `testbench.sv` como archivo principal de
+testbench; el archivo incluye los componentes y RTL de esta carpeta.
+
+**Compile Options** (base):
 ```
 -timescale=1ns/1ns +vcs+flush+all +warn=all -sverilog
 ```
-Para cambiar la configuración se agregan `+define` al final, unidos con `+`:
+Los parámetros estructurales se agregan a Compile Options como `+define`:
 ```
--timescale=1ns/1ns +vcs+flush+all +warn=all -sverilog +define+SCENARIO=SC_BROADCAST+DRVRS=8
+-timescale=1ns/1ns +vcs+flush+all +warn=all -sverilog +define+DRVRS=8+PCKG_SZ=32+BROADCAST=255
 ```
 
-**Run Options** (semilla):
+**Run Options** controlan el perfil, la cantidad y la seed:
 
-| Run Options | Efecto |
+| Plusarg | Default | Efecto |
 |---|---|
-| *(vacío)* | Semilla por defecto (`seed=1`), siempre la misma corrida |
-| `+ntb_random_seed_automatic` | Semilla distinta en cada corrida |
-| `+ntb_random_seed=N` | Repite exactamente la corrida que imprimió `seed=N` |
+| `+SCENARIO=SC_MIXED` | `SC_MIXED` | Perfil de generación; admite los cinco perfiles de la sección 4 |
+| `+NUM=100` | `50` | Transacciones por source; el total es `NUM * DRVRS` |
+| `+SEED=21` | `1` | Seed reproducible del Generator |
+
+En Run Options ingresar, por ejemplo:
+
+```sh
++SCENARIO=SC_CONCURRENT +NUM=10 +SEED=21
+```
+
+Con `DRVRS=4`, `+NUM=10` genera 10 transacciones por interfaz y 40 en total.
+
+Repetir los mismos Compile Options y Run Options debe reproducir el mismo
+estímulo. Para cambiar entre perfiles, usar `SC_RANDOM`, `SC_BURST`,
+`SC_CONCURRENT`, `SC_BOUNDARY` o `SC_MIXED`.
+
+La ejecución local con Makefile/runner es secundaria y aún no está validada;
+la primera validación de estos cambios se realizará en EDA Playground.
 
 Para descargar el CSV, marcar **"Download files after run"** en el panel izquierdo.
 
 ---
 
-## 3. Opciones (`+define`)
+## 3. Opciones de configuración
 
-| Define | Default | Descripción |
+| `+define` estructural | Default | Descripción |
 |---|---|---|
 | `DRVRS` | 4 | Cantidad de interfaces (2, 4, 8) |
 | `PCKG_SZ` | 16 | Tamaño del paquete en bits (16, 32, 64) |
-| `SCENARIO` | `SC_RANDOM` | Escenario de generación (ver sección 4) |
-| `SRC_A`, `SRC_B` | 0, 1 | Interfaces origen para `SC_ONE_IF` / `SC_TWO_IF` |
-| `DELAY_MIN`, `DELAY_MAX` | 0, 10 | Retardo aleatorio (ciclos) antes de ofrecer cada paquete |
-| `NUM_TX_MIN`, `NUM_TX_MAX` | 30, 80 | Rango de la cantidad de transacciones (se sortea con la semilla) |
-| `RESET_AT` | 0 (apagado) | Ciclo en que se aplica un reset en medio del tráfico |
-| `RESET_CYCLES` | 5 | Duración de ese reset |
+| `BROADCAST` | 255 | Direccion broadcast pasada al DUT (0 a 255) |
+| `DELAY_MIN`, `DELAY_MAX` | 0, 10 | Rango de `arrival_delta` en ciclos antes de ofrecer cada paquete |
 | `CSV_FILE` | `"reporte_paquetes.csv"` | Nombre del archivo de retardos |
 
----
+`BITS` permanece fijo en 1. `SCENARIO`, `NUM` y `SEED` son plusargs de simulación, no `+define`.
 
-## 4. Escenarios y casos de prueba
+## 4. Perfiles de generación
 
-| TP | Prueba | Compile Options (después de las base) |
-|---|---|---|
-| TP01 | Reset en actividad | `+define+RESET_AT=300` |
-| TP02 | Transmisión (una interfaz) | `+define+SCENARIO=SC_ONE_IF` |
-| TP03 | Unicast | `+define+SCENARIO=SC_UNICAST` |
-| TP03/05 | Bordes de dirección (0, drvrs-1, drvrs, 0xFE, 0xFF) | `+define+SCENARIO=SC_ADDR_EDGES` |
-| TP04/06 | Broadcast (consecutivos) | `+define+SCENARIO=SC_BROADCAST` |
-| TP05 | Dirección inválida | `+define+SCENARIO=SC_INVALID` |
-| TP07 | Contención entre dos | `+define+SCENARIO=SC_TWO_IF+SRC_A=1+SRC_B=3` |
-| TP08 | Todas activas (Round Robin) | *(default)* o `+define+DRVRS=8` |
-| TP09 | Idle | `+define+DELAY_MIN=50+DELAY_MAX=100` |
-| TP10 | Back-to-back | `+define+DELAY_MAX=0` |
-| TP11 | Tráfico mixto | *(default, `SC_RANDOM`)* |
-| TP12 | Patrones de payload (0, 1…1, 1010…, 0101…) | `+define+SCENARIO=SC_PATTERNS` |
-| TP13 | `push` + `pop` simultáneos | ocurre en cualquier corrida con tráfico (ej. idle); el Checker los procesa por separado |
-| TP14 | `pckg_sz` | `+define+PCKG_SZ=32` / `+define+PCKG_SZ=64` |
-| TP15 | `drvrs` | `+define+DRVRS=2` / `+define+DRVRS=8` |
-| TP16 | `broadcast` parametrizable | ver hallazgos (sección 7) |
+| Perfil | Política |
+|---|---|
+| `SC_RANDOM` | Selección uniforme entre unicast, self-addressed, broadcast e inválido |
+| `SC_BURST` | Rachas de 1 a 4 transacciones de una misma fuente; las siguientes llegan con `arrival_delta=0` |
+| `SC_CONCURRENT` | Solicitudes iniciales coordinadas entre interfaces, con `arrival_delta=0` |
+| `SC_BOUNDARY` | Destinos `0`, `drvrs-1`, `drvrs`, `0xFE` y `0xFF`, con clase coherente |
+| `SC_MIXED` | Tráfico ponderado; perfil predeterminado |
 
-Los escenarios se pueden combinar con cualquier `DRVRS`, `PCKG_SZ` y retardo.
+Los patrones de payload se seleccionan mediante constraints en todos los perfiles. Los perfiles describen políticas de generación; los valores estructurales `DRVRS`, `PCKG_SZ` y `broadcast` se cambian entre compilaciones.
 
 ---
 
 ## 5. Cómo leer el log
 
-Encabezado: configuración de la corrida (`drvrs`, `pckg_sz`, `num_transactions`,
-`seed`, `scenario`, `delay`, reset).
+Encabezado: configuración de la corrida (`drvrs`, `pckg_sz`, `num/source`,
+`total`, `seed`, `scenario` y `arrival_delta`).
 
 Durante la corrida:
-- `[Generator] tx#N if=… packet=… delay=…` — transacción generada
+- `[Generator] tx#N if=… packet=… arrival_delta=…` — transacción generada
 - `[DRV i] ofrecido / pop recibido` — actividad del Driver
 - `[MON] POP / PUSH` — evento observado en el DUT
 - `[Checker] PASS / ERROR` — resultado de cada comparación
-- `[Checker] RESET: descartado …` — paquete que el reset perdió (esperado)
 - `[TB] trafico terminado` — fin de la prueba por condición
 - `[TB] WATCHDOG` — el tráfico no terminó a tiempo (el DUT se colgó)
 
@@ -115,41 +119,57 @@ Reporte final:
 | Transacciones correctas | pop + push que coincidieron con lo esperado |
 | Transacciones con error | eventos observados que no coinciden (paquete corrupto, destino equivocado, push inesperado) |
 | Esperados no observados | eventos que el modelo esperaba y el DUT nunca produjo (paquetes perdidos) |
-| Retardo pop->push | mínimo / máximo / promedio en ns, y cantidad de paquetes recibidos |
-| Reporte CSV | cantidad de filas escritas (una por push) |
+| Transacciones PASS/FAIL | resultado por `tx_id`; un broadcast se considera PASS si completan sus entregas esperadas |
+| Retardo send->receive | mínimo / máximo / promedio en ns por entrega recibida |
+| Reporte CSV | cantidad total de filas, incluyendo drops esperados y resultados FAIL |
 | Round Robin | verificaciones realizadas y violaciones encontradas |
-| Reset en actividad | resets aplicados y push descartados por estar en vuelo |
 | RESULTADO | PASS solo si errores = 0, pendientes = 0 y violaciones RR = 0 |
 
-Chequeo: `correctas = num_transactions (pop) + filas del CSV (push)`.
+El total esperado de transacciones es `NUM * DRVRS`; los eventos POP/PUSH y las
+filas CSV no son equivalentes a cantidad de transacciones (broadcast genera
+varias filas de recepción).
 
 ---
 
 ## 6. CSV e histograma
 
-`reporte_paquetes.csv` — una fila por paquete **recibido** (un broadcast con
-`drvrs=4` genera 3 filas):
+`reporte_paquetes.csv` contiene una fila por entrega esperada/observada. Un
+broadcast genera una fila por interfaz receptora. Un drop self/invalid genera
+una fila PASS sin `receive_time` ni `delay`; una entrega no observada genera una
+fila FAIL.
 
 ```
-t_envio_ns,origen,destino,t_recepcion_ns,retardo_ns,tipo,paquete
-175,2,1,535,360,unicast,0x138
+tx_id,source,destination,send_time,receive_time,delay,packet,result
+1,0,2,15,18,3,0x1234,PASS
 ```
 
 | Columna | Descripción |
 |---|---|
-| `t_envio_ns` | tiempo del `pop` (el DUT tomó el paquete) |
-| `origen` / `destino` | interfaz que envió / que recibió |
-| `t_recepcion_ns` | tiempo del `push` en el destino |
-| `retardo_ns` | `t_recepcion_ns - t_envio_ns` |
-| `tipo` | `unicast` o `broadcast` |
-| `paquete` | paquete completo en hex |
+| `tx_id` | Identificador local; no forma parte de `packet` |
+| `source` | Interfaz origen (`interface_id`) |
+| `destination` | Receptor para PUSH; dirección solicitada para drop sin recepción |
+| `send_time` | Primer `posedge` donde el Monitor observa `pndng` activo |
+| `receive_time` | `posedge` donde el Monitor observa `push` |
+| `delay` | `receive_time - send_time`, en ns según `-timescale=1ns/1ns` |
+| `packet` | Paquete completo en hexadecimal |
+| `result` | `PASS` o `FAIL` para esa entrega/evento esperado |
 
-Histograma (fuera de EDA Playground, con el CSV descargado en la misma carpeta):
+`tx_id` es metadata del testbench, no viaja en el DUT. Si dos fuentes generan
+paquetes idénticos para el mismo destino, el Checker valida contenido y
+multiplicidad; la atribución individual de `tx_id`/source en las filas
+indistinguibles no puede garantizarse.
+
+En EDA Playground, descargar el CSV y ejecutar GNUplot en un entorno que lo
+tenga instalado. Para una corrida local, reutilizar `make plot` con los mismos
+parámetros de configuración:
+
 ```
-gnuplot histograma.gp
-gnuplot -e "archivo='idle.csv'; salida='hist_idle.png'; ancho=100" histograma.gp
+make plot SCENARIO=SC_MIXED NUM=10 SEED=1
+make plot CSV=reporte_paquetes.csv PLOT=histograma.png
 ```
-Genera `histograma_retardos.png` con N, mínimo, máximo y promedio en el título.
+
+El script `histograma.gp` usa únicamente la columna `delay` del CSV; las filas
+sin recepción y sin delay se omiten. El histograma no genera datos sintéticos.
 
 ---
 
@@ -162,12 +182,75 @@ Genera `histograma_retardos.png` con N, mínimo, máximo y promedio en el títul
    detección compara el destino contra `8'hFF` fijo (`Library.sv`, línea 716).
    El modelo usa `8'hFF`; con otro valor configurado el DUT no cumple la
    especificación. Detalle en `docs/DUT_BUS_SPEC.md` sec. 5.
-3. **Reset en actividad**: los paquetes consumidos pero aún no entregados se
-   pierden con el reset y el DUT se recupera correctamente después.
+3. El comportamiento de reset durante actividad fue explorado en la version
+   anterior, pero queda fuera del alcance de los nuevos perfiles.
 
----
+## 8. Primera validacion de entregables pendientes
 
-## 8. Resultados obtenidos (seed = 1)
+Corrida reportada en EDA Playground: `DRVRS=4`, `PCKG_SZ=16`,
+`BROADCAST=255`, `SCENARIO=SC_MIXED`, `NUM=10`, `SEED=1`.
+
+| Metrica | Resultado |
+|---|---|
+| Resultado final | PASS |
+| Transacciones generadas | 40, diez por source (`tx#0` a `tx#39`) |
+| Transacciones PASS/FAIL | 40 / 0 |
+| Errores de eventos | 0 |
+| Round Robin | 105 verificaciones, 0 violaciones |
+| Entregas con latencia | 39 |
+| Delay | min=210 ns, max=1570 ns, promedio=1359.5 ns |
+| Filas CSV reportadas | 48 |
+
+Esta corrida valida en EDA Playground `NUM` por source, el resumen, el flujo
+timestamps/Checker y la generacion del CSV para esta configuracion. GNUplot y
+los otros perfiles/configuraciones aun no se han validado.
+
+## 9. Corrida historica de `SC_MIXED`
+
+Esta corrida se ejecuto antes de cambiar `NUM` a transacciones por source y
+antes del nuevo esquema CSV; no valida esos cambios.
+
+Configuracion reportada: `DRVRS=4`, `PCKG_SZ=16`, `BROADCAST=0xFF`,
+`SCENARIO=SC_MIXED`, `NUM=50`, `SEED=1`.
+
+| Metrica | Resultado |
+|---|---|
+| Resultado final | PASS |
+| Eventos correctos | 106 (50 POP y 56 PUSH) |
+| Errores / pendientes | 0 / 0 |
+| Round Robin | 123 verificaciones, 0 violaciones |
+| Retardo POP->PUSH | min=190 ns, max=770 ns, promedio=699.6 ns |
+| Filas CSV | 56 |
+
+El resultado solo es evidencia de la version anterior del perfil `SC_MIXED`.
+
+## 10. Corrida historica de concurrencia
+
+Esta corrida tambien precede la semantica `NUM` por source y el CSV nuevo.
+
+Configuracion reportada: `DRVRS=4`, `PCKG_SZ=16`, `BROADCAST=0xFF`,
+`SCENARIO=SC_CONCURRENT`, `NUM=12`, `SEED=3`.
+
+| Metrica | Resultado |
+|---|---|
+| Resultado final | PASS |
+| Transacciones generadas | 12 (`tx#0` a `tx#11`) |
+| Eventos correctos | 26 (12 POP y 14 PUSH) |
+| Errores / pendientes | 0 / 0 |
+| Round Robin | 18 verificaciones, 0 violaciones |
+| Retardo POP->PUSH | min=190 ns, max=790 ns, promedio=690.0 ns |
+| Filas CSV | 14 |
+| Solicitudes iniciales concurrentes | 4 POP observados en el mismo ciclo |
+
+El encabezado y los 12 identificadores confirman el override de `+NUM` en la
+version anterior, donde `NUM` era el total global. No valida el requisito actual
+de 12 transacciones por source ni el nuevo CSV. La repetibilidad de seed tambien
+requiere repetir una misma configuracion.
+
+## 11. Resultados historicos del ambiente anterior (seed = 1)
+
+Los resultados siguientes corresponden a los escenarios dedicados anteriores;
+se conservan como referencia y no como evidencia de los perfiles nuevos.
 
 | Corrida | Resultado |
 |---|---|

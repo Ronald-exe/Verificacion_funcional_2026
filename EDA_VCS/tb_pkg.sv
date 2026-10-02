@@ -59,7 +59,22 @@ package tb_pkg;
   parameter logic [7:0] BROADCAST_RTL_ACTUAL = `BROADCAST;
   parameter logic [7:0] BROADCAST_RTL_FIJO   = 8'hFF;
 
+<<<<<<< HEAD
   parameter int NUM_TRANSACTIONS_DEFAULT = 50;
+=======
+  parameter int NUM_TRANSACTIONS_DEFAULT = 50; // Por interfaz/source
+  parameter int SEED_BASE_DEFAULT = 1;
+  parameter logic [7:0] BROADCAST_RTL_ACTUAL = 8'hFF;
+>>>>>>> eae310daa7954b60ed44cddc35e3c03971cdfdc0
+
+  parameter int TRAFFIC_UNICAST_WEIGHT    = 60;
+  parameter int TRAFFIC_SELF_WEIGHT       = 10;
+  parameter int TRAFFIC_BROADCAST_WEIGHT  = 20;
+  parameter int TRAFFIC_INVALID_WEIGHT    = 10;
+  parameter int PAYLOAD_RANDOM_WEIGHT    = 60;
+  parameter int PAYLOAD_PATTERN_WEIGHT   = 10;
+  parameter int BURST_MIN                = 1;
+  parameter int BURST_MAX                = 4;
 
   // Ancho fijo del campo de destino dentro del paquete (sec. 4 del spec).
   // El destino siempre ocupa los 8 bits superiores, sin importar pckg_sz.
@@ -70,9 +85,10 @@ package tb_pkg;
     EVT_PUSH = 1'b1
   } event_type_e;
 
-  // Escenarios de generación (TestplanV3.md sec. 6 y 8). El test elige uno y
-  // el Generator aplica los constraints correspondientes.
+  // Perfiles de generación: el Generator combina cada perfil con los
+  // constraints de traffic_type, payload_type y delay.
   typedef enum {
+<<<<<<< HEAD
     SC_RANDOM,     // TP11: tráfico mixto (unicast / broadcast / inválido)
     SC_UNICAST,    // TP03: solo unicast a otra interfaz válida
     SC_BROADCAST,  // TP04/TP06: solo broadcast
@@ -84,7 +100,29 @@ package tb_pkg;
     SC_PATTERNS,   // TP12: payload con patrones 0...0, 1...1, 1010..., 0101...
     SC_BCAST_PARAM // TP16: destinos BROADCAST configurado y 8'hFF (evidencia
                    //       que el RTL ignora el parámetro broadcast)
+=======
+    SC_RANDOM,
+    SC_BURST,
+    SC_CONCURRENT,
+    SC_BOUNDARY,
+    SC_MIXED
+>>>>>>> eae310daa7954b60ed44cddc35e3c03971cdfdc0
   } scenario_e;
+
+  typedef enum {
+    TR_UNICAST,
+    TR_SELF,
+    TR_BROADCAST,
+    TR_INVALID
+  } traffic_type_e;
+
+  typedef enum {
+    PT_RANDOM,
+    PT_ZERO,
+    PT_ONES,
+    PT_ALT_10,
+    PT_ALT_01
+  } payload_type_e;
 
   function automatic logic [DEST_FIELD_WIDTH-1:0] get_destination(
     logic [63:0] packet,

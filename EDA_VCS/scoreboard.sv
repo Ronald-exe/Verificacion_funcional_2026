@@ -90,6 +90,7 @@ class scoreboard #(
       exp              = new();
       exp.event_type   = tb_pkg::EVT_POP;
       exp.interface_id = tr.interface_id;
+      exp.tx_id        = tr.tx_id;
       exp.packet       = tr.packet;
       // Cantidad de push que generará este paquete (lo usa el reporte CSV)
       if (dest == tb_pkg::BROADCAST_RTL_ACTUAL)             exp.n_rx = drvrs - 1;
@@ -105,6 +106,7 @@ class scoreboard #(
           exp              = new();
           exp.event_type   = tb_pkg::EVT_PUSH;
           exp.interface_id = i;
+          exp.tx_id        = tr.tx_id;
           exp.packet       = tr.packet;
           exp.src_id       = tr.interface_id;
           expected_mb.put(exp);  // hacia el Checker: esperado en cada interfaz
@@ -115,6 +117,7 @@ class scoreboard #(
         exp              = new();
         exp.event_type   = tb_pkg::EVT_PUSH;
         exp.interface_id = dest;
+        exp.tx_id        = tr.tx_id;
         exp.packet       = tr.packet;
         exp.src_id       = tr.interface_id;
         expected_mb.put(exp);  // hacia el Checker: esperado en el destino
@@ -123,12 +126,23 @@ class scoreboard #(
     end
   endtask
 
-  function automatic void confirm_pop(int unsigned id);
-    if (tx_pending[id].size() != 0) void'(tx_pending[id].pop_front());
+  function automatic void confirm_pop(int unsigned id, int unsigned tx_id, time send_time);
+    int idx[$];
+    idx = tx_pending[id].find_first_index(tr) with (tr.tx_id == tx_id);
+    if (idx.size() != 0) begin
+      tx_pending[id][idx[0]].send_time = send_time;
+      tx_pending[id].delete(idx[0]);
+    end
   endfunction
 
-  function automatic void confirm_push(int unsigned id);
-    if (rx_expected[id].size() != 0) void'(rx_expected[id].pop_front());
+  function automatic void confirm_push(int unsigned id, int unsigned tx_id, time receive_time);
+    int idx[$];
+    idx = rx_expected[id].find_first_index(tr) with (tr.tx_id == tx_id);
+    if (idx.size() != 0) begin
+      rx_expected[id][idx[0]].receive_time = receive_time;
+      rx_expected[id][idx[0]].delay = receive_time - rx_expected[id][idx[0]].send_time;
+      rx_expected[id].delete(idx[0]);
+    end
   endfunction
 
 endclass : scoreboard

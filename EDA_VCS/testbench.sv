@@ -8,20 +8,18 @@
 // Descripción:
 //   Integra DUT + bus_if + environment (Generator + driver[] + Monitor +
 //   Scoreboard + Checker + mailboxes) y define la configuración de la
-//   corrida. Todo se elige desde las opciones de compilación con +define
-//   (ver EDA_VCS/README.md): drvrs, pckg_sz, escenario, retardos, cantidad
-//   de transacciones, reset en actividad y archivo CSV.
+//   corrida. Los parámetros estructurales usan +define; SCENARIO, NUM y SEED
+//   son plusargs. NUM indica transacciones por interfaz.
 //
 //   Flujo:
 //     1. Reset inicial
-//     2. Sorteo de num_transactions (con la semilla de la corrida)
+//     2. Lectura de escenario, NUM transacciones/source y seed
 //     3. env.build(): construcción de todos los componentes y mailboxes
 //     4. env.run(): fork paralelo de Generator, Driver[i], Monitor,
 //        Scoreboard, Checker y chequeo de Round Robin
-//     5. (opcional) reset en actividad en el ciclo RESET_AT
-//     6. Fin por condición: env.idle() + DRAIN_CYCLES, con SIM_CYCLES
+//     5. Fin por condición: env.idle() + DRAIN_CYCLES, con SIM_CYCLES
 //        como watchdog
-//     7. Checker.reporte_final() (PASS/FAIL, retardos, Round Robin, CSV)
+//     6. Checker.reporte_final() (PASS/FAIL, retardos, Round Robin, CSV)
 //        + $finish
 //==============================================================================
 
@@ -47,20 +45,10 @@
 `ifndef PCKG_SZ
   `define PCKG_SZ tb_pkg::PCKG_SZ_DEFAULT
 `endif
-// Escenario de generación (ver tb_pkg::scenario_e), p. ej.:
-//   +define+SCENARIO=SC_BROADCAST
-`ifndef SCENARIO
-  `define SCENARIO SC_RANDOM
+`ifndef BROADCAST
+  `define BROADCAST tb_pkg::BROADCAST_DEFAULT
 `endif
-// Interfaces origen para SC_ONE_IF (SRC_A) y SC_TWO_IF (SRC_A, SRC_B), p. ej.:
-//   +define+SCENARIO=SC_TWO_IF+SRC_A=1+SRC_B=3
-`ifndef SRC_A
-  `define SRC_A 0
-`endif
-`ifndef SRC_B
-  `define SRC_B 1
-`endif
-// Retardo aleatorio (ciclos) antes de cada paquete, p. ej.:
+// Rango de arrival_delta (ciclos) antes de cada paquete, p. ej.:
 //   back-to-back (TP10): +define+DELAY_MAX=0
 //   idle         (TP09): +define+DELAY_MIN=50+DELAY_MAX=100
 `ifndef DELAY_MIN
@@ -68,23 +56,6 @@
 `endif
 `ifndef DELAY_MAX
   `define DELAY_MAX 10
-`endif
-// Cantidad de transacciones: se elige al azar en [NUM_TX_MIN : NUM_TX_MAX]
-// con la semilla de la corrida, p. ej. cantidad fija: +define+NUM_TX_MIN=50+NUM_TX_MAX=50
-`ifndef NUM_TX_MIN
-  `define NUM_TX_MIN 30
-`endif
-`ifndef NUM_TX_MAX
-  `define NUM_TX_MAX 80
-`endif
-// Reset durante actividad (TP01): ciclos después del arranque del tráfico en
-// que se aplica un reset de RESET_CYCLES ciclos. 0 = deshabilitado, p. ej.:
-//   +define+RESET_AT=300
-`ifndef RESET_AT
-  `define RESET_AT 0
-`endif
-`ifndef RESET_CYCLES
-  `define RESET_CYCLES 5
 `endif
 // Archivo del reporte de retardos por paquete (entrada del histograma GNUplot)
 `ifndef CSV_FILE
@@ -97,26 +68,22 @@ module tb_top;
   localparam int bits        = tb_pkg::BITS_DEFAULT;
   localparam int drvrs       = `DRVRS;
   localparam int pckg_sz     = `PCKG_SZ;
-  localparam bit [7:0] broadcast = tb_pkg::BROADCAST_DEFAULT;
+  localparam bit [7:0] broadcast = `BROADCAST;
 
-  tb_pkg::scenario_e scenario = tb_pkg::`SCENARIO;
-  localparam int SRC_A = `SRC_A;
-  localparam int SRC_B = `SRC_B;
+  tb_pkg::scenario_e scenario;
   localparam int DELAY_MIN = `DELAY_MIN;
   localparam int DELAY_MAX = `DELAY_MAX;
+  int unsigned seed;
+  string scenario_arg;
 
   // Ciclos extra tras el último pop para que llegue el último push
   // (serialización de un paquete completo más margen)
   localparam int DRAIN_CYCLES = 4*pckg_sz + 50;
 
-  localparam int RESET_AT     = `RESET_AT;
-  localparam int RESET_CYCLES = `RESET_CYCLES;
+  int unsigned num_transactions;
+  int unsigned total_transactions;
 
-  localparam int NUM_TX_MIN = `NUM_TX_MIN;
-  localparam int NUM_TX_MAX = `NUM_TX_MAX;
-  int unsigned   num_transactions;          // se sortea al inicio de la prueba
-
-  localparam int SIM_CYCLES = 20000;        // watchdog: tiempo máximo de la prueba
+  longint unsigned SIM_CYCLES;
 
   // Reloj
   logic clk;
@@ -153,6 +120,30 @@ module tb_top;
 
   // Secuencia principal
   initial begin
+    scenario = tb_pkg::SC_MIXED;
+    num_transactions = tb_pkg::NUM_TRANSACTIONS_DEFAULT;
+    seed = tb_pkg::SEED_BASE_DEFAULT;
+
+    if ($value$plusargs("SCENARIO=%s", scenario_arg)) begin
+      case (scenario_arg)
+        "SC_RANDOM":     scenario = tb_pkg::SC_RANDOM;
+        "SC_BURST":      scenario = tb_pkg::SC_BURST;
+        "SC_CONCURRENT": scenario = tb_pkg::SC_CONCURRENT;
+        "SC_BOUNDARY":   scenario = tb_pkg::SC_BOUNDARY;
+        "SC_MIXED":      scenario = tb_pkg::SC_MIXED;
+        default: $fatal(1, "[TB] SCENARIO='%s' invalido", scenario_arg);
+      endcase
+    end
+    void'($value$plusargs("NUM=%d", num_transactions));
+    void'($value$plusargs("SEED=%d", seed));
+
+    if (drvrs == 0 || num_transactions > (32'hFFFF_FFFF / drvrs))
+      $fatal(1, "[TB] NUM=%0d por terminal excede el rango para drvrs=%0d", num_transactions, drvrs);
+    total_transactions = num_transactions * drvrs;
+    SIM_CYCLES = (longint'(total_transactions) * (pckg_sz + 16) * 3) +
+                 (longint'(total_transactions) * (DELAY_MAX + 1)) +
+                 DRAIN_CYCLES + 1000;
+
     // Ondas
     $dumpfile("dump.vcd");
     $dumpvars(0, dut);
@@ -162,30 +153,16 @@ module tb_top;
     repeat (5) @(posedge clk);
     bus_if_inst.reset = 0;
 
-    if (NUM_TX_MIN > NUM_TX_MAX)
-      $fatal(1, "[TB] NUM_TX_MIN=%0d > NUM_TX_MAX=%0d", NUM_TX_MIN, NUM_TX_MAX);
-    num_transactions = $urandom_range(NUM_TX_MAX, NUM_TX_MIN);
-
     $display("================================================================");
     $display("  PRUEBA DE INTEGRACION COMPLETA");
     $display("  Generator + Driver + Monitor + Scoreboard + Checker + DUT");
-    $display("  drvrs=%0d  pckg_sz=%0d  broadcast=0x%h  num_transactions=%0d (rango [%0d:%0d])",
-              drvrs, pckg_sz, broadcast, num_transactions, NUM_TX_MIN, NUM_TX_MAX);
-    // Semilla inicial del simulador (Run Options: +ntb_random_seed=<N> o
-    // +ntb_random_seed_automatic). Con ella se reproduce la corrida exacta.
-    $display("  seed=%0d", $unsigned($get_initial_random_seed()));
+      $display("  drvrs=%0d  pckg_sz=%0d  broadcast=0x%h  num/source=%0d  total=%0d",
+          drvrs, pckg_sz, broadcast, num_transactions, total_transactions);
+    $display("  seed=%0d", seed);
     $display("  scenario=%s", scenario.name());
-    if (scenario == tb_pkg::SC_ONE_IF || scenario == tb_pkg::SC_TWO_IF) begin
-      if (SRC_A >= drvrs || SRC_B >= drvrs || SRC_A == SRC_B)
-        $fatal(1, "[TB] SRC_A=%0d / SRC_B=%0d invalidos para drvrs=%0d (deben ser distintos y < drvrs)",
-               SRC_A, SRC_B, drvrs);
-      $display("  src_a=%0d  src_b=%0d", SRC_A, SRC_B);
-    end
     if (DELAY_MIN > DELAY_MAX)
       $fatal(1, "[TB] DELAY_MIN=%0d > DELAY_MAX=%0d", DELAY_MIN, DELAY_MAX);
-    $display("  delay=[%0d:%0d] ciclos", DELAY_MIN, DELAY_MAX);
-    if (RESET_AT > 0)
-      $display("  reset en actividad: ciclo %0d, duracion %0d ciclos", RESET_AT, RESET_CYCLES);
+    $display("  arrival_delta=[%0d:%0d] ciclos", DELAY_MIN, DELAY_MAX);
     $display("================================================================");
 
     // Construcción y arranque del ambiente
@@ -193,31 +170,11 @@ module tb_top;
     env.build();
     env.gen.num_transactions = num_transactions;
     env.gen.scenario         = scenario;
-    env.gen.src_a            = SRC_A;
-    env.gen.src_b            = SRC_B;
+    env.gen.seed             = seed;
     env.gen.delay_min        = DELAY_MIN;
     env.gen.delay_max        = DELAY_MAX;
     env.chk.abrir_csv(`CSV_FILE);
     env.run();
-
-    // Reset durante actividad (TP01). Se aplica en negedge para no competir
-    // con el muestreo del DUT/Monitor en posedge; el Checker descarta los
-    // paquetes que el DUT tenía en vuelo en ese momento.
-    if (RESET_AT > 0) begin
-      fork
-        begin
-          repeat (RESET_AT) @(posedge clk);
-          @(negedge clk);
-          $display("[TB] RESET en actividad @%0t (%0d ciclos)", $time, RESET_CYCLES);
-          bus_if_inst.reset = 1;
-          env.chk.descartar_en_vuelo();
-          repeat (RESET_CYCLES) @(posedge clk);
-          @(negedge clk);
-          bus_if_inst.reset = 0;
-          $display("[TB] RESET liberado @%0t", $time);
-        end
-      join_none
-    end
 
     // Fin de la prueba por condición: se espera a que ya no quede tráfico
     // (env.idle) y luego DRAIN_CYCLES para que lleguen los últimos push.
@@ -243,7 +200,25 @@ module tb_top;
     join
 
     // Reporte final del Checker (PASS/FAIL real, no solo actividad)
-    env.chk.reporte_final();
+    env.chk.reporte_final(total_transactions);
+
+    $display("");
+    $display("========================================");
+    $display("VERIFICATION SUMMARY");
+    $display("========================================");
+    $display("SEED        : %0d", seed);
+    $display("SCENARIO    : %s", scenario.name());
+    $display("DRVRS       : %0d", drvrs);
+    $display("PCKG_SZ     : %0d", pckg_sz);
+    $display("BROADCAST   : %0d", broadcast);
+    $display("NUM/TERM    : %0d", num_transactions);
+    $display("TOTAL       : %0d", total_transactions);
+    $display("PASS        : %0d", env.chk.tx_passed_count);
+    $display("FAIL        : %0d", env.chk.tx_failed_count);
+    $display("EVENT ERRORS: %0d", env.chk.transacciones_error +
+         env.chk.transacciones_pendientes + env.chk.rr_errores);
+    $display("RESULT      : %s", env.chk.final_pass ? "PASS" : "FAIL");
+    $display("========================================");
 
     $display("[TB] fin de simulacion @%0t", $time);
     $finish;

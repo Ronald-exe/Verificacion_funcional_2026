@@ -36,6 +36,9 @@ class driver #(
   int unsigned id;
   virtual bus_if #(.drvrs(drvrs), .pckg_sz(pckg_sz)).driver_mp vif;
   mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb;
+  tx_transaction #(drvrs, pckg_sz) tx_fifo[$];
+  event tx_available;
+  int unsigned outstanding_count = 0;
 
   // Timeout por paquete (ciclos negedge)
   localparam int TIMEOUT_CYCLES = 2000;
@@ -55,32 +58,54 @@ class driver #(
   endfunction
 
   task run();
-    tx_transaction #(drvrs, pckg_sz) tr;
-    bit timed_out;
-
     vif.pndng[0][id] = 1'b0;
     vif.D_pop[0][id] = '0;
 
+    fork
+      collect_transactions();
+      drive_transactions();
+    join
+  endtask
+
+  task collect_transactions();
+    tx_transaction #(drvrs, pckg_sz) tr;
+
     forever begin
       tx_mb.get(tr);
+      tx_fifo.push_back(tr);
+      outstanding_count++;
       busy = 1;
+      -> tx_available;
+    end
+  endtask
 
-      // Retardo antes de ofrecer el paquete (0 = back-to-back)
-      repeat (tr.delay) @(negedge vif.clk);
+  task drive_transactions();
+    tx_transaction #(drvrs, pckg_sz) tr;
+    bit timed_out;
+
+    forever begin
+      while (tx_fifo.size() == 0)
+        @tx_available;
+
+      tr = tx_fifo[0];
+
+      // arrival_delta ciclos antes de ofrecer el paquete (0 = back-to-back)
+      repeat (tr.arrival_delta) @(negedge vif.clk);
 
       // Escribe en negedge: no compite con el DUT que muestrea en posedge.
       @(negedge vif.clk);
       vif.D_pop[0][id] = tr.packet;
       vif.pndng[0][id] = 1'b1;
 
-      $display("[DRV %0d] ofrecido pkt=0x%h @%0t", id, tr.packet, $time);
+      $display("[DRV %0d] ofrecido tx#%0d pkt=0x%h @%0t",
+           id, tr.tx_id, tr.packet, $time);
 
       timed_out = 0;
       fork
         begin
           while (vif.pop[0][id] !== 1'b1)
             @(negedge vif.clk);
-          $display("[DRV %0d] pop recibido @%0t", id, $time);
+          $display("[DRV %0d] pop recibido tx#%0d @%0t", id, tr.tx_id, $time);
         end
         begin
           repeat (TIMEOUT_CYCLES) @(negedge vif.clk);
@@ -93,7 +118,9 @@ class driver #(
       // Limpia aunque haya timeout (permite continuar al siguiente paquete)
       vif.pndng[0][id] = 1'b0;
       @(negedge vif.clk);
-      busy = 0;
+      void'(tx_fifo.pop_front());
+      outstanding_count--;
+      busy = (outstanding_count != 0);
     end
   endtask
 

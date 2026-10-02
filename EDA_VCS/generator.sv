@@ -10,10 +10,9 @@
 //     - una copia a Driver[interface_id]  vía tx_mb[interface_id]
 //     - una copia (independiente) al Scoreboard  vía tx_mb_sb
 //
-//   Generación por capas (TestplanV3.md sec. 6):
-//     escenario (scenario_e) -> interfaz origen -> destino -> payload
-//     -> momento de solicitud (delay)
-//   Cada escenario agrega constraints inline sobre los de tx_transaction.
+//   Generación por capas:
+//     perfil -> traffic_type -> interfaz origen -> destino -> payload -> delay
+//   Cada perfil controla constraints de tx_transaction y el calendario.
 //   Al terminar de entregar todas las transacciones pone done = 1.
 //
 //   IMPORTANTE: la copia enviada al Scoreboard debe ser un objeto
@@ -38,33 +37,20 @@ class generator #(
   mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb    [drvrs]; // Generator -> Driver[i]
   mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb_sb;         // Generator -> Scoreboard
 
-  // Cantidad de transacciones a generar; la fija el test (sorteada en
-  // [NUM_TX_MIN : NUM_TX_MAX]). Si no la cambia, se usa el default de tb_pkg.
+  // Cantidad exacta de transacciones por cada source/interface_id.
   int unsigned num_transactions = tb_pkg::NUM_TRANSACTIONS_DEFAULT;
+  int unsigned seed = tb_pkg::SEED_BASE_DEFAULT;
 
-  // Escenario activo; lo fija el test antes de run(). Cada escenario agrega
-  // constraints inline sobre los que ya trae tx_transaction.
+  // Perfil activo; lo fija el test antes de run().
   tb_pkg::scenario_e scenario = tb_pkg::SC_RANDOM;
 
-  // Rango de retardo (ciclos) antes de ofrecer cada paquete; lo fija el test
+  // Rango de arrival_delta (ciclos) antes de ofrecer cada paquete; lo fija el test
   int unsigned delay_min = 0;
   int unsigned delay_max = 0;
 
   // Se pone en 1 cuando ya se entregaron todas las transacciones; el test lo
   // usa para decidir el fin de la prueba
   bit done = 0;
-
-  // Interfaces origen para SC_ONE_IF (src_a) y SC_TWO_IF (src_a, src_b)
-  int unsigned src_a = 0;
-  int unsigned src_b = 1;
-
-  // Patrones de payload para SC_PATTERNS (TestplanV3.md sec. 6). El payload
-  // ocupa los pckg_sz-8 bits inferiores (8, 24 o 56 bits, siempre par).
-  localparam int PAYLOAD_W = pckg_sz - tb_pkg::DEST_FIELD_WIDTH;
-  localparam logic [PAYLOAD_W-1:0] PAT_ZEROS = '0;
-  localparam logic [PAYLOAD_W-1:0] PAT_ONES  = '1;
-  localparam logic [PAYLOAD_W-1:0] PAT_1010  = {(PAYLOAD_W/2){2'b10}};
-  localparam logic [PAYLOAD_W-1:0] PAT_0101  = {(PAYLOAD_W/2){2'b01}};
 
   function new(
     mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb    [drvrs],
@@ -75,62 +61,49 @@ class generator #(
   endfunction
 
   task run();
-    for (int unsigned n = 0; n < num_transactions; n++) begin
-      tx_transaction #(drvrs, pckg_sz) tr, tr_sb;
+    int unsigned process_seed;
+    int unsigned next_tx_id = 0;
 
-      bit ok;
+    process_seed = seed;
+    void'($urandom(process_seed));
 
-      tr = new();
-      tr.delay_min = delay_min;
-      tr.delay_max = delay_max;
-      case (scenario)
-        // Unicast a una interfaz válida distinta del origen
-        tb_pkg::SC_UNICAST:
-          ok = tr.randomize() with {
-            packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] <  drvrs;
-            packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] != interface_id;
-          };
-        tb_pkg::SC_BROADCAST:
-          ok = tr.randomize() with {
-            packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] == tb_pkg::BROADCAST_RTL_ACTUAL;
-          };
-        // Destino fuera de [0, drvrs-1] y distinto de broadcast
-        tb_pkg::SC_INVALID:
-          ok = tr.randomize() with {
-            packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] inside {[drvrs : tb_pkg::BROADCAST_RTL_ACTUAL - 1]};
-          };
-        // Bordes: 0 y drvrs-1 (primer/último ID válido), drvrs y 0xFE
-        // (primer/último inválido) y broadcast, con el mismo peso cada uno.
-        // Se apaga el dist 70/20/10 de tx_transaction: repartiría el 10% de
-        // inválidos entre ~250 valores y los bordes inválidos casi no saldrían.
-        tb_pkg::SC_ADDR_EDGES: begin
-          tr.c_destination.constraint_mode(0);
-          ok = tr.randomize() with {
-            packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] dist {
-              0                                := 1,
-              drvrs-1                          := 1,
-              drvrs                            := 1,
-              tb_pkg::BROADCAST_RTL_ACTUAL - 1 := 1,
-              tb_pkg::BROADCAST_RTL_ACTUAL     := 1
-            };
-          };
+    for (int unsigned source_id = 0; source_id < drvrs; source_id++) begin
+      int unsigned sent_for_source = 0;
+      int unsigned burst_remaining = 0;
+      int unsigned burst_size = 0;
+      int unsigned burst_gap = 0;
+
+      while (sent_for_source < num_transactions) begin
+        tx_transaction #(drvrs, pckg_sz) tr, tr_sb;
+        bit ok;
+
+        if (scenario == tb_pkg::SC_BURST && burst_remaining == 0) begin
+          burst_size = $urandom_range(tb_pkg::BURST_MAX, tb_pkg::BURST_MIN);
+          if (burst_size > num_transactions - sent_for_source)
+            burst_size = num_transactions - sent_for_source;
+          burst_gap = $urandom_range(delay_max, delay_min);
+          burst_remaining = burst_size;
         end
-        // Una sola interfaz transmite: sin contención en el bus
-        tb_pkg::SC_ONE_IF:
-          ok = tr.randomize() with { interface_id == src_a; };
-        // Dos interfaces compiten por el bus (Round Robin entre src_a y src_b)
-        tb_pkg::SC_TWO_IF:
-          ok = tr.randomize() with { interface_id inside {src_a, src_b}; };
-        // Payload con patrones de máxima/mínima alternancia, mismo peso cada
-        // uno; el destino sigue el dist normal de tx_transaction
-        tb_pkg::SC_PATTERNS:
-          ok = tr.randomize() with {
-            packet[PAYLOAD_W-1:0] dist {
-              PAT_ZEROS := 1,
-              PAT_ONES  := 1,
-              PAT_1010  := 1,
-              PAT_0101  := 1
+
+        tr = new();
+        tr.tx_id = next_tx_id;
+        tr.srandom(seed + next_tx_id);
+        tr.delay_min = delay_min;
+        tr.delay_max = delay_max;
+
+        case (scenario)
+          tb_pkg::SC_RANDOM: begin
+            tr.c_traffic_distribution.constraint_mode(0);
+            ok = tr.randomize() with { interface_id == source_id; };
+          end
+          tb_pkg::SC_BURST: begin
+            tr.c_arrival_delta.constraint_mode(0);
+            ok = tr.randomize() with {
+              interface_id == source_id;
+              burst_length == burst_size;
+              arrival_delta == ((burst_remaining == burst_size) ? burst_gap : 0);
             };
+<<<<<<< HEAD
           };
         // TP16: mitad de los paquetes al broadcast configurado y mitad a
         // 8'hFF. Con +define+BROADCAST distinto de 8'hFF el modelo espera
@@ -149,21 +122,65 @@ class generator #(
         default:  // SC_RANDOM: solo los constraints de tx_transaction
           ok = tr.randomize();
       endcase
+=======
+          end
+          tb_pkg::SC_CONCURRENT: begin
+            tr.c_arrival_delta.constraint_mode(0);
+            ok = tr.randomize() with {
+              interface_id == source_id;
+              arrival_delta == 0;
+            };
+          end
+          tb_pkg::SC_BOUNDARY: begin
+            tr.c_traffic_distribution.constraint_mode(0);
+            tr.c_destination.constraint_mode(0);
+            ok = tr.randomize() with {
+              interface_id == source_id;
+              packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] dist {
+                0                                := 1,
+                drvrs-1                          := 1,
+                drvrs                            := 1,
+                tb_pkg::BROADCAST_RTL_ACTUAL - 1 := 1,
+                tb_pkg::BROADCAST_RTL_ACTUAL     := 1
+              };
+              if (packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] == tb_pkg::BROADCAST_RTL_ACTUAL)
+                traffic_type == tb_pkg::TR_BROADCAST;
+              else if (packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] < drvrs) {
+                if (packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] == interface_id)
+                  traffic_type == tb_pkg::TR_SELF;
+                else
+                  traffic_type == tb_pkg::TR_UNICAST;
+              } else
+                traffic_type == tb_pkg::TR_INVALID;
+            };
+          end
+          tb_pkg::SC_MIXED:
+            ok = tr.randomize() with { interface_id == source_id; };
+          default:
+            ok = 0;
+        endcase
+>>>>>>> eae310daa7954b60ed44cddc35e3c03971cdfdc0
 
-      // Si los constraints son contradictorios randomize() devuelve 0 y el
-      // paquete quedaría sin aleatorizar: se reporta en lugar de ignorarlo.
-      if (!ok)
-        $error("T=%0t [Generator] randomize() fallo en tx#%0d (scenario=%s)",
-               $time, n, scenario.name());
+        if (!ok)
+          $fatal(1, "T=%0t [Generator] randomize() fallo en tx#%0d (scenario=%s)",
+                 $time, tr.tx_id, scenario.name());
 
-      tr_sb = new tr;  // copia independiente para el Scoreboard
+        if (scenario == tb_pkg::SC_BURST)
+          burst_remaining--;
 
-      tx_mb[tr.interface_id].put(tr);  // hacia el Driver de esa interfaz
-      tx_mb_sb.put(tr_sb);             // hacia el Scoreboard
+        tr_sb = new tr;  // copia independiente para el Scoreboard
 
-      $display("T=%0t [Generator] tx#%0d if=%0d packet=0x%0h delay=%0d",
-                $time, n, tr.interface_id, tr.packet, tr.delay);
+        tx_mb[source_id].put(tr);
+        tx_mb_sb.put(tr_sb);
+
+        $display("T=%0t [Generator] tx#%0d if=%0d packet=0x%0h arrival_delta=%0d",
+                 $time, tr.tx_id, tr.interface_id, tr.packet, tr.arrival_delta);
+
+        next_tx_id++;
+        sent_for_source++;
+      end
     end
+
     done = 1;
   endtask
 
