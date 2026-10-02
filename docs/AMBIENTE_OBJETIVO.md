@@ -122,7 +122,7 @@ Reglas funcionales candidatas, pendientes de confirmacion contra la especificaci
 
 El orden de recepcion no se exigira inicialmente. El Checker buscara una coincidencia por contenido y debera respetar la multiplicidad de paquetes repetidos. El matching no puede usar `tx_id` como dato observado, ya que el DUT no transporta ese campo.
 
-El parametro `broadcast` merece tratamiento separado: el RTL actual presenta una divergencia conocida y utiliza `8'hFF` internamente. La prueba funcional normal debera usar valores compatibles con el comportamiento esperado; una prueba que evidencie la divergencia debe identificarse como diagnostica y tener un resultado esperado definido, no invertir PASS/FAIL.
+El Generator y el Scoreboard usan el valor `BROADCAST` compilado como direccion de broadcast esperada. El RTL actual compara contra `8'hFF` internamente. Por lo tanto, una corrida diagnostica con `BROADCAST != 255` debe producir FAIL si el DUT no entrega el broadcast configurado; no se invierte artificialmente PASS/FAIL ni se modifica el RTL.
 
 ## 7. Perfiles de trafico
 
@@ -133,12 +133,23 @@ Se sustituyeron los escenarios especificos por cinco perfiles generales. `scenar
 | `SC_RANDOM` | Seleccion uniforme de `traffic_type`; la fuente, destino y `arrival_delta` se randomizan dentro de sus constraints. |
 | `SC_BURST` | Selecciona una fuente y una longitud aleatoria entre `BURST_MIN` y `BURST_MAX`; el primer paquete usa un `arrival_delta` aleatorio y los siguientes usan cero. |
 | `SC_CONCURRENT` | Coordina solicitudes de todas las fuentes y fija `arrival_delta=0`. |
-| `SC_BOUNDARY` | Elige con igual peso entre destinos `0`, `drvrs-1`, `drvrs`, `0xFE` y `0xFF`; `traffic_type` debe ser coherente con el destino y el origen. |
+| `SC_BOUNDARY` | La primera transaccion de cada source usa el `BROADCAST` configurado; las siguientes eligen destinos limite, incluido `0xFF` del RTL, con clase coherente con la expectativa configurada. |
 | `SC_MIXED` | Aplica la distribucion ponderada de `traffic_type`: 60% unicast, 10% self, 20% broadcast y 10% invalido. Es el perfil predeterminado. |
 
 La transaccion utiliza `traffic_type` para seleccionar unicast, self-addressed, broadcast o destino invalido. `payload_type` elige payload aleatorio con peso 60 o uno de cuatro patrones dirigidos con peso 10 cada uno. Los pesos y el rango de burst viven en `tb_pkg`.
 
 Los perfiles no son una prueba independiente por cada funcionalidad. Mediante constraints y pesos generan clases de trafico, back-to-back, bursts, concurrencia, destinos limite y patrones de payload. Varias fuentes hacia un mismo destino y cross traffic pueden aparecer en los perfiles aleatorios; su presencia se informa con contadores cuando estos se incorporen.
+
+Para comprobar el defecto de broadcast sin alterar el DUT, una corrida diagnóstica
+puede usar `BROADCAST=170` con `SC_BOUNDARY`, por ejemplo:
+
+```sh
+make run DRVRS=4 PCKG_SZ=16 BROADCAST=170 SCENARIO=SC_BOUNDARY NUM=1 SEED=1
+```
+
+Se espera FAIL: el modelo espera tres PUSH por source con destino `0xAA`, pero
+el RTL solo reconoce `0xFF`. Con `BROADCAST=255`, las mismas primeras
+transacciones deben completar sus entregas.
 
 No se debe asumir que un caso aparecio solo porque el perfil podia generarlo. Los contadores de ejecucion informaran las clases generadas y los eventos observados; inicialmente estos contadores diagnostican y no sustituyen un criterio de PASS/FAIL.
 

@@ -36,6 +36,7 @@ class tx_transaction #(
   rand tb_pkg::traffic_type_e traffic_type;
   rand tb_pkg::payload_type_e payload_type;
   rand int unsigned burst_length;
+  logic [tb_pkg::DEST_FIELD_WIDTH-1:0] broadcast_value;
 
   // Paquete completo: [pckg_sz-1 -: DEST_FIELD_WIDTH] = destino, resto = payload
   rand logic [pckg_sz-1:0] packet;
@@ -76,10 +77,10 @@ class tx_transaction #(
     } else if (traffic_type == tb_pkg::TR_SELF) {
       packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] == interface_id;
     } else if (traffic_type == tb_pkg::TR_BROADCAST) {
-      packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] == tb_pkg::BROADCAST_RTL_ACTUAL;
+      packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] == broadcast_value;
     } else {
-      packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] inside
-        {[drvrs : tb_pkg::BROADCAST_RTL_ACTUAL - 1]};
+      packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] inside {[drvrs : 8'hFF]};
+      packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] != broadcast_value;
     }
   }
 
@@ -119,6 +120,7 @@ class tx_transaction #(
     traffic_type = tb_pkg::TR_UNICAST;
     payload_type = tb_pkg::PT_RANDOM;
     burst_length = 1;
+    broadcast_value = tb_pkg::BROADCAST_DEFAULT;
   endfunction
 
   // Extrae el campo de destino (8 bits superiores) del paquete

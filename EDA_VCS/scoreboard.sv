@@ -24,7 +24,7 @@
 //
 //   Reglas del modelo:
 //     - unicast   -> agregar a rx_expected[destino]
-//     - broadcast -> agregar copia a rx_expected[] de cada interfaz,
+//     - broadcast_expected -> agregar copia a rx_expected[] de cada interfaz,
 //                     EXCEPTO la de origen
 //     - inválido  -> no se agrega a ninguna cola
 //     - destino == origen -> no se agrega a ninguna cola
@@ -39,10 +39,9 @@
 // Parámetros:
 //   drvrs     - cantidad de interfaces (tamaño de las queues por interfaz)
 //   pckg_sz   - ancho en bits del campo packet
-//   broadcast - dirección de broadcast configurada. El modelo usa
-//               tb_pkg::BROADCAST_RTL_ACTUAL (8'hFF) porque el RTL ignora
-//               este parámetro (hallazgo TP16, DUT_BUS_SPEC.md sec. 5) y
-//               avisa con un WARNING si se configura otro valor.
+//   broadcast - dirección de broadcast esperada por el modelo. El RTL actual
+//               compara contra BROADCAST_RTL_ACTUAL (8'hFF), por lo que una
+//               divergencia debe generar un fallo funcional.
 //
 //   Además, en cada expected_event informa src_id (origen de un push) y
 //   n_rx (cuántos push genera un pop) para el reporte de retardos.
@@ -56,6 +55,7 @@ class scoreboard #(
 
   mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb_sb;     // Generator -> Scoreboard
   mailbox #(expected_event #(drvrs, pckg_sz)) expected_mb;  // Scoreboard -> Checker
+  logic [7:0] broadcast_expected = broadcast;
 
   // Modelo funcional: una queue por interfaz (sec. 12)
   tx_transaction #(drvrs, pckg_sz) tx_pending  [drvrs][$];
@@ -74,9 +74,9 @@ class scoreboard #(
     expected_event    #(drvrs, pckg_sz) exp;
     logic [tb_pkg::DEST_FIELD_WIDTH-1:0] dest;
 
-    if (broadcast !== tb_pkg::BROADCAST_RTL_ACTUAL) begin
+    if (broadcast_expected !== tb_pkg::BROADCAST_RTL_ACTUAL) begin
       $display("T=%0t [Scoreboard] WARNING: broadcast=0x%0h configurado, pero el RTL siempre usa 0x%0h.",
-                $time, broadcast, tb_pkg::BROADCAST_RTL_ACTUAL);
+                $time, broadcast_expected, tb_pkg::BROADCAST_RTL_ACTUAL);
     end
 
     forever begin
@@ -92,12 +92,12 @@ class scoreboard #(
       exp.tx_id        = tr.tx_id;
       exp.packet       = tr.packet;
       // Cantidad de push que generará este paquete (lo usa el reporte CSV)
-      if (dest == tb_pkg::BROADCAST_RTL_ACTUAL)             exp.n_rx = drvrs - 1;
+      if (dest == broadcast_expected)                       exp.n_rx = drvrs - 1;
       else if (dest < drvrs && dest != tr.interface_id)     exp.n_rx = 1;
       else                                                  exp.n_rx = 0;
       expected_mb.put(exp);  // hacia el Checker: esperado de este pop
 
-      if (dest == tb_pkg::BROADCAST_RTL_ACTUAL) begin
+      if (dest == broadcast_expected) begin
         for (int unsigned i = 0; i < drvrs; i++) begin
           if (i == tr.interface_id) continue;  // el origen no se escucha a sí mismo
           rx_expected[i].push_back(tr);

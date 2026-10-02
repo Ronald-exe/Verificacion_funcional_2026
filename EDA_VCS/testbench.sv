@@ -137,6 +137,8 @@ module tb_top;
     void'($value$plusargs("NUM=%d", num_transactions));
     void'($value$plusargs("SEED=%d", seed));
 
+    if (broadcast < drvrs)
+      $fatal(1, "[TB] BROADCAST=%0d colisiona con IDs validos 0..%0d", broadcast, drvrs-1);
     if (drvrs == 0 || num_transactions > (32'hFFFF_FFFF / drvrs))
       $fatal(1, "[TB] NUM=%0d por terminal excede el rango para drvrs=%0d", num_transactions, drvrs);
     total_transactions = num_transactions * drvrs;
@@ -171,8 +173,10 @@ module tb_top;
     env.gen.num_transactions = num_transactions;
     env.gen.scenario         = scenario;
     env.gen.seed             = seed;
+    env.gen.broadcast_stimulus = broadcast;
     env.gen.delay_min        = DELAY_MIN;
     env.gen.delay_max        = DELAY_MAX;
+    env.sb.broadcast_expected = broadcast;
     env.chk.abrir_csv(`CSV_FILE);
     env.run();
 

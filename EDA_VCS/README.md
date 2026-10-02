@@ -92,10 +92,24 @@ Para descargar el CSV, marcar **"Download files after run"** en el panel izquier
 | `SC_RANDOM` | Selección uniforme entre unicast, self-addressed, broadcast e inválido |
 | `SC_BURST` | Rachas de 1 a 4 transacciones de una misma fuente; las siguientes llegan con `arrival_delta=0` |
 | `SC_CONCURRENT` | Solicitudes iniciales coordinadas entre interfaces, con `arrival_delta=0` |
-| `SC_BOUNDARY` | Destinos `0`, `drvrs-1`, `drvrs`, `0xFE` y `0xFF`, con clase coherente |
+| `SC_BOUNDARY` | Fuerza el broadcast configurado en la primera transacción de cada source y mezcla destinos límite, incluido `0xFF` del RTL |
 | `SC_MIXED` | Tráfico ponderado; perfil predeterminado |
 
 Los patrones de payload se seleccionan mediante constraints en todos los perfiles. Los perfiles describen políticas de generación; los valores estructurales `DRVRS`, `PCKG_SZ` y `broadcast` se cambian entre compilaciones.
+
+Para diagnosticar el parámetro broadcast del DUT (el RTL actual compara contra
+`8'hFF` fijo), ejecutar en Linux/VCS:
+
+```sh
+make run DRVRS=4 PCKG_SZ=16 BROADCAST=170 SCENARIO=SC_BOUNDARY NUM=1 SEED=1
+```
+
+El primer paquete de cada source usa el destino configurado `0xAA`. El modelo
+espera broadcast en las otras tres interfaces; como el RTL no reconoce `0xAA`,
+el resultado funcional esperado es `FAIL` por los `PUSH` pendientes. La misma
+prueba con `BROADCAST=255` debe permitir esas entregas. El Makefile ejecuta el
+runner local; en EDA Playground se pasa `BROADCAST=170` en Compile Options y los
+otros parámetros en Run Options.
 
 ---
 

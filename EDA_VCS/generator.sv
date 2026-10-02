@@ -43,6 +43,7 @@ class generator #(
 
   // Perfil activo; lo fija el test antes de run().
   tb_pkg::scenario_e scenario = tb_pkg::SC_RANDOM;
+  logic [7:0] broadcast_stimulus = tb_pkg::BROADCAST_DEFAULT;
 
   // Rango de arrival_delta (ciclos) antes de ofrecer cada paquete; lo fija el test
   int unsigned delay_min = 0;
@@ -90,6 +91,7 @@ class generator #(
         tr.srandom(seed + next_tx_id);
         tr.delay_min = delay_min;
         tr.delay_max = delay_max;
+        tr.broadcast_value = broadcast_stimulus;
 
         case (scenario)
           tb_pkg::SC_RANDOM: begin
@@ -114,25 +116,33 @@ class generator #(
           tb_pkg::SC_BOUNDARY: begin
             tr.c_traffic_distribution.constraint_mode(0);
             tr.c_destination.constraint_mode(0);
-            ok = tr.randomize() with {
-              interface_id == source_id;
-              packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] dist {
-                0                                := 1,
-                drvrs-1                          := 1,
-                drvrs                            := 1,
-                tb_pkg::BROADCAST_RTL_ACTUAL - 1 := 1,
-                tb_pkg::BROADCAST_RTL_ACTUAL     := 1
-              };
-              if (packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] == tb_pkg::BROADCAST_RTL_ACTUAL)
+            if (sent_for_source == 0) begin
+              ok = tr.randomize() with {
+                interface_id == source_id;
                 traffic_type == tb_pkg::TR_BROADCAST;
-              else if (packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] < drvrs) {
-                if (packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] == interface_id)
-                  traffic_type == tb_pkg::TR_SELF;
-                else
-                  traffic_type == tb_pkg::TR_UNICAST;
-              } else
-                traffic_type == tb_pkg::TR_INVALID;
-            };
+                packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] == broadcast_stimulus;
+              };
+            end else begin
+              ok = tr.randomize() with {
+                interface_id == source_id;
+                packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] dist {
+                  0                                := 1,
+                  drvrs-1                          := 1,
+                  drvrs                            := 1,
+                  tb_pkg::BROADCAST_RTL_ACTUAL - 1 := 1,
+                  tb_pkg::BROADCAST_RTL_ACTUAL     := 1
+                };
+                if (packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] == broadcast_stimulus)
+                  traffic_type == tb_pkg::TR_BROADCAST;
+                else if (packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] < drvrs) {
+                  if (packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH] == interface_id)
+                    traffic_type == tb_pkg::TR_SELF;
+                  else
+                    traffic_type == tb_pkg::TR_UNICAST;
+                } else
+                  traffic_type == tb_pkg::TR_INVALID;
+              };
+            end
           end
           tb_pkg::SC_MIXED:
             ok = tr.randomize() with { interface_id == source_id; };
