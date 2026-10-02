@@ -46,6 +46,15 @@ package tb_pkg;
   parameter int NUM_TRANSACTIONS_DEFAULT = 50;
   parameter logic [7:0] BROADCAST_RTL_ACTUAL = 8'hFF;
 
+  parameter int TRAFFIC_UNICAST_WEIGHT    = 60;
+  parameter int TRAFFIC_SELF_WEIGHT       = 10;
+  parameter int TRAFFIC_BROADCAST_WEIGHT  = 20;
+  parameter int TRAFFIC_INVALID_WEIGHT    = 10;
+  parameter int PAYLOAD_RANDOM_WEIGHT    = 60;
+  parameter int PAYLOAD_PATTERN_WEIGHT   = 10;
+  parameter int BURST_MIN                = 1;
+  parameter int BURST_MAX                = 4;
+
   // Ancho fijo del campo de destino dentro del paquete (sec. 4 del spec).
   // El destino siempre ocupa los 8 bits superiores, sin importar pckg_sz.
   parameter int DEST_FIELD_WIDTH = 8;
@@ -55,19 +64,30 @@ package tb_pkg;
     EVT_PUSH = 1'b1
   } event_type_e;
 
-  // Escenarios de generación (TestplanV3.md sec. 6 y 8). El test elige uno y
-  // el Generator aplica los constraints correspondientes.
+  // Perfiles de generación: el Generator combina cada perfil con los
+  // constraints de traffic_type, payload_type y delay.
   typedef enum {
-    SC_RANDOM,     // TP11: tráfico mixto (unicast / broadcast / inválido)
-    SC_UNICAST,    // TP03: solo unicast a otra interfaz válida
-    SC_BROADCAST,  // TP04/TP06: solo broadcast
-    SC_INVALID,    // TP05: solo destinos inválidos
-    SC_ADDR_EDGES, // TP03/TP05: bordes de dirección (primer/último válido,
-                   //            primer/último inválido, broadcast)
-    SC_ONE_IF,     // TP02: solo transmite la interfaz src_a (sin contención)
-    SC_TWO_IF,     // TP07: solo transmiten src_a y src_b (contención Round Robin)
-    SC_PATTERNS    // TP12: payload con patrones 0...0, 1...1, 1010..., 0101...
+    SC_RANDOM,
+    SC_BURST,
+    SC_CONCURRENT,
+    SC_BOUNDARY,
+    SC_MIXED
   } scenario_e;
+
+  typedef enum {
+    TR_UNICAST,
+    TR_SELF,
+    TR_BROADCAST,
+    TR_INVALID
+  } traffic_type_e;
+
+  typedef enum {
+    PT_RANDOM,
+    PT_ZERO,
+    PT_ONES,
+    PT_ALT_10,
+    PT_ALT_01
+  } payload_type_e;
 
   function automatic logic [DEST_FIELD_WIDTH-1:0] get_destination(
     logic [63:0] packet,

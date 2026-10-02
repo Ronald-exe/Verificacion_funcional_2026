@@ -77,10 +77,6 @@ class checker_c #(
   int rr_checks;    // veces que se evaluó la regla
   int rr_errores;   // violaciones detectadas
 
-  // --- Reset durante actividad (TP01) --------------------------------------
-  int perdidos_reset;  // push esperados descartados porque el reset los perdió
-  int resets_aplicados;
-
   function new(
     mailbox #(dut_event #(drvrs, pckg_sz))      event_mb,
     mailbox #(expected_event #(drvrs, pckg_sz)) expected_mb,
@@ -263,36 +259,6 @@ class checker_c #(
     end
   endtask
 
-  // Reset durante actividad (TP01): los paquetes que el DUT ya consumió (pop)
-  // pero aún no entregó (push) se pierden con el reset. Se descartan sus push
-  // esperados para que no cuenten como pendientes; los paquetes que todavía no
-  // hicieron pop siguen esperándose (el Driver los vuelve a ofrecer).
-  task descartar_en_vuelo();
-    int idx[$];
-    logic [tb_pkg::DEST_FIELD_WIDTH-1:0] dest;
-
-    resets_aplicados++;
-    while (expected_mb.num() > 0) file_one_expected();
-
-    for (int s = 0; s < drvrs; s++) begin
-      foreach (pop_log[s][k]) begin
-        dest = pop_log[s][k].packet[pckg_sz-1 -: tb_pkg::DEST_FIELD_WIDTH];
-        for (int d = 0; d < drvrs; d++) begin
-          if (d == s) continue;
-          if (dest != tb_pkg::BROADCAST_RTL_ACTUAL && dest != d) continue;
-          idx = push_q[d].find_first_index(e) with (e.packet == pop_log[s][k].packet && e.src_id == s);
-          if (idx.size() != 0) begin
-            $display("T=%0t [Checker] RESET: descartado push esperado if=%0d packet=0x%0h (origen if=%0d, en vuelo)",
-                     $time, d, pop_log[s][k].packet, s);
-            push_q[d].delete(idx[0]);
-            perdidos_reset++;
-          end
-        end
-      end
-      pop_log[s].delete();
-    end
-  endtask
-
   // Revisión de fin de prueba: todo esperado que siga en pop_q/push_q es un
   // evento que el DUT nunca produjo (paquete perdido o no consumido). Sin
   // esta revisión, una pérdida no genera error (TestplanV3.md sec. 11).
@@ -333,9 +299,6 @@ class checker_c #(
       $display("  Reporte CSV              : escrito (%0d filas)", lat_n);
     end
     $display("  Round Robin              : %0d verificaciones, %0d violaciones", rr_checks, rr_errores);
-    if (resets_aplicados > 0)
-      $display("  Reset en actividad       : %0d reset(s), %0d push descartados (paquetes en vuelo)",
-                resets_aplicados, perdidos_reset);
     $display("----------------------------------------------------------------");
     if (transacciones_error == 0 && transacciones_pendientes == 0 && rr_errores == 0)
       $display("  >>  RESULTADO: ** PASS ** - sin errores detectados");

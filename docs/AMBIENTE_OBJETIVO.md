@@ -120,37 +120,38 @@ El parametro `broadcast` merece tratamiento separado: el RTL actual presenta una
 
 ## 7. Perfiles de trafico
 
-Se reduciran los escenarios especificos actuales y se usaran pocos perfiles generales que controlen la aleatorizacion. El conjunto final y los nombres quedan por aprobar; la propuesta de trabajo es:
+Se sustituyeron los escenarios especificos por cinco perfiles generales. `scenario` y `scenario_e` conservan sus nombres; los valores del enum son:
 
-| Perfil candidato | Politica principal |
+| Perfil | Politica |
 |---|---|
-| `RANDOM` | Combinacion ponderada de fuentes, destinos, payload y tiempos. |
-| `BURST` | Rachas de transacciones con pausas controladas entre ellas. |
-| `CONCURRENT` | Llegadas coordinadas desde varias interfaces para crear contencion. |
-| `BOUNDARY` | Mayor peso en destinos limite, casos self-addressed, payload minimo/maximo y direcciones invalidas. |
-| `MIXED` | Mezcla de politicas y clases de trafico en una misma corrida. |
+| `SC_RANDOM` | Seleccion uniforme de `traffic_type`; la fuente, destino y delay se randomizan dentro de sus constraints. |
+| `SC_BURST` | Selecciona una fuente y una longitud aleatoria entre `BURST_MIN` y `BURST_MAX`; el primer paquete usa un delay aleatorio y los siguientes usan delay cero. |
+| `SC_CONCURRENT` | Distribuye origenes en orden ciclico y fija `delay=0`, iniciando una primera solicitud por interfaz cuando `NUM_TX >= DRVRS`. |
+| `SC_BOUNDARY` | Elige con igual peso entre destinos `0`, `drvrs-1`, `drvrs`, `0xFE` y `0xFF`; `traffic_type` debe ser coherente con el destino y el origen. |
+| `SC_MIXED` | Aplica la distribucion ponderada de `traffic_type`: 60% unicast, 10% self, 20% broadcast y 10% invalido. Es el perfil predeterminado. |
 
-Los perfiles no seran una prueba independiente por cada funcionalidad. Mediante constraints y pesos podran generar unicast, self-addressed, broadcast, destinos invalidos, back-to-back, bursts, concurrencia, varias fuentes hacia un destino, cross traffic y extremos del payload.
+La transaccion utiliza `traffic_type` para seleccionar unicast, self-addressed, broadcast o destino invalido. `payload_type` elige payload aleatorio con peso 60 o uno de cuatro patrones dirigidos con peso 10 cada uno. Los pesos y el rango de burst viven en `tb_pkg`.
+
+Los perfiles no son una prueba independiente por cada funcionalidad. Mediante constraints y pesos generan clases de trafico, back-to-back, bursts, concurrencia, destinos limite y patrones de payload. Varias fuentes hacia un mismo destino y cross traffic pueden aparecer en los perfiles aleatorios; su presencia se informa con contadores cuando estos se incorporen.
 
 No se debe asumir que un caso aparecio solo porque el perfil podia generarlo. Los contadores de ejecucion informaran las clases generadas y los eventos observados; inicialmente estos contadores diagnostican y no sustituyen un criterio de PASS/FAIL.
 
 ## 8. Constraints y aleatorizacion
 
-Las variables principales de aleatorizacion seran:
+Las variables de transaccion usadas para aleatorizacion son:
 
 ```text
-source
-destination
-payload
-arrival_delta
-burst_length
+interface_id
+packet
 traffic_type
 payload_type
+delay
+burst_length
 ```
 
-Cada constraint debe expresar el dominio valido y evitar combinaciones contradictorias. Los perfiles aplicaran constraints adicionales o distribuciones `dist` sin duplicar reglas comunes de `tb_pkg`.
+El nombre actual `interface_id`, `packet` y `delay` se conserva. `traffic_type` determina la relacion entre origen y destino; `payload_type` restringe los bits inferiores de `packet`; `burst_length` esta limitado por `BURST_MIN` y `BURST_MAX`. Los perfiles aplican constraints adicionales o distribuciones `dist` sin repetir los pesos y limites centralizados en `tb_pkg`.
 
-Los pesos iniciales se centralizaran y documentaran. Sus valores concretos se ajustaran despues de revisar el espacio de direcciones, las restricciones del DUT y resultados de simulacion. Una falla de `randomize()` debe detener o marcar la corrida como fallida; no se debe continuar con campos sin aleatorizar.
+Los pesos iniciales estan centralizados en `tb_pkg`. Una falla de `randomize()` detiene el perfil para evitar continuar con campos sin aleatorizar.
 
 No se implementara cobertura funcional en esta etapa. La exploracion se hara con volumen de transacciones, variedad de seeds y contadores informativos.
 
@@ -221,10 +222,10 @@ Cada etapa se revisara y podra cerrarse como un commit independiente, despues de
 
 | Etapa | Alcance |
 |---|---|
-| 1. Referencia documental | Acordar arquitectura, perfiles, parametros, criterios y pendientes en este documento. |
-| 2. Tipos y paquete | Actualizar `tb_pkg` y `tx_transaction`; agregar metadata/enum de perfiles y reglas comunes. |
-| 3. Driver | Incorporar FIFO por interfaz, calendario de llegada y protocolo de `pndng`/`D_pop`/`pop`, sin canal Driver → Scoreboard. |
-| 4. Generator | Reducir escenarios a perfiles generales y definir constraints, distribuciones y semillas reproducibles. |
+| 1. Referencia documental | Definida; se actualiza junto con cada corte. |
+| 2. Tipos y paquete | Perfiles, tipos de trafico/payload, pesos y metadata `tx_id` implementados; falta completar parametrizacion y validacion de compilacion. |
+| 3. Driver | FIFO por instancia, colector concurrente y protocolo de `pndng`/`D_pop`/`pop` implementados; falta validacion de simulacion. |
+| 4. Generator | Cinco perfiles y constraints de trafico, payload, burst y concurrencia implementados; falta validacion de simulacion y definir contadores informativos. |
 | 5. Scoreboard y Checker | Conservar Scoreboard como constructor de esperados y Checker como responsable de matching/veredicto; adaptar colas/eventos para transacciones ampliadas. |
 | 6. Monitor y Environment | Confirmar muestreo de eventos, conexiones, construccion de componentes y cierre de procesos. |
 | 7. Test y TB Top | Leer plusargs, validar configuracion, inicializar DUT y producir resultado por corrida. |
@@ -235,11 +236,11 @@ Cada etapa se revisara y podra cerrarse como un commit independiente, despues de
 
 Antes de fijar las interfaces entre modulos, se deben confirmar:
 
-1. Si el tiempo de llegada se representa como `arrival_delta` por transaccion o como `arrival_time` absoluto, y si el Generator agenda las llegadas o el Driver espera para ejecutarlas.
+1. El contrato temporal inicial queda fijado en el nombre actual `delay`: ciclos de espera aplicados por el Driver antes de ofrecer el frente. No se usa `arrival_time` absoluto.
 2. El matching exacto cuando hay paquetes identicos de distintas fuentes. El DUT no transporta `tx_id`; el modelo puede comprobar contenido y multiplicidad, pero no reconstruir identidad individual si las observaciones son indistinguibles.
 3. Las reglas funcionales definitivas para self-addressed, broadcast e invalid destination, incluyendo la divergencia conocida del parametro `broadcast`.
 4. Los valores validos de `BITS`, `DRVRS`, `PCKG_SZ` y `BROADCAST`, y cuales combinaciones se compilaran en regresion.
-5. Los nombres y conjunto definitivo de perfiles, y si se permite un modo `ALL` para recorrerlos.
+5. Si se agrega un modo `ALL` para recorrer los cinco perfiles automaticamente.
 6. La derivacion de seeds por perfil y el numero de seeds que ejecutara el script en modo regresion.
 7. Los valores por defecto de `NUM`, pesos `dist`, limites de error, verbosidad y margenes del watchdog.
 8. Como reportar paquetes que el Driver conserva en su FIFO al cierre y si el backlog constituye siempre `FAIL`.

@@ -38,7 +38,7 @@ demás `.sv` como archivos adicionales (`testbench.sv` los incluye con `` `inclu
 ```
 Para cambiar la configuración se agregan `+define` al final, unidos con `+`:
 ```
--timescale=1ns/1ns +vcs+flush+all +warn=all -sverilog +define+SCENARIO=SC_BROADCAST+DRVRS=8
+-timescale=1ns/1ns +vcs+flush+all +warn=all -sverilog +define+SCENARIO=SC_CONCURRENT+DRVRS=8
 ```
 
 **Run Options** (semilla):
@@ -59,38 +59,22 @@ Para descargar el CSV, marcar **"Download files after run"** en el panel izquier
 |---|---|---|
 | `DRVRS` | 4 | Cantidad de interfaces (2, 4, 8) |
 | `PCKG_SZ` | 16 | Tamaño del paquete en bits (16, 32, 64) |
-| `SCENARIO` | `SC_RANDOM` | Escenario de generación (ver sección 4) |
-| `SRC_A`, `SRC_B` | 0, 1 | Interfaces origen para `SC_ONE_IF` / `SC_TWO_IF` |
+| `SCENARIO` | `SC_MIXED` | Perfil de generación (ver sección 4) |
 | `DELAY_MIN`, `DELAY_MAX` | 0, 10 | Retardo aleatorio (ciclos) antes de ofrecer cada paquete |
 | `NUM_TX_MIN`, `NUM_TX_MAX` | 30, 80 | Rango de la cantidad de transacciones (se sortea con la semilla) |
-| `RESET_AT` | 0 (apagado) | Ciclo en que se aplica un reset en medio del tráfico |
-| `RESET_CYCLES` | 5 | Duración de ese reset |
 | `CSV_FILE` | `"reporte_paquetes.csv"` | Nombre del archivo de retardos |
 
----
+## 4. Perfiles de generación
 
-## 4. Escenarios y casos de prueba
+| Perfil | Política |
+|---|---|
+| `SC_RANDOM` | Selección uniforme entre unicast, self-addressed, broadcast e inválido |
+| `SC_BURST` | Rachas de 1 a 4 transacciones de una misma fuente |
+| `SC_CONCURRENT` | Solicitudes iniciales coordinadas entre interfaces, con `delay=0` |
+| `SC_BOUNDARY` | Destinos `0`, `drvrs-1`, `drvrs`, `0xFE` y `0xFF`, con clase coherente |
+| `SC_MIXED` | Tráfico ponderado; perfil predeterminado |
 
-| TP | Prueba | Compile Options (después de las base) |
-|---|---|---|
-| TP01 | Reset en actividad | `+define+RESET_AT=300` |
-| TP02 | Transmisión (una interfaz) | `+define+SCENARIO=SC_ONE_IF` |
-| TP03 | Unicast | `+define+SCENARIO=SC_UNICAST` |
-| TP03/05 | Bordes de dirección (0, drvrs-1, drvrs, 0xFE, 0xFF) | `+define+SCENARIO=SC_ADDR_EDGES` |
-| TP04/06 | Broadcast (consecutivos) | `+define+SCENARIO=SC_BROADCAST` |
-| TP05 | Dirección inválida | `+define+SCENARIO=SC_INVALID` |
-| TP07 | Contención entre dos | `+define+SCENARIO=SC_TWO_IF+SRC_A=1+SRC_B=3` |
-| TP08 | Todas activas (Round Robin) | *(default)* o `+define+DRVRS=8` |
-| TP09 | Idle | `+define+DELAY_MIN=50+DELAY_MAX=100` |
-| TP10 | Back-to-back | `+define+DELAY_MAX=0` |
-| TP11 | Tráfico mixto | *(default, `SC_RANDOM`)* |
-| TP12 | Patrones de payload (0, 1…1, 1010…, 0101…) | `+define+SCENARIO=SC_PATTERNS` |
-| TP13 | `push` + `pop` simultáneos | ocurre en cualquier corrida con tráfico (ej. idle); el Checker los procesa por separado |
-| TP14 | `pckg_sz` | `+define+PCKG_SZ=32` / `+define+PCKG_SZ=64` |
-| TP15 | `drvrs` | `+define+DRVRS=2` / `+define+DRVRS=8` |
-| TP16 | `broadcast` parametrizable | ver hallazgos (sección 7) |
-
-Los escenarios se pueden combinar con cualquier `DRVRS`, `PCKG_SZ` y retardo.
+Los patrones de payload se seleccionan mediante constraints en todos los perfiles. Los perfiles describen políticas de generación; los valores estructurales `DRVRS`, `PCKG_SZ` y `broadcast` se cambian entre compilaciones.
 
 ---
 
@@ -104,7 +88,6 @@ Durante la corrida:
 - `[DRV i] ofrecido / pop recibido` — actividad del Driver
 - `[MON] POP / PUSH` — evento observado en el DUT
 - `[Checker] PASS / ERROR` — resultado de cada comparación
-- `[Checker] RESET: descartado …` — paquete que el reset perdió (esperado)
 - `[TB] trafico terminado` — fin de la prueba por condición
 - `[TB] WATCHDOG` — el tráfico no terminó a tiempo (el DUT se colgó)
 
@@ -118,7 +101,6 @@ Reporte final:
 | Retardo pop->push | mínimo / máximo / promedio en ns, y cantidad de paquetes recibidos |
 | Reporte CSV | cantidad de filas escritas (una por push) |
 | Round Robin | verificaciones realizadas y violaciones encontradas |
-| Reset en actividad | resets aplicados y push descartados por estar en vuelo |
 | RESULTADO | PASS solo si errores = 0, pendientes = 0 y violaciones RR = 0 |
 
 Chequeo: `correctas = num_transactions (pop) + filas del CSV (push)`.
@@ -162,12 +144,14 @@ Genera `histograma_retardos.png` con N, mínimo, máximo y promedio en el títul
    detección compara el destino contra `8'hFF` fijo (`Library.sv`, línea 716).
    El modelo usa `8'hFF`; con otro valor configurado el DUT no cumple la
    especificación. Detalle en `docs/DUT_BUS_SPEC.md` sec. 5.
-3. **Reset en actividad**: los paquetes consumidos pero aún no entregados se
-   pierden con el reset y el DUT se recupera correctamente después.
+3. El comportamiento de reset durante actividad fue explorado en la version
+   anterior, pero queda fuera del alcance de los nuevos perfiles.
 
----
+## 8. Resultados historicos (seed = 1)
 
-## 8. Resultados obtenidos (seed = 1)
+Los resultados siguientes corresponden a la version anterior del ambiente y a
+sus escenarios dedicados. No validan los perfiles nuevos; la regresion nueva
+queda pendiente de ejecucion con VCS.
 
 | Corrida | Resultado |
 |---|---|

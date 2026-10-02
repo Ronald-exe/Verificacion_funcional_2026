@@ -18,10 +18,9 @@
 //     3. env.build(): construcción de todos los componentes y mailboxes
 //     4. env.run(): fork paralelo de Generator, Driver[i], Monitor,
 //        Scoreboard, Checker y chequeo de Round Robin
-//     5. (opcional) reset en actividad en el ciclo RESET_AT
-//     6. Fin por condición: env.idle() + DRAIN_CYCLES, con SIM_CYCLES
+//     5. Fin por condición: env.idle() + DRAIN_CYCLES, con SIM_CYCLES
 //        como watchdog
-//     7. Checker.reporte_final() (PASS/FAIL, retardos, Round Robin, CSV)
+//     6. Checker.reporte_final() (PASS/FAIL, retardos, Round Robin, CSV)
 //        + $finish
 //==============================================================================
 
@@ -47,18 +46,10 @@
 `ifndef PCKG_SZ
   `define PCKG_SZ tb_pkg::PCKG_SZ_DEFAULT
 `endif
-// Escenario de generación (ver tb_pkg::scenario_e), p. ej.:
-//   +define+SCENARIO=SC_BROADCAST
+// Perfil de generación (ver tb_pkg::scenario_e), p. ej.:
+//   +define+SCENARIO=SC_CONCURRENT
 `ifndef SCENARIO
-  `define SCENARIO SC_RANDOM
-`endif
-// Interfaces origen para SC_ONE_IF (SRC_A) y SC_TWO_IF (SRC_A, SRC_B), p. ej.:
-//   +define+SCENARIO=SC_TWO_IF+SRC_A=1+SRC_B=3
-`ifndef SRC_A
-  `define SRC_A 0
-`endif
-`ifndef SRC_B
-  `define SRC_B 1
+  `define SCENARIO SC_MIXED
 `endif
 // Retardo aleatorio (ciclos) antes de cada paquete, p. ej.:
 //   back-to-back (TP10): +define+DELAY_MAX=0
@@ -77,15 +68,6 @@
 `ifndef NUM_TX_MAX
   `define NUM_TX_MAX 80
 `endif
-// Reset durante actividad (TP01): ciclos después del arranque del tráfico en
-// que se aplica un reset de RESET_CYCLES ciclos. 0 = deshabilitado, p. ej.:
-//   +define+RESET_AT=300
-`ifndef RESET_AT
-  `define RESET_AT 0
-`endif
-`ifndef RESET_CYCLES
-  `define RESET_CYCLES 5
-`endif
 // Archivo del reporte de retardos por paquete (entrada del histograma GNUplot)
 `ifndef CSV_FILE
   `define CSV_FILE "reporte_paquetes.csv"
@@ -100,17 +82,12 @@ module tb_top;
   localparam bit [7:0] broadcast = tb_pkg::BROADCAST_DEFAULT;
 
   tb_pkg::scenario_e scenario = tb_pkg::`SCENARIO;
-  localparam int SRC_A = `SRC_A;
-  localparam int SRC_B = `SRC_B;
   localparam int DELAY_MIN = `DELAY_MIN;
   localparam int DELAY_MAX = `DELAY_MAX;
 
   // Ciclos extra tras el último pop para que llegue el último push
   // (serialización de un paquete completo más margen)
   localparam int DRAIN_CYCLES = 4*pckg_sz + 50;
-
-  localparam int RESET_AT     = `RESET_AT;
-  localparam int RESET_CYCLES = `RESET_CYCLES;
 
   localparam int NUM_TX_MIN = `NUM_TX_MIN;
   localparam int NUM_TX_MAX = `NUM_TX_MAX;
@@ -175,17 +152,9 @@ module tb_top;
     // +ntb_random_seed_automatic). Con ella se reproduce la corrida exacta.
     $display("  seed=%0d", $unsigned($get_initial_random_seed()));
     $display("  scenario=%s", scenario.name());
-    if (scenario == tb_pkg::SC_ONE_IF || scenario == tb_pkg::SC_TWO_IF) begin
-      if (SRC_A >= drvrs || SRC_B >= drvrs || SRC_A == SRC_B)
-        $fatal(1, "[TB] SRC_A=%0d / SRC_B=%0d invalidos para drvrs=%0d (deben ser distintos y < drvrs)",
-               SRC_A, SRC_B, drvrs);
-      $display("  src_a=%0d  src_b=%0d", SRC_A, SRC_B);
-    end
     if (DELAY_MIN > DELAY_MAX)
       $fatal(1, "[TB] DELAY_MIN=%0d > DELAY_MAX=%0d", DELAY_MIN, DELAY_MAX);
     $display("  delay=[%0d:%0d] ciclos", DELAY_MIN, DELAY_MAX);
-    if (RESET_AT > 0)
-      $display("  reset en actividad: ciclo %0d, duracion %0d ciclos", RESET_AT, RESET_CYCLES);
     $display("================================================================");
 
     // Construcción y arranque del ambiente
@@ -193,31 +162,10 @@ module tb_top;
     env.build();
     env.gen.num_transactions = num_transactions;
     env.gen.scenario         = scenario;
-    env.gen.src_a            = SRC_A;
-    env.gen.src_b            = SRC_B;
     env.gen.delay_min        = DELAY_MIN;
     env.gen.delay_max        = DELAY_MAX;
     env.chk.abrir_csv(`CSV_FILE);
     env.run();
-
-    // Reset durante actividad (TP01). Se aplica en negedge para no competir
-    // con el muestreo del DUT/Monitor en posedge; el Checker descarta los
-    // paquetes que el DUT tenía en vuelo en ese momento.
-    if (RESET_AT > 0) begin
-      fork
-        begin
-          repeat (RESET_AT) @(posedge clk);
-          @(negedge clk);
-          $display("[TB] RESET en actividad @%0t (%0d ciclos)", $time, RESET_CYCLES);
-          bus_if_inst.reset = 1;
-          env.chk.descartar_en_vuelo();
-          repeat (RESET_CYCLES) @(posedge clk);
-          @(negedge clk);
-          bus_if_inst.reset = 0;
-          $display("[TB] RESET liberado @%0t", $time);
-        end
-      join_none
-    end
 
     // Fin de la prueba por condición: se espera a que ya no quede tráfico
     // (env.idle) y luego DRAIN_CYCLES para que lleguen los últimos push.
