@@ -183,7 +183,27 @@ Configuracion reportada: `DRVRS=4`, `PCKG_SZ=16`, `BROADCAST=0xFF`,
 Esta corrida valida el perfil `SC_MIXED` con esa configuracion y seed. No
 valida aun los otros perfiles ni las demas combinaciones estructurales.
 
-## 9. Resultados historicos del ambiente anterior (seed = 1)
+## 9. Verificacion de concurrencia y `+NUM`
+
+Configuracion reportada: `DRVRS=4`, `PCKG_SZ=16`, `BROADCAST=0xFF`,
+`SCENARIO=SC_CONCURRENT`, `NUM=12`, `SEED=3`.
+
+| Metrica | Resultado |
+|---|---|
+| Resultado final | PASS |
+| Transacciones generadas | 12 (`tx#0` a `tx#11`) |
+| Eventos correctos | 26 (12 POP y 14 PUSH) |
+| Errores / pendientes | 0 / 0 |
+| Round Robin | 18 verificaciones, 0 violaciones |
+| Retardo POP->PUSH | min=190 ns, max=790 ns, promedio=690.0 ns |
+| Filas CSV | 14 |
+| Solicitudes iniciales concurrentes | 4 POP observados en el mismo ciclo |
+
+El encabezado y los 12 identificadores confirman que `+NUM=12` sobreescribe el
+default. La corrida valida `SC_CONCURRENT` en esta configuracion; repetir la
+misma seed y comparar la secuencia sigue pendiente para verificar reproduccion.
+
+## 10. Resultados historicos del ambiente anterior (seed = 1)
 
 Los resultados siguientes corresponden a los escenarios dedicados anteriores;
 se conservan como referencia y no como evidencia de los perfiles nuevos.

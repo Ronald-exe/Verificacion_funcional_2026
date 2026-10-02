@@ -227,12 +227,12 @@ Cada etapa se revisara y podra cerrarse como un commit independiente, despues de
 | Etapa | Alcance |
 |---|---|
 | 1. Referencia documental | Definida; se actualiza junto con cada corte. |
-| 2. Tipos y paquete | Perfiles, tipos de trafico/payload, pesos y metadata `tx_id` implementados; la configuracion base paso la corrida reportada en EDA Playground. |
-| 3. Driver | FIFO por instancia, colector concurrente y protocolo de `pndng`/`D_pop`/`pop` implementados; ejercitados en la corrida `SC_MIXED` reportada. |
-| 4. Generator | Cinco perfiles y constraints de trafico, payload, burst y concurrencia implementados; solo `SC_MIXED` esta validado hasta ahora. |
+| 2. Tipos y paquete | Perfiles, tipos de trafico/payload, pesos y metadata `tx_id` implementados; la configuracion base paso dos corridas reportadas en EDA Playground. |
+| 3. Driver | FIFO por instancia, colector concurrente y protocolo de `pndng`/`D_pop`/`pop` implementados; ejercitados en `SC_MIXED` y `SC_CONCURRENT`. |
+| 4. Generator | Cinco perfiles y constraints de trafico, payload, burst y concurrencia implementados; `SC_MIXED` y `SC_CONCURRENT` validados hasta ahora. |
 | 5. Scoreboard y Checker | Conservar Scoreboard como constructor de esperados y Checker como responsable de matching/veredicto; adaptar colas/eventos para transacciones ampliadas. |
 | 6. Monitor y Environment | Confirmar muestreo de eventos, conexiones, construccion de componentes y cierre de procesos. |
-| 7. Test y TB Top | Lectura de `+SCENARIO`, `+NUM` y `+SEED` ejercitada en la corrida reportada (`SC_MIXED`, 50, seed 1); falta validar otros perfiles y resumen estructurado de regresion. |
+| 7. Test y TB Top | `+SCENARIO`, `+NUM` y `+SEED` ejercitados; `+NUM=12` sobreescribe el default. Falta repetir una seed para comprobar reproduccion, validar otros perfiles y completar resumen estructurado. |
 | 8. Scripts y regresion | Prototipo local de runner/Makefile sin validar; queda en segundo plano hasta validar primero la configuracion EDA Playground. Falta producir resumen agregado con PASS/FAIL por corrida. |
 | 9. Documentacion final | Actualizar el plan de pruebas y documentar comandos y resultados medidos. |
 
@@ -249,11 +249,18 @@ Antes de fijar las interfaces entre modulos, se deben confirmar:
 7. Los valores por defecto de `NUM`, pesos `dist`, limites de error, verbosidad y margenes del watchdog.
 8. Como reportar paquetes que el Driver conserva en su FIFO al cierre y si el backlog constituye siempre `FAIL`.
 
-## 15. Primera corrida reportada
+## 15. Corridas reportadas
 
-La primera corrida de EDA Playground reportada para esta version utilizo
+La primera corrida de EDA Playground utilizo
 `DRVRS=4`, `PCKG_SZ=16`, `BROADCAST=0xFF`, `SCENARIO=SC_MIXED`, `NUM=50` y
 `SEED=1`. El log indica `PASS`, 106 eventos correctos, cero errores, cero
 esperados pendientes, 123 verificaciones Round Robin sin violaciones y 56
-recepciones registradas en CSV. Este resultado no certifica los otros perfiles
-ni las demas configuraciones del DUT.
+recepciones registradas en CSV.
+
+La segunda corrida utilizo `SCENARIO=SC_CONCURRENT`, `NUM=12` y `SEED=3` con
+la misma configuracion estructural. El log indica `PASS`, 26 eventos correctos,
+cero errores, cero esperados pendientes, 18 verificaciones Round Robin sin
+violaciones y 14 recepciones CSV. Se observaron las cuatro solicitudes iniciales
+en el mismo ciclo. Este resultado tambien comprueba que `+NUM` sobrescribe el
+default de 50. Aun no se ha repetido una misma seed para validar que la secuencia
+aleatoria se reproduzca exactamente.
