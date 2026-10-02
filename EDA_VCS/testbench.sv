@@ -46,11 +46,6 @@
 `ifndef PCKG_SZ
   `define PCKG_SZ tb_pkg::PCKG_SZ_DEFAULT
 `endif
-// Perfil de generación (ver tb_pkg::scenario_e), p. ej.:
-//   +define+SCENARIO=SC_CONCURRENT
-`ifndef SCENARIO
-  `define SCENARIO SC_MIXED
-`endif
 // Retardo aleatorio (ciclos) antes de cada paquete, p. ej.:
 //   back-to-back (TP10): +define+DELAY_MAX=0
 //   idle         (TP09): +define+DELAY_MIN=50+DELAY_MAX=100
@@ -59,14 +54,6 @@
 `endif
 `ifndef DELAY_MAX
   `define DELAY_MAX 10
-`endif
-// Cantidad de transacciones: se elige al azar en [NUM_TX_MIN : NUM_TX_MAX]
-// con la semilla de la corrida, p. ej. cantidad fija: +define+NUM_TX_MIN=50+NUM_TX_MAX=50
-`ifndef NUM_TX_MIN
-  `define NUM_TX_MIN 30
-`endif
-`ifndef NUM_TX_MAX
-  `define NUM_TX_MAX 80
 `endif
 // Archivo del reporte de retardos por paquete (entrada del histograma GNUplot)
 `ifndef CSV_FILE
@@ -81,17 +68,17 @@ module tb_top;
   localparam int pckg_sz     = `PCKG_SZ;
   localparam bit [7:0] broadcast = tb_pkg::BROADCAST_DEFAULT;
 
-  tb_pkg::scenario_e scenario = tb_pkg::`SCENARIO;
+  tb_pkg::scenario_e scenario;
   localparam int DELAY_MIN = `DELAY_MIN;
   localparam int DELAY_MAX = `DELAY_MAX;
+  int unsigned seed;
+  string scenario_arg;
 
   // Ciclos extra tras el último pop para que llegue el último push
   // (serialización de un paquete completo más margen)
   localparam int DRAIN_CYCLES = 4*pckg_sz + 50;
 
-  localparam int NUM_TX_MIN = `NUM_TX_MIN;
-  localparam int NUM_TX_MAX = `NUM_TX_MAX;
-  int unsigned   num_transactions;          // se sortea al inicio de la prueba
+  int unsigned num_transactions;
 
   localparam int SIM_CYCLES = 20000;        // watchdog: tiempo máximo de la prueba
 
@@ -130,6 +117,23 @@ module tb_top;
 
   // Secuencia principal
   initial begin
+    scenario = tb_pkg::SC_MIXED;
+    num_transactions = tb_pkg::NUM_TRANSACTIONS_DEFAULT;
+    seed = tb_pkg::SEED_BASE_DEFAULT;
+
+    if ($value$plusargs("SCENARIO=%s", scenario_arg)) begin
+      case (scenario_arg)
+        "SC_RANDOM":     scenario = tb_pkg::SC_RANDOM;
+        "SC_BURST":      scenario = tb_pkg::SC_BURST;
+        "SC_CONCURRENT": scenario = tb_pkg::SC_CONCURRENT;
+        "SC_BOUNDARY":   scenario = tb_pkg::SC_BOUNDARY;
+        "SC_MIXED":      scenario = tb_pkg::SC_MIXED;
+        default: $fatal(1, "[TB] SCENARIO='%s' invalido", scenario_arg);
+      endcase
+    end
+    void'($value$plusargs("NUM=%d", num_transactions));
+    void'($value$plusargs("SEED=%d", seed));
+
     // Ondas
     $dumpfile("dump.vcd");
     $dumpvars(0, dut);
@@ -139,18 +143,12 @@ module tb_top;
     repeat (5) @(posedge clk);
     bus_if_inst.reset = 0;
 
-    if (NUM_TX_MIN > NUM_TX_MAX)
-      $fatal(1, "[TB] NUM_TX_MIN=%0d > NUM_TX_MAX=%0d", NUM_TX_MIN, NUM_TX_MAX);
-    num_transactions = $urandom_range(NUM_TX_MAX, NUM_TX_MIN);
-
     $display("================================================================");
     $display("  PRUEBA DE INTEGRACION COMPLETA");
     $display("  Generator + Driver + Monitor + Scoreboard + Checker + DUT");
-    $display("  drvrs=%0d  pckg_sz=%0d  broadcast=0x%h  num_transactions=%0d (rango [%0d:%0d])",
-              drvrs, pckg_sz, broadcast, num_transactions, NUM_TX_MIN, NUM_TX_MAX);
-    // Semilla inicial del simulador (Run Options: +ntb_random_seed=<N> o
-    // +ntb_random_seed_automatic). Con ella se reproduce la corrida exacta.
-    $display("  seed=%0d", $unsigned($get_initial_random_seed()));
+    $display("  drvrs=%0d  pckg_sz=%0d  broadcast=0x%h  num_transactions=%0d",
+          drvrs, pckg_sz, broadcast, num_transactions);
+    $display("  seed=%0d", seed);
     $display("  scenario=%s", scenario.name());
     if (DELAY_MIN > DELAY_MAX)
       $fatal(1, "[TB] DELAY_MIN=%0d > DELAY_MAX=%0d", DELAY_MIN, DELAY_MAX);
@@ -162,6 +160,7 @@ module tb_top;
     env.build();
     env.gen.num_transactions = num_transactions;
     env.gen.scenario         = scenario;
+    env.gen.seed             = seed;
     env.gen.delay_min        = DELAY_MIN;
     env.gen.delay_max        = DELAY_MAX;
     env.chk.abrir_csv(`CSV_FILE);

@@ -36,33 +36,36 @@ demás `.sv` como archivos adicionales (`testbench.sv` los incluye con `` `inclu
 ```
 -timescale=1ns/1ns +vcs+flush+all +warn=all -sverilog
 ```
-Para cambiar la configuración se agregan `+define` al final, unidos con `+`:
+Los parámetros estructurales se cambian al compilar con `+define`:
 ```
--timescale=1ns/1ns +vcs+flush+all +warn=all -sverilog +define+SCENARIO=SC_CONCURRENT+DRVRS=8
+-timescale=1ns/1ns +vcs+flush+all +warn=all -sverilog +define+DRVRS=8+PCKG_SZ=32
 ```
 
-**Run Options** (semilla):
+**Run Options** controlan el perfil, la cantidad y la seed:
 
-| Run Options | Efecto |
+| Plusarg | Default | Efecto |
 |---|---|
-| *(vacío)* | Semilla por defecto (`seed=1`), siempre la misma corrida |
-| `+ntb_random_seed_automatic` | Semilla distinta en cada corrida |
-| `+ntb_random_seed=N` | Repite exactamente la corrida que imprimió `seed=N` |
+| `+SCENARIO=SC_MIXED` | `SC_MIXED` | Perfil de generación; admite los cinco perfiles de la sección 4 |
+| `+NUM=100` | `50` | Cantidad exacta de transacciones |
+| `+SEED=21` | `1` | Seed reproducible del Generator |
+
+Ejemplo de ejecución en VCS: `./salida +SCENARIO=SC_CONCURRENT +NUM=100 +SEED=21`.
+El script local todavía debe adaptarse para aceptar y registrar estos argumentos.
 
 Para descargar el CSV, marcar **"Download files after run"** en el panel izquierdo.
 
 ---
 
-## 3. Opciones (`+define`)
+## 3. Opciones de configuración
 
-| Define | Default | Descripción |
+| `+define` estructural | Default | Descripción |
 |---|---|---|
 | `DRVRS` | 4 | Cantidad de interfaces (2, 4, 8) |
 | `PCKG_SZ` | 16 | Tamaño del paquete en bits (16, 32, 64) |
-| `SCENARIO` | `SC_MIXED` | Perfil de generación (ver sección 4) |
 | `DELAY_MIN`, `DELAY_MAX` | 0, 10 | Retardo aleatorio (ciclos) antes de ofrecer cada paquete |
-| `NUM_TX_MIN`, `NUM_TX_MAX` | 30, 80 | Rango de la cantidad de transacciones (se sortea con la semilla) |
 | `CSV_FILE` | `"reporte_paquetes.csv"` | Nombre del archivo de retardos |
+
+`BITS` permanece fijo en el top. `SCENARIO`, `NUM` y `SEED` son plusargs de simulación, no `+define`.
 
 ## 4. Perfiles de generación
 

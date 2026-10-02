@@ -44,6 +44,7 @@ package tb_pkg;
   parameter logic [7:0] BROADCAST_DEFAULT = 8'hFF;
 
   parameter int NUM_TRANSACTIONS_DEFAULT = 50;
+  parameter int SEED_BASE_DEFAULT = 1;
   parameter logic [7:0] BROADCAST_RTL_ACTUAL = 8'hFF;
 
   parameter int TRAFFIC_UNICAST_WEIGHT    = 60;

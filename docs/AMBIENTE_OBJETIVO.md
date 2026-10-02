@@ -174,7 +174,11 @@ Los valores soportados y sus restricciones se documentaran. `bits` no se aleator
 +SCENARIO=<perfil>
 ```
 
+Estos tres plusargs ya se leen en `testbench.sv`: `SCENARIO` acepta los cinco valores `SC_*`, `NUM` establece una cantidad exacta y `SEED` inicializa las fuentes aleatorias del Generator. Sus defaults actuales son `SC_MIXED`, `NUM_TRANSACTIONS_DEFAULT` y `SEED_BASE_DEFAULT`.
+
 Se podran agregar opciones de verbosidad y limite de errores si la salida de la regresion lo requiere. El script y el Makefile (si se agrega) deberan exponer una interfaz coherente y permitir pasar configuracion estructural, perfil, cantidad y seed sin editar el testbench.
+
+El testbench ya admite los plusargs, pero `run_vcs.sh` aun no los acepta como argumentos ni organiza los logs por corrida.
 
 La forma de pasar parametros de elaboracion depende de VCS y se definira junto con el comando de compilacion probado; no se mezclaran parametros estructurales con plusargs de simulacion.
 
@@ -228,8 +232,8 @@ Cada etapa se revisara y podra cerrarse como un commit independiente, despues de
 | 4. Generator | Cinco perfiles y constraints de trafico, payload, burst y concurrencia implementados; falta validacion de simulacion y definir contadores informativos. |
 | 5. Scoreboard y Checker | Conservar Scoreboard como constructor de esperados y Checker como responsable de matching/veredicto; adaptar colas/eventos para transacciones ampliadas. |
 | 6. Monitor y Environment | Confirmar muestreo de eventos, conexiones, construccion de componentes y cierre de procesos. |
-| 7. Test y TB Top | Leer plusargs, validar configuracion, inicializar DUT y producir resultado por corrida. |
-| 8. Scripts y regresion | Automatizar compilaciones estructurales, ejecuciones multi-seed, almacenamiento de logs y resumen agregado. |
+| 7. Test y TB Top | Lectura basica de `+SCENARIO`, `+NUM` y `+SEED` implementada; falta completar resumen estructurado por corrida y validar seed en VCS. |
+| 8. Scripts y regresion | Pendiente: automatizar compilaciones estructurales, argumentos, ejecuciones multi-seed, almacenamiento de logs y resumen agregado. |
 | 9. Documentacion final | Actualizar el plan de pruebas y documentar comandos y resultados medidos. |
 
 ## 14. Decisiones pendientes
@@ -241,6 +245,6 @@ Antes de fijar las interfaces entre modulos, se deben confirmar:
 3. Las reglas funcionales definitivas para self-addressed, broadcast e invalid destination, incluyendo la divergencia conocida del parametro `broadcast`.
 4. Los valores validos de `BITS`, `DRVRS`, `PCKG_SZ` y `BROADCAST`, y cuales combinaciones se compilaran en regresion.
 5. Si se agrega un modo `ALL` para recorrer los cinco perfiles automaticamente.
-6. La derivacion de seeds por perfil y el numero de seeds que ejecutara el script en modo regresion.
+6. El numero de seeds que ejecutara el script en modo regresion y si se derivaran seeds diferentes por perfil.
 7. Los valores por defecto de `NUM`, pesos `dist`, limites de error, verbosidad y margenes del watchdog.
 8. Como reportar paquetes que el Driver conserva en su FIFO al cierre y si el backlog constituye siempre `FAIL`.

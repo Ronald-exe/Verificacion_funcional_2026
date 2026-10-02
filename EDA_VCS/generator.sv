@@ -37,12 +37,11 @@ class generator #(
   mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb    [drvrs]; // Generator -> Driver[i]
   mailbox #(tx_transaction #(drvrs, pckg_sz)) tx_mb_sb;         // Generator -> Scoreboard
 
-  // Cantidad de transacciones a generar; la fija el test (sorteada en
-  // [NUM_TX_MIN : NUM_TX_MAX]). Si no la cambia, se usa el default de tb_pkg.
+  // Cantidad exacta de transacciones; la fija el test desde +NUM.
   int unsigned num_transactions = tb_pkg::NUM_TRANSACTIONS_DEFAULT;
+  int unsigned seed = tb_pkg::SEED_BASE_DEFAULT;
 
-  // Escenario activo; lo fija el test antes de run(). Cada escenario agrega
-  // constraints inline sobre los que ya trae tx_transaction.
+  // Perfil activo; lo fija el test antes de run().
   tb_pkg::scenario_e scenario = tb_pkg::SC_RANDOM;
 
   // Rango de retardo (ciclos) antes de ofrecer cada paquete; lo fija el test
@@ -62,10 +61,14 @@ class generator #(
   endfunction
 
   task run();
+    int unsigned process_seed;
     int unsigned burst_remaining = 0;
     int unsigned burst_size = 0;
     int unsigned burst_source = 0;
     int unsigned burst_gap = 0;
+
+    process_seed = seed;
+    void'($urandom(process_seed));
 
     for (int unsigned n = 0; n < num_transactions; n++) begin
       tx_transaction #(drvrs, pckg_sz) tr, tr_sb;
@@ -74,6 +77,7 @@ class generator #(
 
       tr = new();
       tr.tx_id = n;
+      tr.srandom(seed + n);
       tr.delay_min = delay_min;
       tr.delay_max = delay_max;
 
