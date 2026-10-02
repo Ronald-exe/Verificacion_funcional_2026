@@ -46,6 +46,9 @@
 `ifndef PCKG_SZ
   `define PCKG_SZ tb_pkg::PCKG_SZ_DEFAULT
 `endif
+`ifndef BROADCAST
+  `define BROADCAST tb_pkg::BROADCAST_DEFAULT
+`endif
 // Retardo aleatorio (ciclos) antes de cada paquete, p. ej.:
 //   back-to-back (TP10): +define+DELAY_MAX=0
 //   idle         (TP09): +define+DELAY_MIN=50+DELAY_MAX=100
@@ -66,7 +69,7 @@ module tb_top;
   localparam int bits        = tb_pkg::BITS_DEFAULT;
   localparam int drvrs       = `DRVRS;
   localparam int pckg_sz     = `PCKG_SZ;
-  localparam bit [7:0] broadcast = tb_pkg::BROADCAST_DEFAULT;
+  localparam bit [7:0] broadcast = `BROADCAST;
 
   tb_pkg::scenario_e scenario;
   localparam int DELAY_MIN = `DELAY_MIN;

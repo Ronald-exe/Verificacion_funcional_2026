@@ -2,9 +2,9 @@
 
 **Curso:** Verificación Funcional · **Integrantes:** Ronald - Eric
 
-Esta carpeta contiene el ambiente que corre en EDA Playground con Synopsys VCS.
-Esta guía explica cómo correr cada prueba del plan (`docs/TestplanV3.md`), cómo
-leer el reporte y cómo generar el histograma de retardos para el análisis.
+Esta carpeta contiene el ambiente destinado inicialmente a EDA Playground con
+Synopsys VCS. Esta guía explica cómo configurar una corrida, leer el reporte y
+generar el histograma de retardos.
 
 ---
 
@@ -12,13 +12,13 @@ leer el reporte y cómo generar el histograma de retardos para el análisis.
 
 | Archivo | Rol |
 |---|---|
-| `testbench.sv` | **Test** (módulo `tb_top`): configuración por `+define`, reset, DUT, fin de prueba |
+| `testbench.sv` | **Test** (módulo `tb_top`): lee plusargs, inicializa DUT y controla el fin de prueba |
 | `environment.sv` | Construye y conecta todos los componentes y mailboxes |
 | `generator.sv` | Genera las transacciones según el escenario y los retardos |
 | `driver.sv` | Una instancia por interfaz: ofrece paquetes (`pndng`/`D_pop`) y espera `pop` |
 | `monitor.sv` | Observa `pop`/`push` y los convierte en `dut_event` |
 | `scoreboard.sv` | Modelo funcional: calcula qué `pop`/`push` deben ocurrir |
-| `checker.sv` | Compara observado vs esperado, pendientes, retardos (CSV), Round Robin, reset |
+| `checker.sv` | Compara observado vs esperado, pendientes, retardos (CSV) y Round Robin |
 | `tx_transaction.sv`, `dut_event.sv`, `expected_event.sv` | Transacciones entre componentes |
 | `tb_pkg.sv` | Parámetros por defecto y tipos compartidos (`scenario_e`, `event_type_e`) |
 | `bus_if.sv` | Interfaz con el DUT |
@@ -32,13 +32,18 @@ demás `.sv` como archivos adicionales (`testbench.sv` los incluye con `` `inclu
 
 ## 2. Cómo correr
 
-**Compile Options** (base, siempre):
+### EDA Playground
+
+Seleccionar Synopsys VCS. Usar `testbench.sv` como archivo principal de
+testbench; el archivo incluye los componentes y RTL de esta carpeta.
+
+**Compile Options** (base):
 ```
 -timescale=1ns/1ns +vcs+flush+all +warn=all -sverilog
 ```
-Los parámetros estructurales se cambian al compilar con `+define`:
+Los parámetros estructurales se agregan a Compile Options como `+define`:
 ```
--timescale=1ns/1ns +vcs+flush+all +warn=all -sverilog +define+DRVRS=8+PCKG_SZ=32
+-timescale=1ns/1ns +vcs+flush+all +warn=all -sverilog +define+DRVRS=8+PCKG_SZ=32+BROADCAST=255
 ```
 
 **Run Options** controlan el perfil, la cantidad y la seed:
@@ -49,8 +54,18 @@ Los parámetros estructurales se cambian al compilar con `+define`:
 | `+NUM=100` | `50` | Cantidad exacta de transacciones |
 | `+SEED=21` | `1` | Seed reproducible del Generator |
 
-Ejemplo de ejecución en VCS: `./salida +SCENARIO=SC_CONCURRENT +NUM=100 +SEED=21`.
-El script local todavía debe adaptarse para aceptar y registrar estos argumentos.
+En Run Options ingresar, por ejemplo:
+
+```sh
++SCENARIO=SC_CONCURRENT +NUM=100 +SEED=21
+```
+
+Repetir los mismos Compile Options y Run Options debe reproducir el mismo
+estímulo. Para cambiar entre perfiles, usar `SC_RANDOM`, `SC_BURST`,
+`SC_CONCURRENT`, `SC_BOUNDARY` o `SC_MIXED`.
+
+La ejecución local con Makefile/runner es secundaria y aún no está validada;
+la primera validación de estos cambios se realizará en EDA Playground.
 
 Para descargar el CSV, marcar **"Download files after run"** en el panel izquierdo.
 
@@ -62,10 +77,11 @@ Para descargar el CSV, marcar **"Download files after run"** en el panel izquier
 |---|---|---|
 | `DRVRS` | 4 | Cantidad de interfaces (2, 4, 8) |
 | `PCKG_SZ` | 16 | Tamaño del paquete en bits (16, 32, 64) |
+| `BROADCAST` | 255 | Direccion broadcast pasada al DUT (0 a 255) |
 | `DELAY_MIN`, `DELAY_MAX` | 0, 10 | Retardo aleatorio (ciclos) antes de ofrecer cada paquete |
 | `CSV_FILE` | `"reporte_paquetes.csv"` | Nombre del archivo de retardos |
 
-`BITS` permanece fijo en el top. `SCENARIO`, `NUM` y `SEED` son plusargs de simulación, no `+define`.
+`BITS` permanece fijo en 1. `SCENARIO`, `NUM` y `SEED` son plusargs de simulación, no `+define`.
 
 ## 4. Perfiles de generación
 
@@ -84,7 +100,7 @@ Los patrones de payload se seleccionan mediante constraints en todos los perfile
 ## 5. Cómo leer el log
 
 Encabezado: configuración de la corrida (`drvrs`, `pckg_sz`, `num_transactions`,
-`seed`, `scenario`, `delay`, reset).
+`seed`, `scenario` y `delay`).
 
 Durante la corrida:
 - `[Generator] tx#N if=… packet=… delay=…` — transacción generada

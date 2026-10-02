@@ -233,7 +233,7 @@ Cada etapa se revisara y podra cerrarse como un commit independiente, despues de
 | 5. Scoreboard y Checker | Conservar Scoreboard como constructor de esperados y Checker como responsable de matching/veredicto; adaptar colas/eventos para transacciones ampliadas. |
 | 6. Monitor y Environment | Confirmar muestreo de eventos, conexiones, construccion de componentes y cierre de procesos. |
 | 7. Test y TB Top | Lectura basica de `+SCENARIO`, `+NUM` y `+SEED` implementada; falta completar resumen estructurado por corrida y validar seed en VCS. |
-| 8. Scripts y regresion | Pendiente: automatizar compilaciones estructurales, argumentos, ejecuciones multi-seed, almacenamiento de logs y resumen agregado. |
+| 8. Scripts y regresion | Prototipo local de runner/Makefile sin validar; queda en segundo plano hasta validar primero la configuracion EDA Playground. Falta producir resumen agregado con PASS/FAIL por corrida. |
 | 9. Documentacion final | Actualizar el plan de pruebas y documentar comandos y resultados medidos. |
 
 ## 14. Decisiones pendientes
