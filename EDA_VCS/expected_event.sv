@@ -28,6 +28,7 @@ class expected_event #(
 
   tb_pkg::event_type_e event_type;   // EVT_POP o EVT_PUSH esperado
   int unsigned          interface_id;
+  int unsigned          tx_id;       // Identificador local para trazabilidad
   logic [pckg_sz-1:0]   packet;      // paquete esperado, cuando aplica
 
   // Datos para el reporte de retardos (CSV); no se usan en la comparación
@@ -37,14 +38,15 @@ class expected_event #(
   function new();
     event_type   = tb_pkg::EVT_POP;
     interface_id = 0;
+    tx_id        = 0;
     packet       = '0;
     src_id       = 0;
     n_rx         = 0;
   endfunction
 
   function void print(string tag = "expected_event");
-    $display("[%s] type=%s if=%0d pkt=0x%h @%0t",
-             tag, event_type.name(), interface_id, packet, $time);
+    $display("[%s] tx_id=%0d type=%s if=%0d pkt=0x%h @%0t",
+         tag, tx_id, event_type.name(), interface_id, packet, $time);
   endfunction
 
 endclass : expected_event

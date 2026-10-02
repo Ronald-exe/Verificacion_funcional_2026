@@ -73,14 +73,15 @@ class driver #(
       vif.D_pop[0][id] = tr.packet;
       vif.pndng[0][id] = 1'b1;
 
-      $display("[DRV %0d] ofrecido pkt=0x%h @%0t", id, tr.packet, $time);
+      $display("[DRV %0d] ofrecido tx#%0d pkt=0x%h @%0t",
+           id, tr.tx_id, tr.packet, $time);
 
       timed_out = 0;
       fork
         begin
           while (vif.pop[0][id] !== 1'b1)
             @(negedge vif.clk);
-          $display("[DRV %0d] pop recibido @%0t", id, $time);
+          $display("[DRV %0d] pop recibido tx#%0d @%0t", id, tr.tx_id, $time);
         end
         begin
           repeat (TIMEOUT_CYCLES) @(negedge vif.clk);

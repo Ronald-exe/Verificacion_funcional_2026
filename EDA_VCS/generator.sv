@@ -81,6 +81,7 @@ class generator #(
       bit ok;
 
       tr = new();
+      tr.tx_id = n;
       tr.delay_min = delay_min;
       tr.delay_max = delay_max;
       case (scenario)
@@ -148,7 +149,7 @@ class generator #(
       tx_mb_sb.put(tr_sb);             // hacia el Scoreboard
 
       $display("T=%0t [Generator] tx#%0d if=%0d packet=0x%0h delay=%0d",
-                $time, n, tr.interface_id, tr.packet, tr.delay);
+            $time, tr.tx_id, tr.interface_id, tr.packet, tr.delay);
     end
     done = 1;
   endtask

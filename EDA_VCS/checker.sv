@@ -185,12 +185,14 @@ class checker_c #(
 
       if (obs.packet !== exp.packet) begin
         transacciones_error++;
-        $display("T=%0t [Checker] ERROR [%0d] if=%0d type=%s obs=0x%0h exp=0x%0h",
-                  $time, transacciones_error, obs.interface_id, obs.event_type.name(), obs.packet, exp.packet);
+        $display("T=%0t [Checker] ERROR [%0d] tx#%0d if=%0d type=%s obs=0x%0h exp=0x%0h",
+                  $time, transacciones_error, exp.tx_id, obs.interface_id,
+                  obs.event_type.name(), obs.packet, exp.packet);
       end else begin
         transacciones_ok++;
-        $display("T=%0t [Checker] PASS  [%0d] if=%0d type=%s packet=0x%0h",
-                  $time, transacciones_ok, obs.interface_id, obs.event_type.name(), obs.packet);
+        $display("T=%0t [Checker] PASS  [%0d] tx#%0d if=%0d type=%s packet=0x%0h",
+                  $time, transacciones_ok, exp.tx_id, obs.interface_id,
+                  obs.event_type.name(), obs.packet);
 
         // avisa al Scoreboard que puede liberar la entrada confirmada
         if (obs.event_type == tb_pkg::EVT_POP) sb.confirm_pop(obs.interface_id);

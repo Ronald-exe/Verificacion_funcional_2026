@@ -30,6 +30,9 @@ class tx_transaction #(
   // Interfaz/driver que origina la transmisión (0 .. drvrs-1)
   rand int unsigned interface_id;
 
+  // Identificador local del testbench; no forma parte del paquete del DUT.
+  int unsigned tx_id;
+
   // Paquete completo: [pckg_sz-1 -: DEST_FIELD_WIDTH] = destino, resto = payload
   rand logic [pckg_sz-1:0] packet;
 
@@ -59,6 +62,7 @@ class tx_transaction #(
   }
 
   function new();
+    tx_id        = 0;
     interface_id = 0;
     packet       = '0;
     delay        = 0;
@@ -72,13 +76,13 @@ class tx_transaction #(
   // Utilidades de depuración 
 
   function void print(string tag = "tx_transaction");
-    $display("[%s] if=%0d dest=0x%h pkt=0x%h @%0t",
-             tag, interface_id, get_destination(), packet, $time);
+    $display("[%s] tx_id=%0d if=%0d dest=0x%h pkt=0x%h @%0t",
+             tag, tx_id, interface_id, get_destination(), packet, $time);
   endfunction
 
   function string sprint();
-    return $sformatf("tx{if=%0d, dest=0x%h, pkt=0x%h}",
-                     interface_id, get_destination(), packet);
+    return $sformatf("tx{id=%0d, if=%0d, dest=0x%h, pkt=0x%h}",
+                     tx_id, interface_id, get_destination(), packet);
   endfunction
 
 endclass : tx_transaction

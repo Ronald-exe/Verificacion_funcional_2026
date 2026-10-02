@@ -89,6 +89,7 @@ class scoreboard #(
       exp              = new();
       exp.event_type   = tb_pkg::EVT_POP;
       exp.interface_id = tr.interface_id;
+      exp.tx_id        = tr.tx_id;
       exp.packet       = tr.packet;
       // Cantidad de push que generará este paquete (lo usa el reporte CSV)
       if (dest == tb_pkg::BROADCAST_RTL_ACTUAL)             exp.n_rx = drvrs - 1;
@@ -104,6 +105,7 @@ class scoreboard #(
           exp              = new();
           exp.event_type   = tb_pkg::EVT_PUSH;
           exp.interface_id = i;
+          exp.tx_id        = tr.tx_id;
           exp.packet       = tr.packet;
           exp.src_id       = tr.interface_id;
           expected_mb.put(exp);  // hacia el Checker: esperado en cada interfaz
@@ -114,6 +116,7 @@ class scoreboard #(
         exp              = new();
         exp.event_type   = tb_pkg::EVT_PUSH;
         exp.interface_id = dest;
+        exp.tx_id        = tr.tx_id;
         exp.packet       = tr.packet;
         exp.src_id       = tr.interface_id;
         expected_mb.put(exp);  // hacia el Checker: esperado en el destino
