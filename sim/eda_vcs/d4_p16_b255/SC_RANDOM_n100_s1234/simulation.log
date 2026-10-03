@@ -1,0 +1,2771 @@
+Command: /mnt/vol_NFS_rh003/Est_Veri_II2026/CASTRO_VELASQUEZ_ERIC_VeriII26/P1/Verificacion_funcional_2026/sim/eda_vcs/d4_p16_b255/SC_RANDOM_n100_s1234/./simv +SCENARIO=SC_RANDOM +NUM=100 +SEED=1234 -l simulation.log
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version R-2020.12-SP2_Full64; Runtime version R-2020.12-SP2_Full64;  Oct  2 23:14 2026
+================================================================
+  PRUEBA DE INTEGRACION COMPLETA
+  Generator + Driver + Monitor + Scoreboard + Checker + DUT
+  drvrs=4  pckg_sz=16  broadcast=0xff  num/source=100  total=400
+  seed=1234
+  scenario=SC_RANDOM
+  arrival_delta=[0:10] ciclos
+================================================================
+T=45 [Generator] tx#0 if=0 packet=0x42ff arrival_delta=7
+T=45 [Generator] tx#1 if=0 packet=0xff95 arrival_delta=8
+T=45 [Generator] tx#2 if=0 packet=0xffdc arrival_delta=4
+T=45 [Generator] tx#3 if=0 packet=0xffb6 arrival_delta=8
+T=45 [Generator] tx#4 if=0 packet=0xd1 arrival_delta=4
+T=45 [Generator] tx#5 if=0 packet=0xffaa arrival_delta=3
+T=45 [Generator] tx#6 if=0 packet=0x3ee arrival_delta=0
+T=45 [Generator] tx#7 if=0 packet=0x55 arrival_delta=9
+T=45 [Generator] tx#8 if=0 packet=0x5f arrival_delta=10
+T=45 [Generator] tx#9 if=0 packet=0xfeaa arrival_delta=9
+T=45 [Generator] tx#10 if=0 packet=0xff55 arrival_delta=4
+T=45 [Generator] tx#11 if=0 packet=0x55 arrival_delta=1
+T=45 [Generator] tx#12 if=0 packet=0x76 arrival_delta=0
+T=45 [Generator] tx#13 if=0 packet=0x5600 arrival_delta=8
+T=45 [Generator] tx#14 if=0 packet=0xf72 arrival_delta=2
+T=45 [Generator] tx#15 if=0 packet=0x9d arrival_delta=6
+T=45 [Generator] tx#16 if=0 packet=0x72ff arrival_delta=2
+T=45 [Generator] tx#17 if=0 packet=0xffaf arrival_delta=3
+T=45 [Generator] tx#18 if=0 packet=0x107 arrival_delta=8
+T=45 [Generator] tx#19 if=0 packet=0x3aa arrival_delta=0
+T=45 [Generator] tx#20 if=0 packet=0x9ddc arrival_delta=8
+T=45 [Generator] tx#21 if=0 packet=0x2ff arrival_delta=7
+T=45 [Generator] tx#22 if=0 packet=0xc7 arrival_delta=8
+T=45 [Generator] tx#23 if=0 packet=0xff arrival_delta=0
+T=45 [Generator] tx#24 if=0 packet=0xf7ed arrival_delta=3
+T=45 [Generator] tx#25 if=0 packet=0x3aa arrival_delta=2
+T=45 [Generator] tx#26 if=0 packet=0xff55 arrival_delta=3
+T=45 [Generator] tx#27 if=0 packet=0xff5f arrival_delta=4
+T=45 [Generator] tx#28 if=0 packet=0xffff arrival_delta=8
+T=45 [Generator] tx#29 if=0 packet=0xff84 arrival_delta=6
+T=45 [Generator] tx#30 if=0 packet=0x7955 arrival_delta=6
+T=45 [Generator] tx#31 if=0 packet=0xff55 arrival_delta=4
+T=45 [Generator] tx#32 if=0 packet=0xacff arrival_delta=9
+T=45 [Generator] tx#33 if=0 packet=0xfbb1 arrival_delta=7
+T=45 [Generator] tx#34 if=0 packet=0xff55 arrival_delta=8
+T=45 [Generator] tx#35 if=0 packet=0x32e arrival_delta=6
+T=45 [Generator] tx#36 if=0 packet=0xff70 arrival_delta=0
+T=45 [Generator] tx#37 if=0 packet=0xd2ee arrival_delta=3
+T=45 [Generator] tx#38 if=0 packet=0x78 arrival_delta=0
+T=45 [Generator] tx#39 if=0 packet=0x13 arrival_delta=7
+T=45 [Generator] tx#40 if=0 packet=0x6555 arrival_delta=1
+T=45 [Generator] tx#41 if=0 packet=0xb5e2 arrival_delta=7
+T=45 [Generator] tx#42 if=0 packet=0x352 arrival_delta=7
+T=45 [Generator] tx#43 if=0 packet=0xb2 arrival_delta=2
+T=45 [Generator] tx#44 if=0 packet=0xa6aa arrival_delta=1
+T=45 [Generator] tx#45 if=0 packet=0x6ee5 arrival_delta=2
+T=45 [Generator] tx#46 if=0 packet=0xaeaa arrival_delta=2
+T=45 [Generator] tx#47 if=0 packet=0xffff arrival_delta=0
+T=45 [Generator] tx#48 if=0 packet=0x259a arrival_delta=5
+T=45 [Generator] tx#49 if=0 packet=0x0 arrival_delta=4
+T=45 [Generator] tx#50 if=0 packet=0x8d2e arrival_delta=8
+T=45 [Generator] tx#51 if=0 packet=0xaa arrival_delta=9
+T=45 [Generator] tx#52 if=0 packet=0x90d4 arrival_delta=3
+T=45 [Generator] tx#53 if=0 packet=0x12bb arrival_delta=0
+T=45 [Generator] tx#54 if=0 packet=0x0 arrival_delta=5
+T=45 [Generator] tx#55 if=0 packet=0x652c arrival_delta=3
+T=45 [Generator] tx#56 if=0 packet=0x0 arrival_delta=7
+T=45 [Generator] tx#57 if=0 packet=0x343 arrival_delta=0
+T=45 [Generator] tx#58 if=0 packet=0xff00 arrival_delta=0
+T=45 [Generator] tx#59 if=0 packet=0x7d arrival_delta=9
+T=45 [Generator] tx#60 if=0 packet=0x7dff arrival_delta=0
+T=45 [Generator] tx#61 if=0 packet=0xff37 arrival_delta=5
+T=45 [Generator] tx#62 if=0 packet=0xff5c arrival_delta=2
+T=45 [Generator] tx#63 if=0 packet=0xc5d9 arrival_delta=3
+T=45 [Generator] tx#64 if=0 packet=0x2a31 arrival_delta=4
+T=45 [Generator] tx#65 if=0 packet=0x86ff arrival_delta=6
+T=45 [Generator] tx#66 if=0 packet=0x4 arrival_delta=2
+T=45 [Generator] tx#67 if=0 packet=0xb7aa arrival_delta=6
+T=45 [Generator] tx#68 if=0 packet=0xff4a arrival_delta=4
+T=45 [Generator] tx#69 if=0 packet=0x6fff arrival_delta=4
+T=45 [Generator] tx#70 if=0 packet=0xff36 arrival_delta=1
+T=45 [Generator] tx#71 if=0 packet=0xffc9 arrival_delta=2
+T=45 [Generator] tx#72 if=0 packet=0xffaa arrival_delta=4
+T=45 [Generator] tx#73 if=0 packet=0xff20 arrival_delta=8
+T=45 [Generator] tx#74 if=0 packet=0x3ff arrival_delta=0
+T=45 [Generator] tx#75 if=0 packet=0x8d arrival_delta=3
+T=45 [Generator] tx#76 if=0 packet=0xe8df arrival_delta=4
+T=45 [Generator] tx#77 if=0 packet=0x1e2 arrival_delta=6
+T=45 [Generator] tx#78 if=0 packet=0x9eaa arrival_delta=2
+T=45 [Generator] tx#79 if=0 packet=0x7f51 arrival_delta=5
+T=45 [Generator] tx#80 if=0 packet=0x7800 arrival_delta=8
+T=45 [Generator] tx#81 if=0 packet=0xff66 arrival_delta=4
+T=45 [Generator] tx#82 if=0 packet=0x7055 arrival_delta=3
+T=45 [Generator] tx#83 if=0 packet=0x173 arrival_delta=2
+T=45 [Generator] tx#84 if=0 packet=0xb300 arrival_delta=1
+T=45 [Generator] tx#85 if=0 packet=0x64fe arrival_delta=8
+T=45 [Generator] tx#86 if=0 packet=0x2ff arrival_delta=0
+T=45 [Generator] tx#87 if=0 packet=0x1aa arrival_delta=6
+T=45 [Generator] tx#88 if=0 packet=0xff00 arrival_delta=1
+T=45 [Generator] tx#89 if=0 packet=0x3e6 arrival_delta=10
+T=45 [Generator] tx#90 if=0 packet=0xff9d arrival_delta=0
+T=45 [Generator] tx#91 if=0 packet=0xd0aa arrival_delta=0
+T=45 [Generator] tx#92 if=0 packet=0xffff arrival_delta=7
+T=45 [Generator] tx#93 if=0 packet=0xca55 arrival_delta=8
+T=45 [Generator] tx#94 if=0 packet=0xf54f arrival_delta=5
+T=45 [Generator] tx#95 if=0 packet=0xff55 arrival_delta=5
+T=45 [Generator] tx#96 if=0 packet=0x3f arrival_delta=4
+T=45 [Generator] tx#97 if=0 packet=0x49aa arrival_delta=2
+T=45 [Generator] tx#98 if=0 packet=0xf0cb arrival_delta=1
+T=45 [Generator] tx#99 if=0 packet=0xc217 arrival_delta=5
+T=45 [Generator] tx#100 if=1 packet=0x7c arrival_delta=0
+T=45 [Generator] tx#101 if=1 packet=0xffaa arrival_delta=8
+T=45 [Generator] tx#102 if=1 packet=0xd037 arrival_delta=10
+T=45 [Generator] tx#103 if=1 packet=0x23d1 arrival_delta=1
+T=45 [Generator] tx#104 if=1 packet=0x170 arrival_delta=10
+T=45 [Generator] tx#105 if=1 packet=0x6900 arrival_delta=1
+T=45 [Generator] tx#106 if=1 packet=0x2daa arrival_delta=2
+T=45 [Generator] tx#107 if=1 packet=0x1000 arrival_delta=5
+T=45 [Generator] tx#108 if=1 packet=0x1a4 arrival_delta=7
+T=45 [Generator] tx#109 if=1 packet=0xc0 arrival_delta=8
+T=45 [Generator] tx#110 if=1 packet=0xd3ff arrival_delta=9
+T=45 [Generator] tx#111 if=1 packet=0x1161 arrival_delta=7
+T=45 [Generator] tx#112 if=1 packet=0xc2aa arrival_delta=0
+T=45 [Generator] tx#113 if=1 packet=0xf2aa arrival_delta=7
+T=45 [Generator] tx#114 if=1 packet=0xa38b arrival_delta=10
+T=45 [Generator] tx#115 if=1 packet=0x4175 arrival_delta=0
+T=45 [Generator] tx#116 if=1 packet=0x0 arrival_delta=3
+T=45 [Generator] tx#117 if=1 packet=0x2b9 arrival_delta=0
+T=45 [Generator] tx#118 if=1 packet=0x8e55 arrival_delta=10
+T=45 [Generator] tx#119 if=1 packet=0xffaa arrival_delta=9
+T=45 [Generator] tx#120 if=1 packet=0x0 arrival_delta=7
+T=45 [Generator] tx#121 if=1 packet=0x127 arrival_delta=4
+T=45 [Generator] tx#122 if=1 packet=0xd538 arrival_delta=0
+T=45 [Generator] tx#123 if=1 packet=0x16f arrival_delta=9
+T=45 [Generator] tx#124 if=1 packet=0x155 arrival_delta=6
+T=45 [Generator] tx#125 if=1 packet=0x149 arrival_delta=5
+T=45 [Generator] tx#126 if=1 packet=0x126 arrival_delta=10
+T=45 [Generator] tx#127 if=1 packet=0x3dd3 arrival_delta=1
+T=45 [Generator] tx#128 if=1 packet=0x3fc arrival_delta=2
+T=45 [Generator] tx#129 if=1 packet=0x100 arrival_delta=8
+T=45 [Generator] tx#130 if=1 packet=0x9b50 arrival_delta=10
+T=45 [Generator] tx#131 if=1 packet=0x5c00 arrival_delta=2
+T=45 [Generator] tx#132 if=1 packet=0x1a9 arrival_delta=6
+T=45 [Generator] tx#133 if=1 packet=0x4328 arrival_delta=7
+T=45 [Generator] tx#134 if=1 packet=0x333b arrival_delta=0
+T=45 [Generator] tx#135 if=1 packet=0xcd00 arrival_delta=4
+T=45 [Generator] tx#136 if=1 packet=0x2fb arrival_delta=0
+T=45 [Generator] tx#137 if=1 packet=0x0 arrival_delta=4
+T=45 [Generator] tx#138 if=1 packet=0x7673 arrival_delta=1
+T=45 [Generator] tx#139 if=1 packet=0x232 arrival_delta=4
+T=45 [Generator] tx#140 if=1 packet=0xd972 arrival_delta=4
+T=45 [Generator] tx#141 if=1 packet=0xe1aa arrival_delta=0
+T=45 [Generator] tx#142 if=1 packet=0x2ff arrival_delta=9
+T=45 [Generator] tx#143 if=1 packet=0xff00 arrival_delta=7
+T=45 [Generator] tx#144 if=1 packet=0x3a00 arrival_delta=3
+T=45 [Generator] tx#145 if=1 packet=0xe4 arrival_delta=2
+T=45 [Generator] tx#146 if=1 packet=0x0 arrival_delta=1
+T=45 [Generator] tx#147 if=1 packet=0xaa arrival_delta=7
+T=45 [Generator] tx#148 if=1 packet=0x518e arrival_delta=9
+T=45 [Generator] tx#149 if=1 packet=0xff arrival_delta=4
+T=45 [Generator] tx#150 if=1 packet=0xd2aa arrival_delta=8
+T=45 [Generator] tx#151 if=1 packet=0xd9b9 arrival_delta=6
+T=45 [Generator] tx#152 if=1 packet=0x100 arrival_delta=5
+T=45 [Generator] tx#153 if=1 packet=0xff37 arrival_delta=5
+T=45 [Generator] tx#154 if=1 packet=0x1e4 arrival_delta=3
+T=45 [Generator] tx#155 if=1 packet=0xc355 arrival_delta=7
+T=45 [Generator] tx#156 if=1 packet=0x1edf arrival_delta=8
+T=45 [Generator] tx#157 if=1 packet=0x200 arrival_delta=5
+T=45 [Generator] tx#158 if=1 packet=0x4137 arrival_delta=3
+T=45 [Generator] tx#159 if=1 packet=0x13ff arrival_delta=6
+T=45 [Generator] tx#160 if=1 packet=0x6d00 arrival_delta=1
+T=45 [Generator] tx#161 if=1 packet=0x2e4 arrival_delta=10
+T=45 [Generator] tx#162 if=1 packet=0xffaa arrival_delta=4
+T=45 [Generator] tx#163 if=1 packet=0x1ff arrival_delta=0
+T=45 [Generator] tx#164 if=1 packet=0xf762 arrival_delta=9
+T=45 [Generator] tx#165 if=1 packet=0xffaa arrival_delta=4
+T=45 [Generator] tx#166 if=1 packet=0xff5e arrival_delta=3
+T=45 [Generator] tx#167 if=1 packet=0x155 arrival_delta=2
+T=45 [Generator] tx#168 if=1 packet=0xc394 arrival_delta=9
+T=45 [Generator] tx#169 if=1 packet=0xff00 arrival_delta=9
+T=45 [Generator] tx#170 if=1 packet=0x8ac5 arrival_delta=6
+T=45 [Generator] tx#171 if=1 packet=0x4877 arrival_delta=5
+T=45 [Generator] tx#172 if=1 packet=0xcbaa arrival_delta=10
+T=45 [Generator] tx#173 if=1 packet=0x1aa arrival_delta=6
+T=45 [Generator] tx#174 if=1 packet=0x2ac arrival_delta=2
+T=45 [Generator] tx#175 if=1 packet=0xe800 arrival_delta=4
+T=45 [Generator] tx#176 if=1 packet=0x154 arrival_delta=8
+T=45 [Generator] tx#177 if=1 packet=0x5055 arrival_delta=4
+T=45 [Generator] tx#178 if=1 packet=0xffe5 arrival_delta=0
+T=45 [Generator] tx#179 if=1 packet=0xa890 arrival_delta=4
+T=45 [Generator] tx#180 if=1 packet=0xff91 arrival_delta=0
+T=45 [Generator] tx#181 if=1 packet=0x7b06 arrival_delta=0
+T=45 [Generator] tx#182 if=1 packet=0xc142 arrival_delta=8
+T=45 [Generator] tx#183 if=1 packet=0xff27 arrival_delta=1
+T=45 [Generator] tx#184 if=1 packet=0xff55 arrival_delta=1
+T=45 [Generator] tx#185 if=1 packet=0xff11 arrival_delta=4
+T=45 [Generator] tx#186 if=1 packet=0xff76 arrival_delta=3
+T=45 [Generator] tx#187 if=1 packet=0x39ff arrival_delta=2
+T=45 [Generator] tx#188 if=1 packet=0x1e00 arrival_delta=6
+T=45 [Generator] tx#189 if=1 packet=0x74d1 arrival_delta=7
+T=45 [Generator] tx#190 if=1 packet=0x1bc arrival_delta=0
+T=45 [Generator] tx#191 if=1 packet=0x100 arrival_delta=5
+T=45 [Generator] tx#192 if=1 packet=0xffff arrival_delta=6
+T=45 [Generator] tx#193 if=1 packet=0xff00 arrival_delta=6
+T=45 [Generator] tx#194 if=1 packet=0xecaa arrival_delta=4
+T=45 [Generator] tx#195 if=1 packet=0x1ce arrival_delta=8
+T=45 [Generator] tx#196 if=1 packet=0x21e arrival_delta=7
+T=45 [Generator] tx#197 if=1 packet=0xaeff arrival_delta=9
+T=45 [Generator] tx#198 if=1 packet=0x8259 arrival_delta=4
+T=45 [Generator] tx#199 if=1 packet=0x27 arrival_delta=6
+T=45 [Generator] tx#200 if=2 packet=0x255 arrival_delta=1
+T=45 [Generator] tx#201 if=2 packet=0x3c arrival_delta=0
+T=45 [Generator] tx#202 if=2 packet=0xa0a5 arrival_delta=9
+T=45 [Generator] tx#203 if=2 packet=0x1148 arrival_delta=3
+T=45 [Generator] tx#204 if=2 packet=0x2d2 arrival_delta=2
+T=45 [Generator] tx#205 if=2 packet=0x255 arrival_delta=3
+T=45 [Generator] tx#206 if=2 packet=0x3200 arrival_delta=1
+T=45 [Generator] tx#207 if=2 packet=0x253 arrival_delta=6
+T=45 [Generator] tx#208 if=2 packet=0x2aa arrival_delta=2
+T=45 [Generator] tx#209 if=2 packet=0xe7aa arrival_delta=9
+T=45 [Generator] tx#210 if=2 packet=0x3aa arrival_delta=10
+T=45 [Generator] tx#211 if=2 packet=0x319 arrival_delta=7
+T=45 [Generator] tx#212 if=2 packet=0x2ff arrival_delta=5
+T=45 [Generator] tx#213 if=2 packet=0x55 arrival_delta=10
+T=45 [Generator] tx#214 if=2 packet=0x3aa arrival_delta=1
+T=45 [Generator] tx#215 if=2 packet=0x100 arrival_delta=2
+T=45 [Generator] tx#216 if=2 packet=0x294 arrival_delta=6
+T=45 [Generator] tx#217 if=2 packet=0x2ff arrival_delta=9
+T=45 [Generator] tx#218 if=2 packet=0xc7 arrival_delta=0
+T=45 [Generator] tx#219 if=2 packet=0x512d arrival_delta=8
+T=45 [Generator] tx#220 if=2 packet=0x255 arrival_delta=3
+T=45 [Generator] tx#221 if=2 packet=0xff00 arrival_delta=2
+T=45 [Generator] tx#222 if=2 packet=0xffe2 arrival_delta=0
+T=45 [Generator] tx#223 if=2 packet=0x51ff arrival_delta=10
+T=45 [Generator] tx#224 if=2 packet=0x60aa arrival_delta=9
+T=45 [Generator] tx#225 if=2 packet=0x9855 arrival_delta=8
+T=45 [Generator] tx#226 if=2 packet=0xffa0 arrival_delta=10
+T=45 [Generator] tx#227 if=2 packet=0x355 arrival_delta=5
+T=45 [Generator] tx#228 if=2 packet=0xffff arrival_delta=4
+T=45 [Generator] tx#229 if=2 packet=0xeeff arrival_delta=2
+T=45 [Generator] tx#230 if=2 packet=0xff49 arrival_delta=3
+T=45 [Generator] tx#231 if=2 packet=0xa5c0 arrival_delta=0
+T=45 [Generator] tx#232 if=2 packet=0xff00 arrival_delta=10
+T=45 [Generator] tx#233 if=2 packet=0x13b9 arrival_delta=4
+T=45 [Generator] tx#234 if=2 packet=0x255 arrival_delta=9
+T=45 [Generator] tx#235 if=2 packet=0x200 arrival_delta=3
+T=45 [Generator] tx#236 if=2 packet=0x2df arrival_delta=9
+T=45 [Generator] tx#237 if=2 packet=0x25b arrival_delta=4
+T=45 [Generator] tx#238 if=2 packet=0xff55 arrival_delta=7
+T=45 [Generator] tx#239 if=2 packet=0xd500 arrival_delta=3
+T=45 [Generator] tx#240 if=2 packet=0x63aa arrival_delta=1
+T=45 [Generator] tx#241 if=2 packet=0x9855 arrival_delta=2
+T=45 [Generator] tx#242 if=2 packet=0xff00 arrival_delta=10
+T=45 [Generator] tx#243 if=2 packet=0xfff4 arrival_delta=7
+T=45 [Generator] tx#244 if=2 packet=0xffb0 arrival_delta=2
+T=45 [Generator] tx#245 if=2 packet=0xff65 arrival_delta=3
+T=45 [Generator] tx#246 if=2 packet=0x200 arrival_delta=9
+T=45 [Generator] tx#247 if=2 packet=0x74e3 arrival_delta=4
+T=45 [Generator] tx#248 if=2 packet=0x1aa arrival_delta=3
+T=45 [Generator] tx#249 if=2 packet=0xffff arrival_delta=6
+T=45 [Generator] tx#250 if=2 packet=0xffff arrival_delta=2
+T=45 [Generator] tx#251 if=2 packet=0x1b00 arrival_delta=3
+T=45 [Generator] tx#252 if=2 packet=0xffaa arrival_delta=4
+T=45 [Generator] tx#253 if=2 packet=0x3400 arrival_delta=4
+T=45 [Generator] tx#254 if=2 packet=0x2c7 arrival_delta=4
+T=45 [Generator] tx#255 if=2 packet=0x6e36 arrival_delta=8
+T=45 [Generator] tx#256 if=2 packet=0x7551 arrival_delta=5
+T=45 [Generator] tx#257 if=2 packet=0x44aa arrival_delta=9
+T=45 [Generator] tx#258 if=2 packet=0x0 arrival_delta=8
+T=45 [Generator] tx#259 if=2 packet=0xaf55 arrival_delta=7
+T=45 [Generator] tx#260 if=2 packet=0x4aaa arrival_delta=2
+T=45 [Generator] tx#261 if=2 packet=0x3004 arrival_delta=9
+T=45 [Generator] tx#262 if=2 packet=0x1aa arrival_delta=7
+T=45 [Generator] tx#263 if=2 packet=0x155 arrival_delta=0
+T=45 [Generator] tx#264 if=2 packet=0xd88f arrival_delta=5
+T=45 [Generator] tx#265 if=2 packet=0x66e1 arrival_delta=9
+T=45 [Generator] tx#266 if=2 packet=0xff00 arrival_delta=4
+T=45 [Generator] tx#267 if=2 packet=0xa3 arrival_delta=3
+T=45 [Generator] tx#268 if=2 packet=0xffa8 arrival_delta=4
+T=45 [Generator] tx#269 if=2 packet=0x2aa arrival_delta=4
+T=45 [Generator] tx#270 if=2 packet=0xffa9 arrival_delta=0
+T=45 [Generator] tx#271 if=2 packet=0x323 arrival_delta=4
+T=45 [Generator] tx#272 if=2 packet=0xfb55 arrival_delta=7
+T=45 [Generator] tx#273 if=2 packet=0x2a8 arrival_delta=9
+T=45 [Generator] tx#274 if=2 packet=0x25d arrival_delta=7
+T=45 [Generator] tx#275 if=2 packet=0x2d8 arrival_delta=6
+T=45 [Generator] tx#276 if=2 packet=0xffaa arrival_delta=8
+T=45 [Generator] tx#277 if=2 packet=0x86 arrival_delta=1
+T=45 [Generator] tx#278 if=2 packet=0xfe02 arrival_delta=4
+T=45 [Generator] tx#279 if=2 packet=0xffff arrival_delta=8
+T=45 [Generator] tx#280 if=2 packet=0x500f arrival_delta=3
+T=45 [Generator] tx#281 if=2 packet=0xadc1 arrival_delta=1
+T=45 [Generator] tx#282 if=2 packet=0xff18 arrival_delta=5
+T=45 [Generator] tx#283 if=2 packet=0xffbc arrival_delta=9
+T=45 [Generator] tx#284 if=2 packet=0x255 arrival_delta=3
+T=45 [Generator] tx#285 if=2 packet=0xffff arrival_delta=8
+T=45 [Generator] tx#286 if=2 packet=0x206 arrival_delta=8
+T=45 [Generator] tx#287 if=2 packet=0xe955 arrival_delta=1
+T=45 [Generator] tx#288 if=2 packet=0xff42 arrival_delta=10
+T=45 [Generator] tx#289 if=2 packet=0x92ba arrival_delta=6
+T=45 [Generator] tx#290 if=2 packet=0x3e9 arrival_delta=5
+T=45 [Generator] tx#291 if=2 packet=0x2ff arrival_delta=4
+T=45 [Generator] tx#292 if=2 packet=0x4df9 arrival_delta=7
+T=45 [Generator] tx#293 if=2 packet=0x212 arrival_delta=7
+T=45 [Generator] tx#294 if=2 packet=0x299 arrival_delta=9
+T=45 [Generator] tx#295 if=2 packet=0x2aa arrival_delta=10
+T=45 [Generator] tx#296 if=2 packet=0x6bfd arrival_delta=8
+T=45 [Generator] tx#297 if=2 packet=0x6c55 arrival_delta=8
+T=45 [Generator] tx#298 if=2 packet=0xe044 arrival_delta=5
+T=45 [Generator] tx#299 if=2 packet=0xffaa arrival_delta=1
+T=45 [Generator] tx#300 if=3 packet=0x3d00 arrival_delta=2
+T=45 [Generator] tx#301 if=3 packet=0xacaa arrival_delta=10
+T=45 [Generator] tx#302 if=3 packet=0xa400 arrival_delta=2
+T=45 [Generator] tx#303 if=3 packet=0x3c67 arrival_delta=6
+T=45 [Generator] tx#304 if=3 packet=0xed55 arrival_delta=4
+T=45 [Generator] tx#305 if=3 packet=0x9 arrival_delta=1
+T=45 [Generator] tx#306 if=3 packet=0xa758 arrival_delta=10
+T=45 [Generator] tx#307 if=3 packet=0x7e4a arrival_delta=5
+T=45 [Generator] tx#308 if=3 packet=0xea55 arrival_delta=5
+T=45 [Generator] tx#309 if=3 packet=0x9 arrival_delta=7
+T=45 [Generator] tx#310 if=3 packet=0x228d arrival_delta=2
+T=45 [Generator] tx#311 if=3 packet=0xb06b arrival_delta=2
+T=45 [Generator] tx#312 if=3 packet=0xffaa arrival_delta=7
+T=45 [Generator] tx#313 if=3 packet=0xfffb arrival_delta=3
+T=45 [Generator] tx#314 if=3 packet=0x300 arrival_delta=4
+T=45 [Generator] tx#315 if=3 packet=0x145 arrival_delta=0
+T=45 [Generator] tx#316 if=3 packet=0xffff arrival_delta=4
+T=45 [Generator] tx#317 if=3 packet=0x3aa arrival_delta=10
+T=45 [Generator] tx#318 if=3 packet=0x300 arrival_delta=2
+T=45 [Generator] tx#319 if=3 packet=0x8a54 arrival_delta=8
+T=45 [Generator] tx#320 if=3 packet=0x3ff arrival_delta=1
+T=45 [Generator] tx#321 if=3 packet=0x355 arrival_delta=10
+T=45 [Generator] tx#322 if=3 packet=0xffad arrival_delta=2
+T=45 [Generator] tx#323 if=3 packet=0xffff arrival_delta=2
+T=45 [Generator] tx#324 if=3 packet=0x6200 arrival_delta=2
+T=45 [Generator] tx#325 if=3 packet=0x355 arrival_delta=7
+T=45 [Generator] tx#326 if=3 packet=0xffb1 arrival_delta=10
+T=45 [Generator] tx#327 if=3 packet=0x70 arrival_delta=1
+T=45 [Generator] tx#328 if=3 packet=0xb516 arrival_delta=2
+T=45 [Generator] tx#329 if=3 packet=0x8faa arrival_delta=0
+T=45 [Generator] tx#330 if=3 packet=0x8500 arrival_delta=1
+T=45 [Generator] tx#331 if=3 packet=0x362 arrival_delta=8
+T=45 [Generator] tx#332 if=3 packet=0x8f8f arrival_delta=5
+T=45 [Generator] tx#333 if=3 packet=0x3ff arrival_delta=6
+T=45 [Generator] tx#334 if=3 packet=0x11d arrival_delta=4
+T=45 [Generator] tx#335 if=3 packet=0x597e arrival_delta=7
+T=45 [Generator] tx#336 if=3 packet=0xffaa arrival_delta=7
+T=45 [Generator] tx#337 if=3 packet=0xff0c arrival_delta=9
+T=45 [Generator] tx#338 if=3 packet=0xffff arrival_delta=7
+T=45 [Generator] tx#339 if=3 packet=0x255 arrival_delta=10
+T=45 [Generator] tx#340 if=3 packet=0x17da arrival_delta=9
+T=45 [Generator] tx#341 if=3 packet=0xff55 arrival_delta=7
+T=45 [Generator] tx#342 if=3 packet=0x760c arrival_delta=9
+T=45 [Generator] tx#343 if=3 packet=0x1941 arrival_delta=3
+T=45 [Generator] tx#344 if=3 packet=0xff6c arrival_delta=10
+T=45 [Generator] tx#345 if=3 packet=0xff3b arrival_delta=10
+T=45 [Generator] tx#346 if=3 packet=0xebf5 arrival_delta=2
+T=45 [Generator] tx#347 if=3 packet=0x1ff arrival_delta=10
+T=45 [Generator] tx#348 if=3 packet=0x337 arrival_delta=9
+T=45 [Generator] tx#349 if=3 packet=0x636e arrival_delta=6
+T=45 [Generator] tx#350 if=3 packet=0x122b arrival_delta=7
+T=45 [Generator] tx#351 if=3 packet=0xfb9f arrival_delta=10
+T=45 [Generator] tx#352 if=3 packet=0x68ff arrival_delta=3
+T=45 [Generator] tx#353 if=3 packet=0xeeaa arrival_delta=0
+T=45 [Generator] tx#354 if=3 packet=0x8c04 arrival_delta=2
+T=45 [Generator] tx#355 if=3 packet=0x370 arrival_delta=3
+T=45 [Generator] tx#356 if=3 packet=0xff0a arrival_delta=6
+T=45 [Generator] tx#357 if=3 packet=0x16f4 arrival_delta=8
+T=45 [Generator] tx#358 if=3 packet=0x62d arrival_delta=0
+T=45 [Generator] tx#359 if=3 packet=0xff arrival_delta=6
+T=45 [Generator] tx#360 if=3 packet=0xff3d arrival_delta=7
+T=45 [Generator] tx#361 if=3 packet=0xffe1 arrival_delta=3
+T=45 [Generator] tx#362 if=3 packet=0xffaa arrival_delta=2
+T=45 [Generator] tx#363 if=3 packet=0x5eb8 arrival_delta=8
+T=45 [Generator] tx#364 if=3 packet=0xbc0d arrival_delta=8
+T=45 [Generator] tx#365 if=3 packet=0x368 arrival_delta=7
+T=45 [Generator] tx#366 if=3 packet=0xbfff arrival_delta=10
+T=45 [Generator] tx#367 if=3 packet=0x3a7 arrival_delta=2
+T=45 [Generator] tx#368 if=3 packet=0xff69 arrival_delta=3
+T=45 [Generator] tx#369 if=3 packet=0xe51f arrival_delta=8
+T=45 [Generator] tx#370 if=3 packet=0xbf arrival_delta=10
+T=45 [Generator] tx#371 if=3 packet=0x3baa arrival_delta=5
+T=45 [Generator] tx#372 if=3 packet=0x1d7 arrival_delta=3
+T=45 [Generator] tx#373 if=3 packet=0x217c arrival_delta=7
+T=45 [Generator] tx#374 if=3 packet=0x44aa arrival_delta=10
+T=45 [Generator] tx#375 if=3 packet=0xffd1 arrival_delta=4
+T=45 [Generator] tx#376 if=3 packet=0x3aa arrival_delta=6
+T=45 [Generator] tx#377 if=3 packet=0xd155 arrival_delta=7
+T=45 [Generator] tx#378 if=3 packet=0xffb3 arrival_delta=2
+T=45 [Generator] tx#379 if=3 packet=0x324 arrival_delta=10
+T=45 [Generator] tx#380 if=3 packet=0x1dbd arrival_delta=3
+T=45 [Generator] tx#381 if=3 packet=0xff23 arrival_delta=2
+T=45 [Generator] tx#382 if=3 packet=0x24d arrival_delta=3
+T=45 [Generator] tx#383 if=3 packet=0xdc9f arrival_delta=2
+T=45 [Generator] tx#384 if=3 packet=0xdf55 arrival_delta=8
+T=45 [Generator] tx#385 if=3 packet=0x3d5 arrival_delta=4
+T=45 [Generator] tx#386 if=3 packet=0xb0d4 arrival_delta=10
+T=45 [Generator] tx#387 if=3 packet=0x355 arrival_delta=8
+T=45 [Generator] tx#388 if=3 packet=0x2305 arrival_delta=7
+T=45 [Generator] tx#389 if=3 packet=0x2bff arrival_delta=2
+T=45 [Generator] tx#390 if=3 packet=0xe499 arrival_delta=3
+T=45 [Generator] tx#391 if=3 packet=0x488a arrival_delta=1
+T=45 [Generator] tx#392 if=3 packet=0xffaa arrival_delta=4
+T=45 [Generator] tx#393 if=3 packet=0xc00 arrival_delta=3
+T=45 [Generator] tx#394 if=3 packet=0x3ff arrival_delta=9
+T=45 [Generator] tx#395 if=3 packet=0xb4 arrival_delta=2
+T=45 [Generator] tx#396 if=3 packet=0x1d2 arrival_delta=3
+T=45 [Generator] tx#397 if=3 packet=0xff55 arrival_delta=10
+T=45 [Generator] tx#398 if=3 packet=0x13b8 arrival_delta=9
+T=45 [Generator] tx#399 if=3 packet=0xffba arrival_delta=2
+[DRV 1] ofrecido tx#100 pkt=0x007c @50
+[DRV 2] ofrecido tx#200 pkt=0x0255 @60
+[DRV 3] ofrecido tx#300 pkt=0x3d00 @70
+[DRV 1] pop recibido tx#100 @80
+[DRV 2] pop recibido tx#200 @80
+[MON] POP  if=1 pkt=0x007c @85
+[MON] POP  if=2 pkt=0x0255 @85
+T=85 [Checker] PASS  [1] tx#100 if=1 type=EVT_POP packet=0x7c
+T=85 [Checker] PASS  [2] tx#200 if=2 type=EVT_POP packet=0x255
+[DRV 3] pop recibido tx#300 @90
+[MON] POP  if=3 pkt=0x3d00 @95
+T=95 [Checker] PASS  [3] tx#300 if=3 type=EVT_POP packet=0x3d00
+[DRV 2] ofrecido tx#201 pkt=0x003c @100
+[DRV 0] ofrecido tx#0 pkt=0x42ff @120
+[DRV 0] pop recibido tx#0 @140
+[MON] POP  if=0 pkt=0x42ff @145
+T=145 [Checker] PASS  [4] tx#0 if=0 type=EVT_POP packet=0x42ff
+[DRV 1] ofrecido tx#101 pkt=0xffaa @180
+[DRV 3] ofrecido tx#301 pkt=0xacaa @210
+[DRV 0] ofrecido tx#1 pkt=0xff95 @240
+[DRV 2] pop recibido tx#201 @300
+[MON] POP  if=2 pkt=0x003c @305
+T=305 [Checker] PASS  [5] tx#201 if=2 type=EVT_POP packet=0x3c
+[DRV 2] ofrecido tx#202 pkt=0xa0a5 @410
+[DRV 3] pop recibido tx#301 @500
+[MON] POP  if=3 pkt=0xacaa @505
+T=505 [Checker] PASS  [6] tx#301 if=3 type=EVT_POP packet=0xacaa
+[DRV 3] ofrecido tx#302 pkt=0xa400 @540
+[DRV 0] pop recibido tx#1 @700
+[MON] POP  if=0 pkt=0xff95 @705
+T=705 [Checker] PASS  [7] tx#1 if=0 type=EVT_POP packet=0xff95
+[DRV 0] ofrecido tx#2 pkt=0xffdc @760
+[MON] PUSH if=0 pkt=0x007c @875
+T=875 [Checker] PASS  [8] tx#100 if=0 type=EVT_PUSH packet=0x7c
+[DRV 1] pop recibido tx#101 @900
+[MON] POP  if=1 pkt=0xffaa @905
+T=905 [Checker] PASS  [9] tx#101 if=1 type=EVT_POP packet=0xffaa
+[DRV 1] ofrecido tx#102 pkt=0xd037 @1020
+[MON] PUSH if=0 pkt=0x003c @1075
+T=1075 [Checker] PASS  [10] tx#201 if=0 type=EVT_PUSH packet=0x3c
+[DRV 2] pop recibido tx#202 @1100
+[MON] POP  if=2 pkt=0xa0a5 @1105
+T=1105 [Checker] PASS  [11] tx#202 if=2 type=EVT_POP packet=0xa0a5
+[DRV 2] ofrecido tx#203 pkt=0x1148 @1150
+[DRV 3] pop recibido tx#302 @1300
+[MON] POP  if=3 pkt=0xa400 @1305
+T=1305 [Checker] PASS  [12] tx#302 if=3 type=EVT_POP packet=0xa400
+[DRV 3] ofrecido tx#303 pkt=0x3c67 @1380
+[MON] PUSH if=1 pkt=0xff95 @1475
+[MON] PUSH if=2 pkt=0xff95 @1475
+[MON] PUSH if=3 pkt=0xff95 @1475
+T=1475 [Checker] PASS  [13] tx#1 if=1 type=EVT_PUSH packet=0xff95
+T=1475 [Checker] PASS  [14] tx#1 if=2 type=EVT_PUSH packet=0xff95
+T=1475 [Checker] PASS  [15] tx#1 if=3 type=EVT_PUSH packet=0xff95
+[DRV 0] pop recibido tx#2 @1500
+[MON] POP  if=0 pkt=0xffdc @1505
+T=1505 [Checker] PASS  [16] tx#2 if=0 type=EVT_POP packet=0xffdc
+[DRV 0] ofrecido tx#3 pkt=0xffb6 @1600
+[MON] PUSH if=0 pkt=0xffaa @1675
+[MON] PUSH if=2 pkt=0xffaa @1675
+[MON] PUSH if=3 pkt=0xffaa @1675
+T=1675 [Checker] PASS  [17] tx#101 if=0 type=EVT_PUSH packet=0xffaa
+T=1675 [Checker] PASS  [18] tx#5 if=2 type=EVT_PUSH packet=0xffaa
+T=1675 [Checker] WARNING: push if=2 pkt=0xffaa sin pop previo en if=0 (retardo no registrado)
+T=1675 [Checker] PASS  [19] tx#5 if=3 type=EVT_PUSH packet=0xffaa
+T=1675 [Checker] WARNING: push if=3 pkt=0xffaa sin pop previo en if=0 (retardo no registrado)
+[DRV 1] pop recibido tx#102 @1700
+[MON] POP  if=1 pkt=0xd037 @1705
+T=1705 [Checker] PASS  [20] tx#102 if=1 type=EVT_POP packet=0xd037
+[DRV 1] ofrecido tx#103 pkt=0x23d1 @1730
+[DRV 2] pop recibido tx#203 @1900
+[MON] POP  if=2 pkt=0x1148 @1905
+T=1905 [Checker] PASS  [21] tx#203 if=2 type=EVT_POP packet=0x1148
+[DRV 2] ofrecido tx#204 pkt=0x02d2 @1940
+[DRV 3] pop recibido tx#303 @2100
+[MON] POP  if=3 pkt=0x3c67 @2105
+T=2105 [Checker] PASS  [22] tx#303 if=3 type=EVT_POP packet=0x3c67
+[DRV 3] ofrecido tx#304 pkt=0xed55 @2160
+[MON] PUSH if=1 pkt=0xffdc @2275
+[MON] PUSH if=2 pkt=0xffdc @2275
+[MON] PUSH if=3 pkt=0xffdc @2275
+T=2275 [Checker] PASS  [23] tx#2 if=1 type=EVT_PUSH packet=0xffdc
+T=2275 [Checker] PASS  [24] tx#2 if=2 type=EVT_PUSH packet=0xffdc
+T=2275 [Checker] PASS  [25] tx#2 if=3 type=EVT_PUSH packet=0xffdc
+[DRV 0] pop recibido tx#3 @2300
+[MON] POP  if=0 pkt=0xffb6 @2305
+T=2305 [Checker] PASS  [26] tx#3 if=0 type=EVT_POP packet=0xffb6
+[DRV 0] ofrecido tx#4 pkt=0x00d1 @2360
+[DRV 1] pop recibido tx#103 @2500
+[MON] POP  if=1 pkt=0x23d1 @2505
+T=2505 [Checker] PASS  [27] tx#103 if=1 type=EVT_POP packet=0x23d1
+[DRV 1] ofrecido tx#104 pkt=0x0170 @2620
+[DRV 2] pop recibido tx#204 @2700
+[MON] POP  if=2 pkt=0x02d2 @2705
+T=2705 [Checker] PASS  [28] tx#204 if=2 type=EVT_POP packet=0x2d2
+[DRV 2] ofrecido tx#205 pkt=0x0255 @2750
+[DRV 3] pop recibido tx#304 @2900
+[MON] POP  if=3 pkt=0xed55 @2905
+T=2905 [Checker] PASS  [29] tx#304 if=3 type=EVT_POP packet=0xed55
+[DRV 3] ofrecido tx#305 pkt=0x0009 @2930
+[MON] PUSH if=1 pkt=0xffb6 @3075
+[MON] PUSH if=2 pkt=0xffb6 @3075
+[MON] PUSH if=3 pkt=0xffb6 @3075
+T=3075 [Checker] PASS  [30] tx#3 if=1 type=EVT_PUSH packet=0xffb6
+T=3075 [Checker] PASS  [31] tx#3 if=2 type=EVT_PUSH packet=0xffb6
+T=3075 [Checker] PASS  [32] tx#3 if=3 type=EVT_PUSH packet=0xffb6
+[DRV 0] pop recibido tx#4 @3100
+[MON] POP  if=0 pkt=0x00d1 @3105
+T=3105 [Checker] PASS  [33] tx#4 if=0 type=EVT_POP packet=0xd1
+[DRV 0] ofrecido tx#5 pkt=0xffaa @3150
+[DRV 1] pop recibido tx#104 @3300
+[MON] POP  if=1 pkt=0x0170 @3305
+T=3305 [Checker] PASS  [34] tx#104 if=1 type=EVT_POP packet=0x170
+[DRV 1] ofrecido tx#105 pkt=0x6900 @3330
+[DRV 2] pop recibido tx#205 @3500
+[MON] POP  if=2 pkt=0x0255 @3505
+T=3505 [Checker] PASS  [35] tx#205 if=2 type=EVT_POP packet=0x255
+[DRV 2] ofrecido tx#206 pkt=0x3200 @3530
+[DRV 3] pop recibido tx#305 @3700
+[MON] POP  if=3 pkt=0x0009 @3705
+T=3705 [Checker] PASS  [36] tx#305 if=3 type=EVT_POP packet=0x9
+[DRV 3] ofrecido tx#306 pkt=0xa758 @3820
+[DRV 0] pop recibido tx#5 @3900
+[MON] POP  if=0 pkt=0xffaa @3905
+T=3905 [Checker] PASS  [37] tx#5 if=0 type=EVT_POP packet=0xffaa
+[DRV 0] ofrecido tx#6 pkt=0x03ee @3920
+[DRV 1] pop recibido tx#105 @4100
+[MON] POP  if=1 pkt=0x6900 @4105
+T=4105 [Checker] PASS  [38] tx#105 if=1 type=EVT_POP packet=0x6900
+[DRV 1] ofrecido tx#106 pkt=0x2daa @4140
+[DRV 2] pop recibido tx#206 @4300
+[MON] POP  if=2 pkt=0x3200 @4305
+T=4305 [Checker] PASS  [39] tx#206 if=2 type=EVT_POP packet=0x3200
+[DRV 2] ofrecido tx#207 pkt=0x0253 @4380
+[MON] PUSH if=0 pkt=0x0009 @4475
+T=4475 [Checker] PASS  [40] tx#305 if=0 type=EVT_PUSH packet=0x9
+[DRV 3] pop recibido tx#306 @4500
+[MON] POP  if=3 pkt=0xa758 @4505
+T=4505 [Checker] PASS  [41] tx#306 if=3 type=EVT_POP packet=0xa758
+[DRV 3] ofrecido tx#307 pkt=0x7e4a @4570
+[MON] PUSH if=1 pkt=0xffaa @4675
+[MON] PUSH if=2 pkt=0xffaa @4675
+[MON] PUSH if=3 pkt=0xffaa @4675
+T=4675 [Checker] PASS  [42] tx#5 if=1 type=EVT_PUSH packet=0xffaa
+T=4675 [Checker] PASS  [43] tx#72 if=2 type=EVT_PUSH packet=0xffaa
+T=4675 [Checker] WARNING: push if=2 pkt=0xffaa sin pop previo en if=0 (retardo no registrado)
+T=4675 [Checker] PASS  [44] tx#72 if=3 type=EVT_PUSH packet=0xffaa
+T=4675 [Checker] WARNING: push if=3 pkt=0xffaa sin pop previo en if=0 (retardo no registrado)
+[DRV 0] pop recibido tx#6 @4700
+[MON] POP  if=0 pkt=0x03ee @4705
+T=4705 [Checker] PASS  [45] tx#6 if=0 type=EVT_POP packet=0x3ee
+[DRV 0] ofrecido tx#7 pkt=0x0055 @4810
+[DRV 1] pop recibido tx#106 @4900
+[MON] POP  if=1 pkt=0x2daa @4905
+T=4905 [Checker] PASS  [46] tx#106 if=1 type=EVT_POP packet=0x2daa
+[DRV 1] ofrecido tx#107 pkt=0x1000 @4970
+[DRV 2] pop recibido tx#207 @5100
+[MON] POP  if=2 pkt=0x0253 @5105
+T=5105 [Checker] PASS  [47] tx#207 if=2 type=EVT_POP packet=0x253
+[DRV 2] ofrecido tx#208 pkt=0x02aa @5140
+[DRV 3] pop recibido tx#307 @5300
+[MON] POP  if=3 pkt=0x7e4a @5305
+T=5305 [Checker] PASS  [48] tx#307 if=3 type=EVT_POP packet=0x7e4a
+[DRV 3] ofrecido tx#308 pkt=0xea55 @5370
+[MON] PUSH if=3 pkt=0x03ee @5475
+T=5475 [Checker] PASS  [49] tx#6 if=3 type=EVT_PUSH packet=0x3ee
+[DRV 0] pop recibido tx#7 @5500
+[MON] POP  if=0 pkt=0x0055 @5505
+T=5505 [Checker] PASS  [50] tx#7 if=0 type=EVT_POP packet=0x55
+[DRV 0] ofrecido tx#8 pkt=0x005f @5620
+[DRV 1] pop recibido tx#107 @5700
+[MON] POP  if=1 pkt=0x1000 @5705
+T=5705 [Checker] PASS  [51] tx#107 if=1 type=EVT_POP packet=0x1000
+[DRV 1] ofrecido tx#108 pkt=0x01a4 @5790
+[DRV 2] pop recibido tx#208 @5900
+[MON] POP  if=2 pkt=0x02aa @5905
+T=5905 [Checker] PASS  [52] tx#208 if=2 type=EVT_POP packet=0x2aa
+[DRV 2] ofrecido tx#209 pkt=0xe7aa @6010
+[DRV 3] pop recibido tx#308 @6100
+[MON] POP  if=3 pkt=0xea55 @6105
+T=6105 [Checker] PASS  [53] tx#308 if=3 type=EVT_POP packet=0xea55
+[DRV 3] ofrecido tx#309 pkt=0x0009 @6190
+[DRV 0] pop recibido tx#8 @6300
+[MON] POP  if=0 pkt=0x005f @6305
+T=6305 [Checker] PASS  [54] tx#8 if=0 type=EVT_POP packet=0x5f
+[DRV 0] ofrecido tx#9 pkt=0xfeaa @6410
+[DRV 1] pop recibido tx#108 @6500
+[MON] POP  if=1 pkt=0x01a4 @6505
+T=6505 [Checker] PASS  [55] tx#108 if=1 type=EVT_POP packet=0x1a4
+[DRV 1] ofrecido tx#109 pkt=0x00c0 @6600
+[DRV 2] pop recibido tx#209 @6700
+[MON] POP  if=2 pkt=0xe7aa @6705
+T=6705 [Checker] PASS  [56] tx#209 if=2 type=EVT_POP packet=0xe7aa
+[DRV 2] ofrecido tx#210 pkt=0x03aa @6820
+[DRV 3] pop recibido tx#309 @6900
+[MON] POP  if=3 pkt=0x0009 @6905
+T=6905 [Checker] PASS  [57] tx#309 if=3 type=EVT_POP packet=0x9
+[DRV 3] ofrecido tx#310 pkt=0x228d @6940
+[DRV 0] pop recibido tx#9 @7100
+[MON] POP  if=0 pkt=0xfeaa @7105
+T=7105 [Checker] PASS  [58] tx#9 if=0 type=EVT_POP packet=0xfeaa
+[DRV 0] ofrecido tx#10 pkt=0xff55 @7160
+[DRV 1] pop recibido tx#109 @7300
+[MON] POP  if=1 pkt=0x00c0 @7305
+T=7305 [Checker] PASS  [59] tx#109 if=1 type=EVT_POP packet=0xc0
+[DRV 1] ofrecido tx#110 pkt=0xd3ff @7410
+[DRV 2] pop recibido tx#210 @7500
+[MON] POP  if=2 pkt=0x03aa @7505
+T=7505 [Checker] PASS  [60] tx#210 if=2 type=EVT_POP packet=0x3aa
+[DRV 2] ofrecido tx#211 pkt=0x0319 @7590
+[MON] PUSH if=0 pkt=0x0009 @7675
+T=7675 [Checker] PASS  [61] tx#309 if=0 type=EVT_PUSH packet=0x9
+[DRV 3] pop recibido tx#310 @7700
+[MON] POP  if=3 pkt=0x228d @7705
+T=7705 [Checker] PASS  [62] tx#310 if=3 type=EVT_POP packet=0x228d
+[DRV 3] ofrecido tx#311 pkt=0xb06b @7740
+[DRV 0] pop recibido tx#10 @7900
+[MON] POP  if=0 pkt=0xff55 @7905
+T=7905 [Checker] PASS  [63] tx#10 if=0 type=EVT_POP packet=0xff55
+[DRV 0] ofrecido tx#11 pkt=0x0055 @7930
+[MON] PUSH if=0 pkt=0x00c0 @8075
+T=8075 [Checker] PASS  [64] tx#109 if=0 type=EVT_PUSH packet=0xc0
+[DRV 1] pop recibido tx#110 @8100
+[MON] POP  if=1 pkt=0xd3ff @8105
+T=8105 [Checker] PASS  [65] tx#110 if=1 type=EVT_POP packet=0xd3ff
+[DRV 1] ofrecido tx#111 pkt=0x1161 @8190
+[MON] PUSH if=3 pkt=0x03aa @8275
+T=8275 [Checker] PASS  [66] tx#19 if=3 type=EVT_PUSH packet=0x3aa
+T=8275 [Checker] WARNING: push if=3 pkt=0x3aa sin pop previo en if=0 (retardo no registrado)
+[DRV 2] pop recibido tx#211 @8300
+[MON] POP  if=2 pkt=0x0319 @8305
+T=8305 [Checker] PASS  [67] tx#211 if=2 type=EVT_POP packet=0x319
+[DRV 2] ofrecido tx#212 pkt=0x02ff @8370
+[DRV 3] pop recibido tx#311 @8500
+[MON] POP  if=3 pkt=0xb06b @8505
+T=8505 [Checker] PASS  [68] tx#311 if=3 type=EVT_POP packet=0xb06b
+[DRV 3] ofrecido tx#312 pkt=0xffaa @8590
+[MON] PUSH if=1 pkt=0xff55 @8675
+[MON] PUSH if=2 pkt=0xff55 @8675
+[MON] PUSH if=3 pkt=0xff55 @8675
+T=8675 [Checker] PASS  [69] tx#10 if=1 type=EVT_PUSH packet=0xff55
+T=8675 [Checker] PASS  [70] tx#10 if=2 type=EVT_PUSH packet=0xff55
+T=8675 [Checker] PASS  [71] tx#10 if=3 type=EVT_PUSH packet=0xff55
+[DRV 0] pop recibido tx#11 @8700
+[MON] POP  if=0 pkt=0x0055 @8705
+T=8705 [Checker] PASS  [72] tx#11 if=0 type=EVT_POP packet=0x55
+[DRV 0] ofrecido tx#12 pkt=0x0076 @8720
+[DRV 1] pop recibido tx#111 @8900
+[MON] POP  if=1 pkt=0x1161 @8905
+T=8905 [Checker] PASS  [73] tx#111 if=1 type=EVT_POP packet=0x1161
+[DRV 1] ofrecido tx#112 pkt=0xc2aa @8920
+[MON] PUSH if=3 pkt=0x0319 @9075
+T=9075 [Checker] PASS  [74] tx#211 if=3 type=EVT_PUSH packet=0x319
+[DRV 2] pop recibido tx#212 @9100
+[MON] POP  if=2 pkt=0x02ff @9105
+T=9105 [Checker] PASS  [75] tx#212 if=2 type=EVT_POP packet=0x2ff
+[DRV 2] ofrecido tx#213 pkt=0x0055 @9220
+[DRV 3] pop recibido tx#312 @9300
+[MON] POP  if=3 pkt=0xffaa @9305
+T=9305 [Checker] PASS  [76] tx#312 if=3 type=EVT_POP packet=0xffaa
+[DRV 3] ofrecido tx#313 pkt=0xfffb @9350
+[DRV 0] pop recibido tx#12 @9500
+[MON] POP  if=0 pkt=0x0076 @9505
+T=9505 [Checker] PASS  [77] tx#12 if=0 type=EVT_POP packet=0x76
+[DRV 0] ofrecido tx#13 pkt=0x5600 @9600
+[DRV 1] pop recibido tx#112 @9700
+[MON] POP  if=1 pkt=0xc2aa @9705
+T=9705 [Checker] PASS  [78] tx#112 if=1 type=EVT_POP packet=0xc2aa
+[DRV 1] ofrecido tx#113 pkt=0xf2aa @9790
+[DRV 2] pop recibido tx#213 @9900
+[MON] POP  if=2 pkt=0x0055 @9905
+T=9905 [Checker] PASS  [79] tx#213 if=2 type=EVT_POP packet=0x55
+[DRV 2] ofrecido tx#214 pkt=0x03aa @9930
+[MON] PUSH if=0 pkt=0xffaa @10075
+[MON] PUSH if=1 pkt=0xffaa @10075
+[MON] PUSH if=2 pkt=0xffaa @10075
+T=10075 [Checker] PASS  [80] tx#119 if=0 type=EVT_PUSH packet=0xffaa
+T=10075 [Checker] WARNING: push if=0 pkt=0xffaa sin pop previo en if=1 (retardo no registrado)
+T=10075 [Checker] PASS  [81] tx#72 if=1 type=EVT_PUSH packet=0xffaa
+T=10075 [Checker] WARNING: push if=1 pkt=0xffaa sin pop previo en if=0 (retardo no registrado)
+T=10075 [Checker] PASS  [82] tx#101 if=2 type=EVT_PUSH packet=0xffaa
+[DRV 3] pop recibido tx#313 @10100
+[MON] POP  if=3 pkt=0xfffb @10105
+T=10105 [Checker] PASS  [83] tx#313 if=3 type=EVT_POP packet=0xfffb
+[DRV 3] ofrecido tx#314 pkt=0x0300 @10160
+[DRV 0] pop recibido tx#13 @10300
+[MON] POP  if=0 pkt=0x5600 @10305
+T=10305 [Checker] PASS  [84] tx#13 if=0 type=EVT_POP packet=0x5600
+[DRV 0] ofrecido tx#14 pkt=0x0f72 @10340
+[DRV 1] pop recibido tx#113 @10500
+[MON] POP  if=1 pkt=0xf2aa @10505
+T=10505 [Checker] PASS  [85] tx#113 if=1 type=EVT_POP packet=0xf2aa
+[DRV 1] ofrecido tx#114 pkt=0xa38b @10620
+[MON] PUSH if=0 pkt=0x0055 @10675
+T=10675 [Checker] PASS  [86] tx#213 if=0 type=EVT_PUSH packet=0x55
+[DRV 2] pop recibido tx#214 @10700
+[MON] POP  if=2 pkt=0x03aa @10705
+T=10705 [Checker] PASS  [87] tx#214 if=2 type=EVT_POP packet=0x3aa
+[DRV 2] ofrecido tx#215 pkt=0x0100 @10740
+[MON] PUSH if=0 pkt=0xfffb @10875
+[MON] PUSH if=1 pkt=0xfffb @10875
+[MON] PUSH if=2 pkt=0xfffb @10875
+T=10875 [Checker] PASS  [88] tx#313 if=0 type=EVT_PUSH packet=0xfffb
+T=10875 [Checker] PASS  [89] tx#313 if=1 type=EVT_PUSH packet=0xfffb
+T=10875 [Checker] PASS  [90] tx#313 if=2 type=EVT_PUSH packet=0xfffb
+[DRV 3] pop recibido tx#314 @10900
+[MON] POP  if=3 pkt=0x0300 @10905
+T=10905 [Checker] PASS  [91] tx#314 if=3 type=EVT_POP packet=0x300
+[DRV 3] ofrecido tx#315 pkt=0x0145 @10920
+[DRV 0] pop recibido tx#14 @11100
+[MON] POP  if=0 pkt=0x0f72 @11105
+T=11105 [Checker] PASS  [92] tx#14 if=0 type=EVT_POP packet=0xf72
+[DRV 0] ofrecido tx#15 pkt=0x009d @11180
+[DRV 1] pop recibido tx#114 @11300
+[MON] POP  if=1 pkt=0xa38b @11305
+T=11305 [Checker] PASS  [93] tx#114 if=1 type=EVT_POP packet=0xa38b
+[DRV 1] ofrecido tx#115 pkt=0x4175 @11320
+[MON] PUSH if=3 pkt=0x03aa @11475
+T=11475 [Checker] PASS  [94] tx#25 if=3 type=EVT_PUSH packet=0x3aa
+T=11475 [Checker] WARNING: push if=3 pkt=0x3aa sin pop previo en if=0 (retardo no registrado)
+[DRV 2] pop recibido tx#215 @11500
+[MON] POP  if=2 pkt=0x0100 @11505
+T=11505 [Checker] PASS  [95] tx#215 if=2 type=EVT_POP packet=0x100
+[DRV 2] ofrecido tx#216 pkt=0x0294 @11580
+[DRV 3] pop recibido tx#315 @11700
+[MON] POP  if=3 pkt=0x0145 @11705
+T=11705 [Checker] PASS  [96] tx#315 if=3 type=EVT_POP packet=0x145
+[DRV 3] ofrecido tx#316 pkt=0xffff @11760
+[DRV 0] pop recibido tx#15 @11900
+[MON] POP  if=0 pkt=0x009d @11905
+T=11905 [Checker] PASS  [97] tx#15 if=0 type=EVT_POP packet=0x9d
+[DRV 0] ofrecido tx#16 pkt=0x72ff @11940
+[DRV 1] pop recibido tx#115 @12100
+[MON] POP  if=1 pkt=0x4175 @12105
+T=12105 [Checker] PASS  [98] tx#115 if=1 type=EVT_POP packet=0x4175
+[DRV 1] ofrecido tx#116 pkt=0x0000 @12150
+[MON] PUSH if=1 pkt=0x0100 @12275
+T=12275 [Checker] PASS  [99] tx#215 if=1 type=EVT_PUSH packet=0x100
+[DRV 2] pop recibido tx#216 @12300
+[MON] POP  if=2 pkt=0x0294 @12305
+T=12305 [Checker] PASS  [100] tx#216 if=2 type=EVT_POP packet=0x294
+[DRV 2] ofrecido tx#217 pkt=0x02ff @12410
+[MON] PUSH if=1 pkt=0x0145 @12475
+T=12475 [Checker] PASS  [101] tx#315 if=1 type=EVT_PUSH packet=0x145
+[DRV 3] pop recibido tx#316 @12500
+[MON] POP  if=3 pkt=0xffff @12505
+T=12505 [Checker] PASS  [102] tx#316 if=3 type=EVT_POP packet=0xffff
+[DRV 3] ofrecido tx#317 pkt=0x03aa @12620
+[DRV 0] pop recibido tx#16 @12700
+[MON] POP  if=0 pkt=0x72ff @12705
+T=12705 [Checker] PASS  [103] tx#16 if=0 type=EVT_POP packet=0x72ff
+[DRV 0] ofrecido tx#17 pkt=0xffaf @12750
+[DRV 1] pop recibido tx#116 @12900
+[MON] POP  if=1 pkt=0x0000 @12905
+T=12905 [Checker] PASS  [104] tx#116 if=1 type=EVT_POP packet=0x0
+[DRV 1] ofrecido tx#117 pkt=0x02b9 @12920
+[DRV 2] pop recibido tx#217 @13100
+[MON] POP  if=2 pkt=0x02ff @13105
+T=13105 [Checker] PASS  [105] tx#217 if=2 type=EVT_POP packet=0x2ff
+[DRV 2] ofrecido tx#218 pkt=0x00c7 @13120
+[MON] PUSH if=0 pkt=0xffff @13275
+[MON] PUSH if=1 pkt=0xffff @13275
+[MON] PUSH if=2 pkt=0xffff @13275
+T=13275 [Checker] PASS  [106] tx#192 if=0 type=EVT_PUSH packet=0xffff
+T=13275 [Checker] WARNING: push if=0 pkt=0xffff sin pop previo en if=1 (retardo no registrado)
+T=13275 [Checker] PASS  [107] tx#28 if=1 type=EVT_PUSH packet=0xffff
+T=13275 [Checker] WARNING: push if=1 pkt=0xffff sin pop previo en if=0 (retardo no registrado)
+T=13275 [Checker] PASS  [108] tx#28 if=2 type=EVT_PUSH packet=0xffff
+T=13275 [Checker] WARNING: push if=2 pkt=0xffff sin pop previo en if=0 (retardo no registrado)
+[DRV 3] pop recibido tx#317 @13300
+[MON] POP  if=3 pkt=0x03aa @13305
+T=13305 [Checker] PASS  [109] tx#317 if=3 type=EVT_POP packet=0x3aa
+[DRV 3] ofrecido tx#318 pkt=0x0300 @13340
+[DRV 0] pop recibido tx#17 @13500
+[MON] POP  if=0 pkt=0xffaf @13505
+T=13505 [Checker] PASS  [110] tx#17 if=0 type=EVT_POP packet=0xffaf
+[DRV 0] ofrecido tx#18 pkt=0x0107 @13600
+[MON] PUSH if=0 pkt=0x0000 @13675
+T=13675 [Checker] PASS  [111] tx#116 if=0 type=EVT_PUSH packet=0x0
+[DRV 1] pop recibido tx#117 @13700
+[MON] POP  if=1 pkt=0x02b9 @13705
+T=13705 [Checker] PASS  [112] tx#117 if=1 type=EVT_POP packet=0x2b9
+[DRV 1] ofrecido tx#118 pkt=0x8e55 @13820
+[DRV 2] pop recibido tx#218 @13900
+[MON] POP  if=2 pkt=0x00c7 @13905
+T=13905 [Checker] PASS  [113] tx#218 if=2 type=EVT_POP packet=0xc7
+[DRV 2] ofrecido tx#219 pkt=0x512d @14000
+[DRV 3] pop recibido tx#318 @14100
+[MON] POP  if=3 pkt=0x0300 @14105
+T=14105 [Checker] PASS  [114] tx#318 if=3 type=EVT_POP packet=0x300
+[DRV 3] ofrecido tx#319 pkt=0x8a54 @14200
+[MON] PUSH if=1 pkt=0xffaf @14275
+[MON] PUSH if=2 pkt=0xffaf @14275
+[MON] PUSH if=3 pkt=0xffaf @14275
+T=14275 [Checker] PASS  [115] tx#17 if=1 type=EVT_PUSH packet=0xffaf
+T=14275 [Checker] PASS  [116] tx#17 if=2 type=EVT_PUSH packet=0xffaf
+T=14275 [Checker] PASS  [117] tx#17 if=3 type=EVT_PUSH packet=0xffaf
+[DRV 0] pop recibido tx#18 @14300
+[MON] POP  if=0 pkt=0x0107 @14305
+T=14305 [Checker] PASS  [118] tx#18 if=0 type=EVT_POP packet=0x107
+[DRV 0] ofrecido tx#19 pkt=0x03aa @14320
+[MON] PUSH if=2 pkt=0x02b9 @14475
+T=14475 [Checker] PASS  [119] tx#117 if=2 type=EVT_PUSH packet=0x2b9
+[DRV 1] pop recibido tx#118 @14500
+[MON] POP  if=1 pkt=0x8e55 @14505
+T=14505 [Checker] PASS  [120] tx#118 if=1 type=EVT_POP packet=0x8e55
+[DRV 1] ofrecido tx#119 pkt=0xffaa @14610
+[MON] PUSH if=0 pkt=0x00c7 @14675
+T=14675 [Checker] PASS  [121] tx#218 if=0 type=EVT_PUSH packet=0xc7
+[DRV 2] pop recibido tx#219 @14700
+[MON] POP  if=2 pkt=0x512d @14705
+T=14705 [Checker] PASS  [122] tx#219 if=2 type=EVT_POP packet=0x512d
+[DRV 2] ofrecido tx#220 pkt=0x0255 @14750
+[DRV 3] pop recibido tx#319 @14900
+[MON] POP  if=3 pkt=0x8a54 @14905
+T=14905 [Checker] PASS  [123] tx#319 if=3 type=EVT_POP packet=0x8a54
+[DRV 3] ofrecido tx#320 pkt=0x03ff @14930
+[MON] PUSH if=1 pkt=0x0107 @15075
+T=15075 [Checker] PASS  [124] tx#18 if=1 type=EVT_PUSH packet=0x107
+[DRV 0] pop recibido tx#19 @15100
+[MON] POP  if=0 pkt=0x03aa @15105
+T=15105 [Checker] PASS  [125] tx#19 if=0 type=EVT_POP packet=0x3aa
+[DRV 0] ofrecido tx#20 pkt=0x9ddc @15200
+[DRV 1] pop recibido tx#119 @15300
+[MON] POP  if=1 pkt=0xffaa @15305
+T=15305 [Checker] PASS  [126] tx#119 if=1 type=EVT_POP packet=0xffaa
+[DRV 1] ofrecido tx#120 pkt=0x0000 @15390
+[DRV 2] pop recibido tx#220 @15500
+[MON] POP  if=2 pkt=0x0255 @15505
+T=15505 [Checker] PASS  [127] tx#220 if=2 type=EVT_POP packet=0x255
+[DRV 2] ofrecido tx#221 pkt=0xff00 @15540
+[DRV 3] pop recibido tx#320 @15700
+[MON] POP  if=3 pkt=0x03ff @15705
+T=15705 [Checker] PASS  [128] tx#320 if=3 type=EVT_POP packet=0x3ff
+[DRV 3] ofrecido tx#321 pkt=0x0355 @15820
+[MON] PUSH if=3 pkt=0x03aa @15875
+T=15875 [Checker] PASS  [129] tx#210 if=3 type=EVT_PUSH packet=0x3aa
+[DRV 0] pop recibido tx#20 @15900
+[MON] POP  if=0 pkt=0x9ddc @15905
+T=15905 [Checker] PASS  [130] tx#20 if=0 type=EVT_POP packet=0x9ddc
+[DRV 0] ofrecido tx#21 pkt=0x02ff @15990
+[MON] PUSH if=0 pkt=0xffaa @16075
+[MON] PUSH if=2 pkt=0xffaa @16075
+[MON] PUSH if=3 pkt=0xffaa @16075
+T=16075 [Checker] PASS  [131] tx#162 if=0 type=EVT_PUSH packet=0xffaa
+T=16075 [Checker] WARNING: push if=0 pkt=0xffaa sin pop previo en if=1 (retardo no registrado)
+T=16075 [Checker] PASS  [132] tx#119 if=2 type=EVT_PUSH packet=0xffaa
+T=16075 [Checker] PASS  [133] tx#101 if=3 type=EVT_PUSH packet=0xffaa
+[DRV 1] pop recibido tx#120 @16100
+[MON] POP  if=1 pkt=0x0000 @16105
+T=16105 [Checker] PASS  [134] tx#120 if=1 type=EVT_POP packet=0x0
+[DRV 1] ofrecido tx#121 pkt=0x0127 @16160
+[DRV 2] pop recibido tx#221 @16300
+[MON] POP  if=2 pkt=0xff00 @16305
+T=16305 [Checker] PASS  [135] tx#221 if=2 type=EVT_POP packet=0xff00
+[DRV 2] ofrecido tx#222 pkt=0xffe2 @16320
+[DRV 3] pop recibido tx#321 @16500
+[MON] POP  if=3 pkt=0x0355 @16505
+T=16505 [Checker] PASS  [136] tx#321 if=3 type=EVT_POP packet=0x355
+[DRV 3] ofrecido tx#322 pkt=0xffad @16540
+[DRV 0] pop recibido tx#21 @16700
+[MON] POP  if=0 pkt=0x02ff @16705
+T=16705 [Checker] PASS  [137] tx#21 if=0 type=EVT_POP packet=0x2ff
+[DRV 0] ofrecido tx#22 pkt=0x00c7 @16800
+[MON] PUSH if=0 pkt=0x0000 @16875
+T=16875 [Checker] PASS  [138] tx#120 if=0 type=EVT_PUSH packet=0x0
+[DRV 1] pop recibido tx#121 @16900
+[MON] POP  if=1 pkt=0x0127 @16905
+T=16905 [Checker] PASS  [139] tx#121 if=1 type=EVT_POP packet=0x127
+[DRV 1] ofrecido tx#122 pkt=0xd538 @16920
+[MON] PUSH if=0 pkt=0xff00 @17075
+[MON] PUSH if=1 pkt=0xff00 @17075
+[MON] PUSH if=3 pkt=0xff00 @17075
+T=17075 [Checker] PASS  [140] tx#143 if=0 type=EVT_PUSH packet=0xff00
+T=17075 [Checker] WARNING: push if=0 pkt=0xff00 sin pop previo en if=1 (retardo no registrado)
+T=17075 [Checker] PASS  [141] tx#58 if=1 type=EVT_PUSH packet=0xff00
+T=17075 [Checker] WARNING: push if=1 pkt=0xff00 sin pop previo en if=0 (retardo no registrado)
+T=17075 [Checker] PASS  [142] tx#58 if=3 type=EVT_PUSH packet=0xff00
+T=17075 [Checker] WARNING: push if=3 pkt=0xff00 sin pop previo en if=0 (retardo no registrado)
+[DRV 2] pop recibido tx#222 @17100
+[MON] POP  if=2 pkt=0xffe2 @17105
+T=17105 [Checker] PASS  [143] tx#222 if=2 type=EVT_POP packet=0xffe2
+[DRV 2] ofrecido tx#223 pkt=0x51ff @17220
+[DRV 3] pop recibido tx#322 @17300
+[MON] POP  if=3 pkt=0xffad @17305
+T=17305 [Checker] PASS  [144] tx#322 if=3 type=EVT_POP packet=0xffad
+[DRV 3] ofrecido tx#323 pkt=0xffff @17340
+[MON] PUSH if=2 pkt=0x02ff @17475
+T=17475 [Checker] PASS  [145] tx#21 if=2 type=EVT_PUSH packet=0x2ff
+[DRV 0] pop recibido tx#22 @17500
+[MON] POP  if=0 pkt=0x00c7 @17505
+T=17505 [Checker] PASS  [146] tx#22 if=0 type=EVT_POP packet=0xc7
+[DRV 0] ofrecido tx#23 pkt=0x00ff @17520
+[DRV 1] pop recibido tx#122 @17700
+[MON] POP  if=1 pkt=0xd538 @17705
+T=17705 [Checker] PASS  [147] tx#122 if=1 type=EVT_POP packet=0xd538
+[DRV 1] ofrecido tx#123 pkt=0x016f @17810
+[MON] PUSH if=0 pkt=0xffe2 @17875
+[MON] PUSH if=1 pkt=0xffe2 @17875
+[MON] PUSH if=3 pkt=0xffe2 @17875
+T=17875 [Checker] PASS  [148] tx#222 if=0 type=EVT_PUSH packet=0xffe2
+T=17875 [Checker] PASS  [149] tx#222 if=1 type=EVT_PUSH packet=0xffe2
+T=17875 [Checker] PASS  [150] tx#222 if=3 type=EVT_PUSH packet=0xffe2
+[DRV 2] pop recibido tx#223 @17900
+[MON] POP  if=2 pkt=0x51ff @17905
+T=17905 [Checker] PASS  [151] tx#223 if=2 type=EVT_POP packet=0x51ff
+[DRV 2] ofrecido tx#224 pkt=0x60aa @18010
+[MON] PUSH if=0 pkt=0xffad @18075
+[MON] PUSH if=1 pkt=0xffad @18075
+[MON] PUSH if=2 pkt=0xffad @18075
+T=18075 [Checker] PASS  [152] tx#322 if=0 type=EVT_PUSH packet=0xffad
+T=18075 [Checker] PASS  [153] tx#322 if=1 type=EVT_PUSH packet=0xffad
+T=18075 [Checker] PASS  [154] tx#322 if=2 type=EVT_PUSH packet=0xffad
+[DRV 3] pop recibido tx#323 @18100
+[MON] POP  if=3 pkt=0xffff @18105
+T=18105 [Checker] PASS  [155] tx#323 if=3 type=EVT_POP packet=0xffff
+[DRV 3] ofrecido tx#324 pkt=0x6200 @18140
+[DRV 0] pop recibido tx#23 @18300
+[MON] POP  if=0 pkt=0x00ff @18305
+T=18305 [Checker] PASS  [156] tx#23 if=0 type=EVT_POP packet=0xff
+[DRV 0] ofrecido tx#24 pkt=0xf7ed @18350
+[DRV 1] pop recibido tx#123 @18500
+[MON] POP  if=1 pkt=0x016f @18505
+T=18505 [Checker] PASS  [157] tx#123 if=1 type=EVT_POP packet=0x16f
+[DRV 1] ofrecido tx#124 pkt=0x0155 @18580
+[DRV 2] pop recibido tx#224 @18700
+[MON] POP  if=2 pkt=0x60aa @18705
+T=18705 [Checker] PASS  [158] tx#224 if=2 type=EVT_POP packet=0x60aa
+[DRV 2] ofrecido tx#225 pkt=0x9855 @18800
+[MON] PUSH if=0 pkt=0xffff @18875
+[MON] PUSH if=1 pkt=0xffff @18875
+[MON] PUSH if=2 pkt=0xffff @18875
+T=18875 [Checker] PASS  [159] tx#228 if=0 type=EVT_PUSH packet=0xffff
+T=18875 [Checker] WARNING: push if=0 pkt=0xffff sin pop previo en if=2 (retardo no registrado)
+T=18875 [Checker] PASS  [160] tx#47 if=1 type=EVT_PUSH packet=0xffff
+T=18875 [Checker] WARNING: push if=1 pkt=0xffff sin pop previo en if=0 (retardo no registrado)
+T=18875 [Checker] PASS  [161] tx#47 if=2 type=EVT_PUSH packet=0xffff
+T=18875 [Checker] WARNING: push if=2 pkt=0xffff sin pop previo en if=0 (retardo no registrado)
+[DRV 3] pop recibido tx#324 @18900
+[MON] POP  if=3 pkt=0x6200 @18905
+T=18905 [Checker] PASS  [162] tx#324 if=3 type=EVT_POP packet=0x6200
+[DRV 3] ofrecido tx#325 pkt=0x0355 @18990
+[DRV 0] pop recibido tx#24 @19100
+[MON] POP  if=0 pkt=0xf7ed @19105
+T=19105 [Checker] PASS  [163] tx#24 if=0 type=EVT_POP packet=0xf7ed
+[DRV 0] ofrecido tx#25 pkt=0x03aa @19140
+[DRV 1] pop recibido tx#124 @19300
+[MON] POP  if=1 pkt=0x0155 @19305
+T=19305 [Checker] PASS  [164] tx#124 if=1 type=EVT_POP packet=0x155
+[DRV 1] ofrecido tx#125 pkt=0x0149 @19370
+[DRV 2] pop recibido tx#225 @19500
+[MON] POP  if=2 pkt=0x9855 @19505
+T=19505 [Checker] PASS  [165] tx#225 if=2 type=EVT_POP packet=0x9855
+[DRV 2] ofrecido tx#226 pkt=0xffa0 @19620
+[DRV 3] pop recibido tx#325 @19700
+[MON] POP  if=3 pkt=0x0355 @19705
+T=19705 [Checker] PASS  [166] tx#325 if=3 type=EVT_POP packet=0x355
+[DRV 3] ofrecido tx#326 pkt=0xffb1 @19820
+[DRV 0] pop recibido tx#25 @19900
+[MON] POP  if=0 pkt=0x03aa @19905
+T=19905 [Checker] PASS  [167] tx#25 if=0 type=EVT_POP packet=0x3aa
+[DRV 0] ofrecido tx#26 pkt=0xff55 @19950
+[DRV 1] pop recibido tx#125 @20100
+[MON] POP  if=1 pkt=0x0149 @20105
+T=20105 [Checker] PASS  [168] tx#125 if=1 type=EVT_POP packet=0x149
+[DRV 1] ofrecido tx#126 pkt=0x0126 @20220
+[DRV 2] pop recibido tx#226 @20300
+[MON] POP  if=2 pkt=0xffa0 @20305
+T=20305 [Checker] PASS  [169] tx#226 if=2 type=EVT_POP packet=0xffa0
+[DRV 2] ofrecido tx#227 pkt=0x0355 @20370
+[DRV 3] pop recibido tx#326 @20500
+[MON] POP  if=3 pkt=0xffb1 @20505
+T=20505 [Checker] PASS  [170] tx#326 if=3 type=EVT_POP packet=0xffb1
+[DRV 3] ofrecido tx#327 pkt=0x0070 @20530
+[MON] PUSH if=3 pkt=0x03aa @20675
+T=20675 [Checker] PASS  [171] tx#214 if=3 type=EVT_PUSH packet=0x3aa
+[DRV 0] pop recibido tx#26 @20700
+[MON] POP  if=0 pkt=0xff55 @20705
+T=20705 [Checker] PASS  [172] tx#26 if=0 type=EVT_POP packet=0xff55
+[DRV 0] ofrecido tx#27 pkt=0xff5f @20760
+[DRV 1] pop recibido tx#126 @20900
+[MON] POP  if=1 pkt=0x0126 @20905
+T=20905 [Checker] PASS  [173] tx#126 if=1 type=EVT_POP packet=0x126
+[DRV 1] ofrecido tx#127 pkt=0x3dd3 @20930
+[MON] PUSH if=0 pkt=0xffa0 @21075
+[MON] PUSH if=1 pkt=0xffa0 @21075
+[MON] PUSH if=3 pkt=0xffa0 @21075
+T=21075 [Checker] PASS  [174] tx#226 if=0 type=EVT_PUSH packet=0xffa0
+T=21075 [Checker] PASS  [175] tx#226 if=1 type=EVT_PUSH packet=0xffa0
+T=21075 [Checker] PASS  [176] tx#226 if=3 type=EVT_PUSH packet=0xffa0
+[DRV 2] pop recibido tx#227 @21100
+[MON] POP  if=2 pkt=0x0355 @21105
+T=21105 [Checker] PASS  [177] tx#227 if=2 type=EVT_POP packet=0x355
+[DRV 2] ofrecido tx#228 pkt=0xffff @21160
+[MON] PUSH if=0 pkt=0xffb1 @21275
+[MON] PUSH if=1 pkt=0xffb1 @21275
+[MON] PUSH if=2 pkt=0xffb1 @21275
+T=21275 [Checker] PASS  [178] tx#326 if=0 type=EVT_PUSH packet=0xffb1
+T=21275 [Checker] PASS  [179] tx#326 if=1 type=EVT_PUSH packet=0xffb1
+T=21275 [Checker] PASS  [180] tx#326 if=2 type=EVT_PUSH packet=0xffb1
+[DRV 3] pop recibido tx#327 @21300
+[MON] POP  if=3 pkt=0x0070 @21305
+T=21305 [Checker] PASS  [181] tx#327 if=3 type=EVT_POP packet=0x70
+[DRV 3] ofrecido tx#328 pkt=0xb516 @21340
+[MON] PUSH if=1 pkt=0xff55 @21475
+[MON] PUSH if=2 pkt=0xff55 @21475
+[MON] PUSH if=3 pkt=0xff55 @21475
+T=21475 [Checker] PASS  [182] tx#26 if=1 type=EVT_PUSH packet=0xff55
+T=21475 [Checker] PASS  [183] tx#26 if=2 type=EVT_PUSH packet=0xff55
+T=21475 [Checker] PASS  [184] tx#26 if=3 type=EVT_PUSH packet=0xff55
+[DRV 0] pop recibido tx#27 @21500
+[MON] POP  if=0 pkt=0xff5f @21505
+T=21505 [Checker] PASS  [185] tx#27 if=0 type=EVT_POP packet=0xff5f
+[DRV 0] ofrecido tx#28 pkt=0xffff @21600
+[DRV 1] pop recibido tx#127 @21700
+[MON] POP  if=1 pkt=0x3dd3 @21705
+T=21705 [Checker] PASS  [186] tx#127 if=1 type=EVT_POP packet=0x3dd3
+[DRV 1] ofrecido tx#128 pkt=0x03fc @21740
+[MON] PUSH if=3 pkt=0x0355 @21875
+T=21875 [Checker] PASS  [187] tx#227 if=3 type=EVT_PUSH packet=0x355
+[DRV 2] pop recibido tx#228 @21900
+[MON] POP  if=2 pkt=0xffff @21905
+T=21905 [Checker] PASS  [188] tx#228 if=2 type=EVT_POP packet=0xffff
+[DRV 2] ofrecido tx#229 pkt=0xeeff @21940
+[MON] PUSH if=0 pkt=0x0070 @22075
+T=22075 [Checker] PASS  [189] tx#327 if=0 type=EVT_PUSH packet=0x70
+[DRV 3] pop recibido tx#328 @22100
+[MON] POP  if=3 pkt=0xb516 @22105
+T=22105 [Checker] PASS  [190] tx#328 if=3 type=EVT_POP packet=0xb516
+[DRV 3] ofrecido tx#329 pkt=0x8faa @22120
+[MON] PUSH if=1 pkt=0xff5f @22275
+[MON] PUSH if=2 pkt=0xff5f @22275
+[MON] PUSH if=3 pkt=0xff5f @22275
+T=22275 [Checker] PASS  [191] tx#27 if=1 type=EVT_PUSH packet=0xff5f
+T=22275 [Checker] PASS  [192] tx#27 if=2 type=EVT_PUSH packet=0xff5f
+T=22275 [Checker] PASS  [193] tx#27 if=3 type=EVT_PUSH packet=0xff5f
+[DRV 0] pop recibido tx#28 @22300
+[MON] POP  if=0 pkt=0xffff @22305
+T=22305 [Checker] PASS  [194] tx#28 if=0 type=EVT_POP packet=0xffff
+[DRV 0] ofrecido tx#29 pkt=0xff84 @22380
+[DRV 1] pop recibido tx#128 @22500
+[MON] POP  if=1 pkt=0x03fc @22505
+T=22505 [Checker] PASS  [195] tx#128 if=1 type=EVT_POP packet=0x3fc
+[DRV 1] ofrecido tx#129 pkt=0x0100 @22600
+[MON] PUSH if=0 pkt=0xffff @22675
+[MON] PUSH if=1 pkt=0xffff @22675
+[MON] PUSH if=3 pkt=0xffff @22675
+T=22675 [Checker] PASS  [196] tx#249 if=0 type=EVT_PUSH packet=0xffff
+T=22675 [Checker] WARNING: push if=0 pkt=0xffff sin pop previo en if=2 (retardo no registrado)
+T=22675 [Checker] PASS  [197] tx#92 if=1 type=EVT_PUSH packet=0xffff
+T=22675 [Checker] WARNING: push if=1 pkt=0xffff sin pop previo en if=0 (retardo no registrado)
+T=22675 [Checker] PASS  [198] tx#28 if=3 type=EVT_PUSH packet=0xffff
+[DRV 2] pop recibido tx#229 @22700
+[MON] POP  if=2 pkt=0xeeff @22705
+T=22705 [Checker] PASS  [199] tx#229 if=2 type=EVT_POP packet=0xeeff
+[DRV 2] ofrecido tx#230 pkt=0xff49 @22750
+[DRV 3] pop recibido tx#329 @22900
+[MON] POP  if=3 pkt=0x8faa @22905
+T=22905 [Checker] PASS  [200] tx#329 if=3 type=EVT_POP packet=0x8faa
+[DRV 3] ofrecido tx#330 pkt=0x8500 @22930
+[MON] PUSH if=1 pkt=0xffff @23075
+[MON] PUSH if=2 pkt=0xffff @23075
+[MON] PUSH if=3 pkt=0xffff @23075
+T=23075 [Checker] PASS  [201] tx#228 if=1 type=EVT_PUSH packet=0xffff
+T=23075 [Checker] PASS  [202] tx#92 if=2 type=EVT_PUSH packet=0xffff
+T=23075 [Checker] WARNING: push if=2 pkt=0xffff sin pop previo en if=0 (retardo no registrado)
+T=23075 [Checker] PASS  [203] tx#47 if=3 type=EVT_PUSH packet=0xffff
+T=23075 [Checker] WARNING: push if=3 pkt=0xffff sin pop previo en if=0 (retardo no registrado)
+[DRV 0] pop recibido tx#29 @23100
+[MON] POP  if=0 pkt=0xff84 @23105
+T=23105 [Checker] PASS  [204] tx#29 if=0 type=EVT_POP packet=0xff84
+[DRV 0] ofrecido tx#30 pkt=0x7955 @23180
+[MON] PUSH if=3 pkt=0x03fc @23275
+T=23275 [Checker] PASS  [205] tx#128 if=3 type=EVT_PUSH packet=0x3fc
+[DRV 1] pop recibido tx#129 @23300
+[MON] POP  if=1 pkt=0x0100 @23305
+T=23305 [Checker] PASS  [206] tx#129 if=1 type=EVT_POP packet=0x100
+[DRV 1] ofrecido tx#130 pkt=0x9b50 @23420
+[DRV 2] pop recibido tx#230 @23500
+[MON] POP  if=2 pkt=0xff49 @23505
+T=23505 [Checker] PASS  [207] tx#230 if=2 type=EVT_POP packet=0xff49
+[DRV 2] ofrecido tx#231 pkt=0xa5c0 @23520
+[DRV 3] pop recibido tx#330 @23700
+[MON] POP  if=3 pkt=0x8500 @23705
+T=23705 [Checker] PASS  [208] tx#330 if=3 type=EVT_POP packet=0x8500
+[DRV 3] ofrecido tx#331 pkt=0x0362 @23800
+[MON] PUSH if=1 pkt=0xff84 @23875
+[MON] PUSH if=2 pkt=0xff84 @23875
+[MON] PUSH if=3 pkt=0xff84 @23875
+T=23875 [Checker] PASS  [209] tx#29 if=1 type=EVT_PUSH packet=0xff84
+T=23875 [Checker] PASS  [210] tx#29 if=2 type=EVT_PUSH packet=0xff84
+T=23875 [Checker] PASS  [211] tx#29 if=3 type=EVT_PUSH packet=0xff84
+[DRV 0] pop recibido tx#30 @23900
+[MON] POP  if=0 pkt=0x7955 @23905
+T=23905 [Checker] PASS  [212] tx#30 if=0 type=EVT_POP packet=0x7955
+[DRV 0] ofrecido tx#31 pkt=0xff55 @23960
+[DRV 1] pop recibido tx#130 @24100
+[MON] POP  if=1 pkt=0x9b50 @24105
+T=24105 [Checker] PASS  [213] tx#130 if=1 type=EVT_POP packet=0x9b50
+[DRV 1] ofrecido tx#131 pkt=0x5c00 @24140
+[MON] PUSH if=0 pkt=0xff49 @24275
+[MON] PUSH if=1 pkt=0xff49 @24275
+[MON] PUSH if=3 pkt=0xff49 @24275
+T=24275 [Checker] PASS  [214] tx#230 if=0 type=EVT_PUSH packet=0xff49
+T=24275 [Checker] PASS  [215] tx#230 if=1 type=EVT_PUSH packet=0xff49
+T=24275 [Checker] PASS  [216] tx#230 if=3 type=EVT_PUSH packet=0xff49
+[DRV 2] pop recibido tx#231 @24300
+[MON] POP  if=2 pkt=0xa5c0 @24305
+T=24305 [Checker] PASS  [217] tx#231 if=2 type=EVT_POP packet=0xa5c0
+[DRV 2] ofrecido tx#232 pkt=0xff00 @24420
+[DRV 3] pop recibido tx#331 @24500
+[MON] POP  if=3 pkt=0x0362 @24505
+T=24505 [Checker] PASS  [218] tx#331 if=3 type=EVT_POP packet=0x362
+[DRV 3] ofrecido tx#332 pkt=0x8f8f @24570
+[DRV 0] pop recibido tx#31 @24700
+[MON] POP  if=0 pkt=0xff55 @24705
+T=24705 [Checker] PASS  [219] tx#31 if=0 type=EVT_POP packet=0xff55
+[DRV 0] ofrecido tx#32 pkt=0xacff @24810
+[DRV 1] pop recibido tx#131 @24900
+[MON] POP  if=1 pkt=0x5c00 @24905
+T=24905 [Checker] PASS  [220] tx#131 if=1 type=EVT_POP packet=0x5c00
+[DRV 1] ofrecido tx#132 pkt=0x01a9 @24980
+[DRV 2] pop recibido tx#232 @25100
+[MON] POP  if=2 pkt=0xff00 @25105
+T=25105 [Checker] PASS  [221] tx#232 if=2 type=EVT_POP packet=0xff00
+[DRV 2] ofrecido tx#233 pkt=0x13b9 @25160
+[DRV 3] pop recibido tx#332 @25300
+[MON] POP  if=3 pkt=0x8f8f @25305
+T=25305 [Checker] PASS  [222] tx#332 if=3 type=EVT_POP packet=0x8f8f
+[DRV 3] ofrecido tx#333 pkt=0x03ff @25380
+[MON] PUSH if=1 pkt=0xff55 @25475
+[MON] PUSH if=2 pkt=0xff55 @25475
+[MON] PUSH if=3 pkt=0xff55 @25475
+T=25475 [Checker] PASS  [223] tx#31 if=1 type=EVT_PUSH packet=0xff55
+T=25475 [Checker] PASS  [224] tx#31 if=2 type=EVT_PUSH packet=0xff55
+T=25475 [Checker] PASS  [225] tx#31 if=3 type=EVT_PUSH packet=0xff55
+[DRV 0] pop recibido tx#32 @25500
+[MON] POP  if=0 pkt=0xacff @25505
+T=25505 [Checker] PASS  [226] tx#32 if=0 type=EVT_POP packet=0xacff
+[DRV 0] ofrecido tx#33 pkt=0xfbb1 @25590
+[DRV 1] pop recibido tx#132 @25700
+[MON] POP  if=1 pkt=0x01a9 @25705
+T=25705 [Checker] PASS  [227] tx#132 if=1 type=EVT_POP packet=0x1a9
+[DRV 1] ofrecido tx#133 pkt=0x4328 @25790
+[MON] PUSH if=0 pkt=0xff00 @25875
+[MON] PUSH if=1 pkt=0xff00 @25875
+[MON] PUSH if=3 pkt=0xff00 @25875
+T=25875 [Checker] PASS  [228] tx#169 if=0 type=EVT_PUSH packet=0xff00
+T=25875 [Checker] WARNING: push if=0 pkt=0xff00 sin pop previo en if=1 (retardo no registrado)
+T=25875 [Checker] PASS  [229] tx#88 if=1 type=EVT_PUSH packet=0xff00
+T=25875 [Checker] WARNING: push if=1 pkt=0xff00 sin pop previo en if=0 (retardo no registrado)
+T=25875 [Checker] PASS  [230] tx#88 if=3 type=EVT_PUSH packet=0xff00
+T=25875 [Checker] WARNING: push if=3 pkt=0xff00 sin pop previo en if=0 (retardo no registrado)
+[DRV 2] pop recibido tx#233 @25900
+[MON] POP  if=2 pkt=0x13b9 @25905
+T=25905 [Checker] PASS  [231] tx#233 if=2 type=EVT_POP packet=0x13b9
+[DRV 2] ofrecido tx#234 pkt=0x0255 @26010
+[DRV 3] pop recibido tx#333 @26100
+[MON] POP  if=3 pkt=0x03ff @26105
+T=26105 [Checker] PASS  [232] tx#333 if=3 type=EVT_POP packet=0x3ff
+[DRV 3] ofrecido tx#334 pkt=0x011d @26160
+[DRV 0] pop recibido tx#33 @26300
+[MON] POP  if=0 pkt=0xfbb1 @26305
+T=26305 [Checker] PASS  [233] tx#33 if=0 type=EVT_POP packet=0xfbb1
+[DRV 0] ofrecido tx#34 pkt=0xff55 @26400
+[DRV 1] pop recibido tx#133 @26500
+[MON] POP  if=1 pkt=0x4328 @26505
+T=26505 [Checker] PASS  [234] tx#133 if=1 type=EVT_POP packet=0x4328
+[DRV 1] ofrecido tx#134 pkt=0x333b @26520
+[DRV 2] pop recibido tx#234 @26700
+[MON] POP  if=2 pkt=0x0255 @26705
+T=26705 [Checker] PASS  [235] tx#234 if=2 type=EVT_POP packet=0x255
+[DRV 2] ofrecido tx#235 pkt=0x0200 @26750
+[DRV 3] pop recibido tx#334 @26900
+[MON] POP  if=3 pkt=0x011d @26905
+T=26905 [Checker] PASS  [236] tx#334 if=3 type=EVT_POP packet=0x11d
+[DRV 3] ofrecido tx#335 pkt=0x597e @26990
+[DRV 0] pop recibido tx#34 @27100
+[MON] POP  if=0 pkt=0xff55 @27105
+T=27105 [Checker] PASS  [237] tx#34 if=0 type=EVT_POP packet=0xff55
+[DRV 0] ofrecido tx#35 pkt=0x032e @27180
+[DRV 1] pop recibido tx#134 @27300
+[MON] POP  if=1 pkt=0x333b @27305
+T=27305 [Checker] PASS  [238] tx#134 if=1 type=EVT_POP packet=0x333b
+[DRV 1] ofrecido tx#135 pkt=0xcd00 @27360
+[DRV 2] pop recibido tx#235 @27500
+[MON] POP  if=2 pkt=0x0200 @27505
+T=27505 [Checker] PASS  [239] tx#235 if=2 type=EVT_POP packet=0x200
+[DRV 2] ofrecido tx#236 pkt=0x02df @27610
+[MON] PUSH if=1 pkt=0x011d @27675
+T=27675 [Checker] PASS  [240] tx#334 if=1 type=EVT_PUSH packet=0x11d
+[DRV 3] pop recibido tx#335 @27700
+[MON] POP  if=3 pkt=0x597e @27705
+T=27705 [Checker] PASS  [241] tx#335 if=3 type=EVT_POP packet=0x597e
+[DRV 3] ofrecido tx#336 pkt=0xffaa @27790
+[MON] PUSH if=1 pkt=0xff55 @27875
+[MON] PUSH if=2 pkt=0xff55 @27875
+[MON] PUSH if=3 pkt=0xff55 @27875
+T=27875 [Checker] PASS  [242] tx#34 if=1 type=EVT_PUSH packet=0xff55
+T=27875 [Checker] PASS  [243] tx#34 if=2 type=EVT_PUSH packet=0xff55
+T=27875 [Checker] PASS  [244] tx#34 if=3 type=EVT_PUSH packet=0xff55
+[DRV 0] pop recibido tx#35 @27900
+[MON] POP  if=0 pkt=0x032e @27905
+T=27905 [Checker] PASS  [245] tx#35 if=0 type=EVT_POP packet=0x32e
+[DRV 0] ofrecido tx#36 pkt=0xff70 @27920
+[DRV 1] pop recibido tx#135 @28100
+[MON] POP  if=1 pkt=0xcd00 @28105
+T=28105 [Checker] PASS  [246] tx#135 if=1 type=EVT_POP packet=0xcd00
+[DRV 1] ofrecido tx#136 pkt=0x02fb @28120
+[DRV 2] pop recibido tx#236 @28300
+[MON] POP  if=2 pkt=0x02df @28305
+T=28305 [Checker] PASS  [247] tx#236 if=2 type=EVT_POP packet=0x2df
+[DRV 2] ofrecido tx#237 pkt=0x025b @28360
+[DRV 3] pop recibido tx#336 @28500
+[MON] POP  if=3 pkt=0xffaa @28505
+T=28505 [Checker] PASS  [248] tx#336 if=3 type=EVT_POP packet=0xffaa
+[DRV 3] ofrecido tx#337 pkt=0xff0c @28610
+[MON] PUSH if=3 pkt=0x032e @28675
+T=28675 [Checker] PASS  [249] tx#35 if=3 type=EVT_PUSH packet=0x32e
+[DRV 0] pop recibido tx#36 @28700
+[MON] POP  if=0 pkt=0xff70 @28705
+T=28705 [Checker] PASS  [250] tx#36 if=0 type=EVT_POP packet=0xff70
+[DRV 0] ofrecido tx#37 pkt=0xd2ee @28750
+[DRV 1] pop recibido tx#136 @28900
+[MON] POP  if=1 pkt=0x02fb @28905
+T=28905 [Checker] PASS  [251] tx#136 if=1 type=EVT_POP packet=0x2fb
+[DRV 1] ofrecido tx#137 pkt=0x0000 @28960
+[DRV 2] pop recibido tx#237 @29100
+[MON] POP  if=2 pkt=0x025b @29105
+T=29105 [Checker] PASS  [252] tx#237 if=2 type=EVT_POP packet=0x25b
+[DRV 2] ofrecido tx#238 pkt=0xff55 @29190
+[MON] PUSH if=0 pkt=0xffaa @29275
+[MON] PUSH if=1 pkt=0xffaa @29275
+[MON] PUSH if=2 pkt=0xffaa @29275
+T=29275 [Checker] PASS  [253] tx#165 if=0 type=EVT_PUSH packet=0xffaa
+T=29275 [Checker] WARNING: push if=0 pkt=0xffaa sin pop previo en if=1 (retardo no registrado)
+T=29275 [Checker] PASS  [254] tx#252 if=1 type=EVT_PUSH packet=0xffaa
+T=29275 [Checker] WARNING: push if=1 pkt=0xffaa sin pop previo en if=2 (retardo no registrado)
+T=29275 [Checker] PASS  [255] tx#162 if=2 type=EVT_PUSH packet=0xffaa
+T=29275 [Checker] WARNING: push if=2 pkt=0xffaa sin pop previo en if=1 (retardo no registrado)
+[DRV 3] pop recibido tx#337 @29300
+[MON] POP  if=3 pkt=0xff0c @29305
+T=29305 [Checker] PASS  [256] tx#337 if=3 type=EVT_POP packet=0xff0c
+[DRV 3] ofrecido tx#338 pkt=0xffff @29390
+[MON] PUSH if=1 pkt=0xff70 @29475
+[MON] PUSH if=2 pkt=0xff70 @29475
+[MON] PUSH if=3 pkt=0xff70 @29475
+T=29475 [Checker] PASS  [257] tx#36 if=1 type=EVT_PUSH packet=0xff70
+T=29475 [Checker] PASS  [258] tx#36 if=2 type=EVT_PUSH packet=0xff70
+T=29475 [Checker] PASS  [259] tx#36 if=3 type=EVT_PUSH packet=0xff70
+[DRV 0] pop recibido tx#37 @29500
+[MON] POP  if=0 pkt=0xd2ee @29505
+T=29505 [Checker] PASS  [260] tx#37 if=0 type=EVT_POP packet=0xd2ee
+[DRV 0] ofrecido tx#38 pkt=0x0078 @29520
+[MON] PUSH if=2 pkt=0x02fb @29675
+T=29675 [Checker] PASS  [261] tx#136 if=2 type=EVT_PUSH packet=0x2fb
+[DRV 1] pop recibido tx#137 @29700
+[MON] POP  if=1 pkt=0x0000 @29705
+T=29705 [Checker] PASS  [262] tx#137 if=1 type=EVT_POP packet=0x0
+[DRV 1] ofrecido tx#138 pkt=0x7673 @29730
+[DRV 2] pop recibido tx#238 @29900
+[MON] POP  if=2 pkt=0xff55 @29905
+T=29905 [Checker] PASS  [263] tx#238 if=2 type=EVT_POP packet=0xff55
+[DRV 2] ofrecido tx#239 pkt=0xd500 @29950
+[MON] PUSH if=0 pkt=0xff0c @30075
+[MON] PUSH if=1 pkt=0xff0c @30075
+[MON] PUSH if=2 pkt=0xff0c @30075
+T=30075 [Checker] PASS  [264] tx#337 if=0 type=EVT_PUSH packet=0xff0c
+T=30075 [Checker] PASS  [265] tx#337 if=1 type=EVT_PUSH packet=0xff0c
+T=30075 [Checker] PASS  [266] tx#337 if=2 type=EVT_PUSH packet=0xff0c
+[DRV 3] pop recibido tx#338 @30100
+[MON] POP  if=3 pkt=0xffff @30105
+T=30105 [Checker] PASS  [267] tx#338 if=3 type=EVT_POP packet=0xffff
+[DRV 3] ofrecido tx#339 pkt=0x0255 @30220
+[DRV 0] pop recibido tx#38 @30300
+[MON] POP  if=0 pkt=0x0078 @30305
+T=30305 [Checker] PASS  [268] tx#38 if=0 type=EVT_POP packet=0x78
+[DRV 0] ofrecido tx#39 pkt=0x0013 @30390
+[MON] PUSH if=0 pkt=0x0000 @30475
+T=30475 [Checker] PASS  [269] tx#137 if=0 type=EVT_PUSH packet=0x0
+[DRV 1] pop recibido tx#138 @30500
+[MON] POP  if=1 pkt=0x7673 @30505
+T=30505 [Checker] PASS  [270] tx#138 if=1 type=EVT_POP packet=0x7673
+[DRV 1] ofrecido tx#139 pkt=0x0232 @30560
+[MON] PUSH if=0 pkt=0xff55 @30675
+[MON] PUSH if=1 pkt=0xff55 @30675
+[MON] PUSH if=3 pkt=0xff55 @30675
+T=30675 [Checker] PASS  [271] tx#184 if=0 type=EVT_PUSH packet=0xff55
+T=30675 [Checker] WARNING: push if=0 pkt=0xff55 sin pop previo en if=1 (retardo no registrado)
+T=30675 [Checker] PASS  [272] tx#95 if=1 type=EVT_PUSH packet=0xff55
+T=30675 [Checker] WARNING: push if=1 pkt=0xff55 sin pop previo en if=0 (retardo no registrado)
+T=30675 [Checker] PASS  [273] tx#95 if=3 type=EVT_PUSH packet=0xff55
+T=30675 [Checker] WARNING: push if=3 pkt=0xff55 sin pop previo en if=0 (retardo no registrado)
+[DRV 2] pop recibido tx#239 @30700
+[MON] POP  if=2 pkt=0xd500 @30705
+T=30705 [Checker] PASS  [274] tx#239 if=2 type=EVT_POP packet=0xd500
+[DRV 2] ofrecido tx#240 pkt=0x63aa @30730
+[MON] PUSH if=0 pkt=0xffff @30875
+[MON] PUSH if=1 pkt=0xffff @30875
+[MON] PUSH if=2 pkt=0xffff @30875
+T=30875 [Checker] PASS  [275] tx#250 if=0 type=EVT_PUSH packet=0xffff
+T=30875 [Checker] WARNING: push if=0 pkt=0xffff sin pop previo en if=2 (retardo no registrado)
+T=30875 [Checker] PASS  [276] tx#249 if=1 type=EVT_PUSH packet=0xffff
+T=30875 [Checker] WARNING: push if=1 pkt=0xffff sin pop previo en if=2 (retardo no registrado)
+T=30875 [Checker] PASS  [277] tx#192 if=2 type=EVT_PUSH packet=0xffff
+T=30875 [Checker] WARNING: push if=2 pkt=0xffff sin pop previo en if=1 (retardo no registrado)
+[DRV 3] pop recibido tx#339 @30900
+[MON] POP  if=3 pkt=0x0255 @30905
+T=30905 [Checker] PASS  [278] tx#339 if=3 type=EVT_POP packet=0x255
+[DRV 3] ofrecido tx#340 pkt=0x17da @31010
+[DRV 0] pop recibido tx#39 @31100
+[MON] POP  if=0 pkt=0x0013 @31105
+T=31105 [Checker] PASS  [279] tx#39 if=0 type=EVT_POP packet=0x13
+[DRV 0] ofrecido tx#40 pkt=0x6555 @31130
+[DRV 1] pop recibido tx#139 @31300
+[MON] POP  if=1 pkt=0x0232 @31305
+T=31305 [Checker] PASS  [280] tx#139 if=1 type=EVT_POP packet=0x232
+[DRV 1] ofrecido tx#140 pkt=0xd972 @31360
+[DRV 2] pop recibido tx#240 @31500
+[MON] POP  if=2 pkt=0x63aa @31505
+T=31505 [Checker] PASS  [281] tx#240 if=2 type=EVT_POP packet=0x63aa
+[DRV 2] ofrecido tx#241 pkt=0x9855 @31540
+[MON] PUSH if=2 pkt=0x0255 @31675
+T=31675 [Checker] PASS  [282] tx#339 if=2 type=EVT_PUSH packet=0x255
+[DRV 3] pop recibido tx#340 @31700
+[MON] POP  if=3 pkt=0x17da @31705
+T=31705 [Checker] PASS  [283] tx#340 if=3 type=EVT_POP packet=0x17da
+[DRV 3] ofrecido tx#341 pkt=0xff55 @31790
+[DRV 0] pop recibido tx#40 @31900
+[MON] POP  if=0 pkt=0x6555 @31905
+T=31905 [Checker] PASS  [284] tx#40 if=0 type=EVT_POP packet=0x6555
+[DRV 0] ofrecido tx#41 pkt=0xb5e2 @31990
+[MON] PUSH if=2 pkt=0x0232 @32075
+T=32075 [Checker] PASS  [285] tx#139 if=2 type=EVT_PUSH packet=0x232
+[DRV 1] pop recibido tx#140 @32100
+[MON] POP  if=1 pkt=0xd972 @32105
+T=32105 [Checker] PASS  [286] tx#140 if=1 type=EVT_POP packet=0xd972
+[DRV 1] ofrecido tx#141 pkt=0xe1aa @32120
+[DRV 2] pop recibido tx#241 @32300
+[MON] POP  if=2 pkt=0x9855 @32305
+T=32305 [Checker] PASS  [287] tx#241 if=2 type=EVT_POP packet=0x9855
+[DRV 2] ofrecido tx#242 pkt=0xff00 @32420
+[DRV 3] pop recibido tx#341 @32500
+[MON] POP  if=3 pkt=0xff55 @32505
+T=32505 [Checker] PASS  [288] tx#341 if=3 type=EVT_POP packet=0xff55
+[DRV 3] ofrecido tx#342 pkt=0x760c @32610
+[DRV 0] pop recibido tx#41 @32700
+[MON] POP  if=0 pkt=0xb5e2 @32705
+T=32705 [Checker] PASS  [289] tx#41 if=0 type=EVT_POP packet=0xb5e2
+[DRV 0] ofrecido tx#42 pkt=0x0352 @32790
+[DRV 1] pop recibido tx#141 @32900
+[MON] POP  if=1 pkt=0xe1aa @32905
+T=32905 [Checker] PASS  [290] tx#141 if=1 type=EVT_POP packet=0xe1aa
+[DRV 1] ofrecido tx#142 pkt=0x02ff @33010
+[DRV 2] pop recibido tx#242 @33100
+[MON] POP  if=2 pkt=0xff00 @33105
+T=33105 [Checker] PASS  [291] tx#242 if=2 type=EVT_POP packet=0xff00
+[DRV 2] ofrecido tx#243 pkt=0xfff4 @33190
+[MON] PUSH if=0 pkt=0xff55 @33275
+[MON] PUSH if=1 pkt=0xff55 @33275
+[MON] PUSH if=2 pkt=0xff55 @33275
+T=33275 [Checker] PASS  [292] tx#238 if=0 type=EVT_PUSH packet=0xff55
+T=33275 [Checker] PASS  [293] tx#238 if=1 type=EVT_PUSH packet=0xff55
+T=33275 [Checker] PASS  [294] tx#95 if=2 type=EVT_PUSH packet=0xff55
+T=33275 [Checker] WARNING: push if=2 pkt=0xff55 sin pop previo en if=0 (retardo no registrado)
+[DRV 3] pop recibido tx#342 @33300
+[MON] POP  if=3 pkt=0x760c @33305
+T=33305 [Checker] PASS  [295] tx#342 if=3 type=EVT_POP packet=0x760c
+[DRV 3] ofrecido tx#343 pkt=0x1941 @33350
+[DRV 0] pop recibido tx#42 @33500
+[MON] POP  if=0 pkt=0x0352 @33505
+T=33505 [Checker] PASS  [296] tx#42 if=0 type=EVT_POP packet=0x352
+[DRV 0] ofrecido tx#43 pkt=0x00b2 @33540
+[DRV 1] pop recibido tx#142 @33700
+[MON] POP  if=1 pkt=0x02ff @33705
+T=33705 [Checker] PASS  [297] tx#142 if=1 type=EVT_POP packet=0x2ff
+[DRV 1] ofrecido tx#143 pkt=0xff00 @33790
+[MON] PUSH if=0 pkt=0xff00 @33875
+[MON] PUSH if=1 pkt=0xff00 @33875
+[MON] PUSH if=3 pkt=0xff00 @33875
+T=33875 [Checker] PASS  [298] tx#193 if=0 type=EVT_PUSH packet=0xff00
+T=33875 [Checker] WARNING: push if=0 pkt=0xff00 sin pop previo en if=1 (retardo no registrado)
+T=33875 [Checker] PASS  [299] tx#221 if=1 type=EVT_PUSH packet=0xff00
+T=33875 [Checker] PASS  [300] tx#143 if=3 type=EVT_PUSH packet=0xff00
+T=33875 [Checker] WARNING: push if=3 pkt=0xff00 sin pop previo en if=1 (retardo no registrado)
+[DRV 2] pop recibido tx#243 @33900
+[MON] POP  if=2 pkt=0xfff4 @33905
+T=33905 [Checker] PASS  [301] tx#243 if=2 type=EVT_POP packet=0xfff4
+[DRV 2] ofrecido tx#244 pkt=0xffb0 @33940
+[DRV 3] pop recibido tx#343 @34100
+[MON] POP  if=3 pkt=0x1941 @34105
+T=34105 [Checker] PASS  [302] tx#343 if=3 type=EVT_POP packet=0x1941
+[DRV 3] ofrecido tx#344 pkt=0xff6c @34220
+[MON] PUSH if=3 pkt=0x0352 @34275
+T=34275 [Checker] PASS  [303] tx#42 if=3 type=EVT_PUSH packet=0x352
+[DRV 0] pop recibido tx#43 @34300
+[MON] POP  if=0 pkt=0x00b2 @34305
+T=34305 [Checker] PASS  [304] tx#43 if=0 type=EVT_POP packet=0xb2
+[DRV 0] ofrecido tx#44 pkt=0xa6aa @34330
+[MON] PUSH if=2 pkt=0x02ff @34475
+T=34475 [Checker] PASS  [305] tx#86 if=2 type=EVT_PUSH packet=0x2ff
+T=34475 [Checker] WARNING: push if=2 pkt=0x2ff sin pop previo en if=0 (retardo no registrado)
+[DRV 1] pop recibido tx#143 @34500
+[MON] POP  if=1 pkt=0xff00 @34505
+T=34505 [Checker] PASS  [306] tx#143 if=1 type=EVT_POP packet=0xff00
+[DRV 1] ofrecido tx#144 pkt=0x3a00 @34550
+[MON] PUSH if=0 pkt=0xfff4 @34675
+[MON] PUSH if=1 pkt=0xfff4 @34675
+[MON] PUSH if=3 pkt=0xfff4 @34675
+T=34675 [Checker] PASS  [307] tx#243 if=0 type=EVT_PUSH packet=0xfff4
+T=34675 [Checker] PASS  [308] tx#243 if=1 type=EVT_PUSH packet=0xfff4
+T=34675 [Checker] PASS  [309] tx#243 if=3 type=EVT_PUSH packet=0xfff4
+[DRV 2] pop recibido tx#244 @34700
+[MON] POP  if=2 pkt=0xffb0 @34705
+T=34705 [Checker] PASS  [310] tx#244 if=2 type=EVT_POP packet=0xffb0
+[DRV 2] ofrecido tx#245 pkt=0xff65 @34750
+[DRV 3] pop recibido tx#344 @34900
+[MON] POP  if=3 pkt=0xff6c @34905
+T=34905 [Checker] PASS  [311] tx#344 if=3 type=EVT_POP packet=0xff6c
+[DRV 3] ofrecido tx#345 pkt=0xff3b @35020
+[DRV 0] pop recibido tx#44 @35100
+[MON] POP  if=0 pkt=0xa6aa @35105
+T=35105 [Checker] PASS  [312] tx#44 if=0 type=EVT_POP packet=0xa6aa
+[DRV 0] ofrecido tx#45 pkt=0x6ee5 @35140
+[MON] PUSH if=0 pkt=0xff00 @35275
+[MON] PUSH if=2 pkt=0xff00 @35275
+[MON] PUSH if=3 pkt=0xff00 @35275
+T=35275 [Checker] PASS  [313] tx#221 if=0 type=EVT_PUSH packet=0xff00
+T=35275 [Checker] PASS  [314] tx#58 if=2 type=EVT_PUSH packet=0xff00
+T=35275 [Checker] WARNING: push if=2 pkt=0xff00 sin pop previo en if=0 (retardo no registrado)
+T=35275 [Checker] PASS  [315] tx#169 if=3 type=EVT_PUSH packet=0xff00
+T=35275 [Checker] WARNING: push if=3 pkt=0xff00 sin pop previo en if=1 (retardo no registrado)
+[DRV 1] pop recibido tx#144 @35300
+[MON] POP  if=1 pkt=0x3a00 @35305
+T=35305 [Checker] PASS  [316] tx#144 if=1 type=EVT_POP packet=0x3a00
+[DRV 1] ofrecido tx#145 pkt=0x00e4 @35340
+[MON] PUSH if=0 pkt=0xffb0 @35475
+[MON] PUSH if=1 pkt=0xffb0 @35475
+[MON] PUSH if=3 pkt=0xffb0 @35475
+T=35475 [Checker] PASS  [317] tx#244 if=0 type=EVT_PUSH packet=0xffb0
+T=35475 [Checker] PASS  [318] tx#244 if=1 type=EVT_PUSH packet=0xffb0
+T=35475 [Checker] PASS  [319] tx#244 if=3 type=EVT_PUSH packet=0xffb0
+[DRV 2] pop recibido tx#245 @35500
+[MON] POP  if=2 pkt=0xff65 @35505
+T=35505 [Checker] PASS  [320] tx#245 if=2 type=EVT_POP packet=0xff65
+[DRV 2] ofrecido tx#246 pkt=0x0200 @35610
+[MON] PUSH if=0 pkt=0xff6c @35675
+[MON] PUSH if=1 pkt=0xff6c @35675
+[MON] PUSH if=2 pkt=0xff6c @35675
+T=35675 [Checker] PASS  [321] tx#344 if=0 type=EVT_PUSH packet=0xff6c
+T=35675 [Checker] PASS  [322] tx#344 if=1 type=EVT_PUSH packet=0xff6c
+T=35675 [Checker] PASS  [323] tx#344 if=2 type=EVT_PUSH packet=0xff6c
+[DRV 3] pop recibido tx#345 @35700
+[MON] POP  if=3 pkt=0xff3b @35705
+T=35705 [Checker] PASS  [324] tx#345 if=3 type=EVT_POP packet=0xff3b
+[DRV 3] ofrecido tx#346 pkt=0xebf5 @35740
+[DRV 0] pop recibido tx#45 @35900
+[MON] POP  if=0 pkt=0x6ee5 @35905
+T=35905 [Checker] PASS  [325] tx#45 if=0 type=EVT_POP packet=0x6ee5
+[DRV 0] ofrecido tx#46 pkt=0xaeaa @35940
+[DRV 1] pop recibido tx#145 @36100
+[MON] POP  if=1 pkt=0x00e4 @36105
+T=36105 [Checker] PASS  [326] tx#145 if=1 type=EVT_POP packet=0xe4
+[DRV 1] ofrecido tx#146 pkt=0x0000 @36130
+[MON] PUSH if=0 pkt=0xff65 @36275
+[MON] PUSH if=1 pkt=0xff65 @36275
+[MON] PUSH if=3 pkt=0xff65 @36275
+T=36275 [Checker] PASS  [327] tx#245 if=0 type=EVT_PUSH packet=0xff65
+T=36275 [Checker] PASS  [328] tx#245 if=1 type=EVT_PUSH packet=0xff65
+T=36275 [Checker] PASS  [329] tx#245 if=3 type=EVT_PUSH packet=0xff65
+[DRV 2] pop recibido tx#246 @36300
+[MON] POP  if=2 pkt=0x0200 @36305
+T=36305 [Checker] PASS  [330] tx#246 if=2 type=EVT_POP packet=0x200
+[DRV 2] ofrecido tx#247 pkt=0x74e3 @36360
+[MON] PUSH if=0 pkt=0xff3b @36475
+[MON] PUSH if=1 pkt=0xff3b @36475
+[MON] PUSH if=2 pkt=0xff3b @36475
+T=36475 [Checker] PASS  [331] tx#345 if=0 type=EVT_PUSH packet=0xff3b
+T=36475 [Checker] PASS  [332] tx#345 if=1 type=EVT_PUSH packet=0xff3b
+T=36475 [Checker] PASS  [333] tx#345 if=2 type=EVT_PUSH packet=0xff3b
+[DRV 3] pop recibido tx#346 @36500
+[MON] POP  if=3 pkt=0xebf5 @36505
+T=36505 [Checker] PASS  [334] tx#346 if=3 type=EVT_POP packet=0xebf5
+[DRV 3] ofrecido tx#347 pkt=0x01ff @36620
+[DRV 0] pop recibido tx#46 @36700
+[MON] POP  if=0 pkt=0xaeaa @36705
+T=36705 [Checker] PASS  [335] tx#46 if=0 type=EVT_POP packet=0xaeaa
+[DRV 0] ofrecido tx#47 pkt=0xffff @36720
+[MON] PUSH if=0 pkt=0x00e4 @36875
+T=36875 [Checker] PASS  [336] tx#145 if=0 type=EVT_PUSH packet=0xe4
+[DRV 1] pop recibido tx#146 @36900
+[MON] POP  if=1 pkt=0x0000 @36905
+T=36905 [Checker] PASS  [337] tx#146 if=1 type=EVT_POP packet=0x0
+[DRV 1] ofrecido tx#147 pkt=0x00aa @36990
+[DRV 2] pop recibido tx#247 @37100
+[MON] POP  if=2 pkt=0x74e3 @37105
+T=37105 [Checker] PASS  [338] tx#247 if=2 type=EVT_POP packet=0x74e3
+[DRV 2] ofrecido tx#248 pkt=0x01aa @37150
+[DRV 3] pop recibido tx#347 @37300
+[MON] POP  if=3 pkt=0x01ff @37305
+T=37305 [Checker] PASS  [339] tx#347 if=3 type=EVT_POP packet=0x1ff
+[DRV 3] ofrecido tx#348 pkt=0x0337 @37410
+[DRV 0] pop recibido tx#47 @37500
+[MON] POP  if=0 pkt=0xffff @37505
+T=37505 [Checker] PASS  [340] tx#47 if=0 type=EVT_POP packet=0xffff
+[DRV 0] ofrecido tx#48 pkt=0x259a @37570
+[MON] PUSH if=0 pkt=0x0000 @37675
+T=37675 [Checker] PASS  [341] tx#146 if=0 type=EVT_PUSH packet=0x0
+[DRV 1] pop recibido tx#147 @37700
+[MON] POP  if=1 pkt=0x00aa @37705
+T=37705 [Checker] PASS  [342] tx#147 if=1 type=EVT_POP packet=0xaa
+[DRV 1] ofrecido tx#148 pkt=0x518e @37810
+[DRV 2] pop recibido tx#248 @37900
+[MON] POP  if=2 pkt=0x01aa @37905
+T=37905 [Checker] PASS  [343] tx#248 if=2 type=EVT_POP packet=0x1aa
+[DRV 2] ofrecido tx#249 pkt=0xffff @37980
+[MON] PUSH if=1 pkt=0x01ff @38075
+T=38075 [Checker] PASS  [344] tx#347 if=1 type=EVT_PUSH packet=0x1ff
+[DRV 3] pop recibido tx#348 @38100
+[MON] POP  if=3 pkt=0x0337 @38105
+T=38105 [Checker] PASS  [345] tx#348 if=3 type=EVT_POP packet=0x337
+[DRV 3] ofrecido tx#349 pkt=0x636e @38180
+[MON] PUSH if=1 pkt=0xffff @38275
+[MON] PUSH if=2 pkt=0xffff @38275
+[MON] PUSH if=3 pkt=0xffff @38275
+T=38275 [Checker] PASS  [346] tx#250 if=1 type=EVT_PUSH packet=0xffff
+T=38275 [Checker] WARNING: push if=1 pkt=0xffff sin pop previo en if=2 (retardo no registrado)
+T=38275 [Checker] PASS  [347] tx#316 if=2 type=EVT_PUSH packet=0xffff
+T=38275 [Checker] PASS  [348] tx#92 if=3 type=EVT_PUSH packet=0xffff
+T=38275 [Checker] WARNING: push if=3 pkt=0xffff sin pop previo en if=0 (retardo no registrado)
+[DRV 0] pop recibido tx#48 @38300
+[MON] POP  if=0 pkt=0x259a @38305
+T=38305 [Checker] PASS  [349] tx#48 if=0 type=EVT_POP packet=0x259a
+[DRV 0] ofrecido tx#49 pkt=0x0000 @38360
+[MON] PUSH if=0 pkt=0x00aa @38475
+T=38475 [Checker] PASS  [350] tx#147 if=0 type=EVT_PUSH packet=0xaa
+[DRV 1] pop recibido tx#148 @38500
+[MON] POP  if=1 pkt=0x518e @38505
+T=38505 [Checker] PASS  [351] tx#148 if=1 type=EVT_POP packet=0x518e
+[DRV 1] ofrecido tx#149 pkt=0x00ff @38560
+[MON] PUSH if=1 pkt=0x01aa @38675
+T=38675 [Checker] PASS  [352] tx#87 if=1 type=EVT_PUSH packet=0x1aa
+T=38675 [Checker] WARNING: push if=1 pkt=0x1aa sin pop previo en if=0 (retardo no registrado)
+[DRV 2] pop recibido tx#249 @38700
+[MON] POP  if=2 pkt=0xffff @38705
+T=38705 [Checker] PASS  [353] tx#249 if=2 type=EVT_POP packet=0xffff
+[DRV 2] ofrecido tx#250 pkt=0xffff @38740
+[DRV 3] pop recibido tx#349 @38900
+[MON] POP  if=3 pkt=0x636e @38905
+T=38905 [Checker] PASS  [354] tx#349 if=3 type=EVT_POP packet=0x636e
+[DRV 3] ofrecido tx#350 pkt=0x122b @38990
+[DRV 0] pop recibido tx#49 @39100
+[MON] POP  if=0 pkt=0x0000 @39105
+T=39105 [Checker] PASS  [355] tx#49 if=0 type=EVT_POP packet=0x0
+[DRV 0] ofrecido tx#50 pkt=0x8d2e @39200
+[DRV 1] pop recibido tx#149 @39300
+[MON] POP  if=1 pkt=0x00ff @39305
+T=39305 [Checker] PASS  [356] tx#149 if=1 type=EVT_POP packet=0xff
+[DRV 1] ofrecido tx#150 pkt=0xd2aa @39400
+[MON] PUSH if=0 pkt=0xffff @39475
+[MON] PUSH if=1 pkt=0xffff @39475
+[MON] PUSH if=3 pkt=0xffff @39475
+T=39475 [Checker] PASS  [357] tx#279 if=0 type=EVT_PUSH packet=0xffff
+T=39475 [Checker] WARNING: push if=0 pkt=0xffff sin pop previo en if=2 (retardo no registrado)
+T=39475 [Checker] PASS  [358] tx#279 if=1 type=EVT_PUSH packet=0xffff
+T=39475 [Checker] WARNING: push if=1 pkt=0xffff sin pop previo en if=2 (retardo no registrado)
+T=39475 [Checker] PASS  [359] tx#192 if=3 type=EVT_PUSH packet=0xffff
+T=39475 [Checker] WARNING: push if=3 pkt=0xffff sin pop previo en if=1 (retardo no registrado)
+[DRV 2] pop recibido tx#250 @39500
+[MON] POP  if=2 pkt=0xffff @39505
+T=39505 [Checker] PASS  [360] tx#250 if=2 type=EVT_POP packet=0xffff
+[DRV 2] ofrecido tx#251 pkt=0x1b00 @39550
+[DRV 3] pop recibido tx#350 @39700
+[MON] POP  if=3 pkt=0x122b @39705
+T=39705 [Checker] PASS  [361] tx#350 if=3 type=EVT_POP packet=0x122b
+[DRV 3] ofrecido tx#351 pkt=0xfb9f @39820
+[DRV 0] pop recibido tx#50 @39900
+[MON] POP  if=0 pkt=0x8d2e @39905
+T=39905 [Checker] PASS  [362] tx#50 if=0 type=EVT_POP packet=0x8d2e
+[DRV 0] ofrecido tx#51 pkt=0x00aa @40010
+[MON] PUSH if=0 pkt=0x00ff @40075
+T=40075 [Checker] PASS  [363] tx#149 if=0 type=EVT_PUSH packet=0xff
+[DRV 1] pop recibido tx#150 @40100
+[MON] POP  if=1 pkt=0xd2aa @40105
+T=40105 [Checker] PASS  [364] tx#150 if=1 type=EVT_POP packet=0xd2aa
+[DRV 1] ofrecido tx#151 pkt=0xd9b9 @40180
+[MON] PUSH if=0 pkt=0xffff @40275
+[MON] PUSH if=1 pkt=0xffff @40275
+[MON] PUSH if=3 pkt=0xffff @40275
+T=40275 [Checker] PASS  [365] tx#285 if=0 type=EVT_PUSH packet=0xffff
+T=40275 [Checker] WARNING: push if=0 pkt=0xffff sin pop previo en if=2 (retardo no registrado)
+T=40275 [Checker] PASS  [366] tx#285 if=1 type=EVT_PUSH packet=0xffff
+T=40275 [Checker] WARNING: push if=1 pkt=0xffff sin pop previo en if=2 (retardo no registrado)
+T=40275 [Checker] PASS  [367] tx#228 if=3 type=EVT_PUSH packet=0xffff
+[DRV 2] pop recibido tx#251 @40300
+[MON] POP  if=2 pkt=0x1b00 @40305
+T=40305 [Checker] PASS  [368] tx#251 if=2 type=EVT_POP packet=0x1b00
+[DRV 2] ofrecido tx#252 pkt=0xffaa @40360
+[DRV 3] pop recibido tx#351 @40500
+[MON] POP  if=3 pkt=0xfb9f @40505
+T=40505 [Checker] PASS  [369] tx#351 if=3 type=EVT_POP packet=0xfb9f
+[DRV 3] ofrecido tx#352 pkt=0x68ff @40550
+[DRV 0] pop recibido tx#51 @40700
+[MON] POP  if=0 pkt=0x00aa @40705
+T=40705 [Checker] PASS  [370] tx#51 if=0 type=EVT_POP packet=0xaa
+[DRV 0] ofrecido tx#52 pkt=0x90d4 @40750
+[DRV 1] pop recibido tx#151 @40900
+[MON] POP  if=1 pkt=0xd9b9 @40905
+T=40905 [Checker] PASS  [371] tx#151 if=1 type=EVT_POP packet=0xd9b9
+[DRV 1] ofrecido tx#152 pkt=0x0100 @40970
+[DRV 2] pop recibido tx#252 @41100
+[MON] POP  if=2 pkt=0xffaa @41105
+T=41105 [Checker] PASS  [372] tx#252 if=2 type=EVT_POP packet=0xffaa
+[DRV 2] ofrecido tx#253 pkt=0x3400 @41160
+[DRV 3] pop recibido tx#352 @41300
+[MON] POP  if=3 pkt=0x68ff @41305
+T=41305 [Checker] PASS  [373] tx#352 if=3 type=EVT_POP packet=0x68ff
+[DRV 3] ofrecido tx#353 pkt=0xeeaa @41320
+[DRV 0] pop recibido tx#52 @41500
+[MON] POP  if=0 pkt=0x90d4 @41505
+T=41505 [Checker] PASS  [374] tx#52 if=0 type=EVT_POP packet=0x90d4
+[DRV 0] ofrecido tx#53 pkt=0x12bb @41520
+[DRV 1] pop recibido tx#152 @41700
+[MON] POP  if=1 pkt=0x0100 @41705
+T=41705 [Checker] PASS  [375] tx#152 if=1 type=EVT_POP packet=0x100
+[DRV 1] ofrecido tx#153 pkt=0xff37 @41770
+[MON] PUSH if=0 pkt=0xffaa @41875
+[MON] PUSH if=1 pkt=0xffaa @41875
+[MON] PUSH if=3 pkt=0xffaa @41875
+T=41875 [Checker] PASS  [376] tx#252 if=0 type=EVT_PUSH packet=0xffaa
+T=41875 [Checker] PASS  [377] tx#276 if=1 type=EVT_PUSH packet=0xffaa
+T=41875 [Checker] WARNING: push if=1 pkt=0xffaa sin pop previo en if=2 (retardo no registrado)
+T=41875 [Checker] PASS  [378] tx#119 if=3 type=EVT_PUSH packet=0xffaa
+[DRV 2] pop recibido tx#253 @41900
+[MON] POP  if=2 pkt=0x3400 @41905
+T=41905 [Checker] PASS  [379] tx#253 if=2 type=EVT_POP packet=0x3400
+[DRV 2] ofrecido tx#254 pkt=0x02c7 @41960
+[DRV 3] pop recibido tx#353 @42100
+[MON] POP  if=3 pkt=0xeeaa @42105
+T=42105 [Checker] PASS  [380] tx#353 if=3 type=EVT_POP packet=0xeeaa
+[DRV 3] ofrecido tx#354 pkt=0x8c04 @42140
+[DRV 0] pop recibido tx#53 @42300
+[MON] POP  if=0 pkt=0x12bb @42305
+T=42305 [Checker] PASS  [381] tx#53 if=0 type=EVT_POP packet=0x12bb
+[DRV 0] ofrecido tx#54 pkt=0x0000 @42370
+[DRV 1] pop recibido tx#153 @42500
+[MON] POP  if=1 pkt=0xff37 @42505
+T=42505 [Checker] PASS  [382] tx#153 if=1 type=EVT_POP packet=0xff37
+[DRV 1] ofrecido tx#154 pkt=0x01e4 @42550
+[DRV 2] pop recibido tx#254 @42700
+[MON] POP  if=2 pkt=0x02c7 @42705
+T=42705 [Checker] PASS  [383] tx#254 if=2 type=EVT_POP packet=0x2c7
+[DRV 2] ofrecido tx#255 pkt=0x6e36 @42800
+[DRV 3] pop recibido tx#354 @42900
+[MON] POP  if=3 pkt=0x8c04 @42905
+T=42905 [Checker] PASS  [384] tx#354 if=3 type=EVT_POP packet=0x8c04
+[DRV 3] ofrecido tx#355 pkt=0x0370 @42950
+[DRV 0] pop recibido tx#54 @43100
+[MON] POP  if=0 pkt=0x0000 @43105
+T=43105 [Checker] PASS  [385] tx#54 if=0 type=EVT_POP packet=0x0
+[DRV 0] ofrecido tx#55 pkt=0x652c @43150
+[MON] PUSH if=0 pkt=0xff37 @43275
+[MON] PUSH if=2 pkt=0xff37 @43275
+[MON] PUSH if=3 pkt=0xff37 @43275
+T=43275 [Checker] PASS  [386] tx#153 if=0 type=EVT_PUSH packet=0xff37
+T=43275 [Checker] PASS  [387] tx#61 if=2 type=EVT_PUSH packet=0xff37
+T=43275 [Checker] WARNING: push if=2 pkt=0xff37 sin pop previo en if=0 (retardo no registrado)
+T=43275 [Checker] PASS  [388] tx#61 if=3 type=EVT_PUSH packet=0xff37
+T=43275 [Checker] WARNING: push if=3 pkt=0xff37 sin pop previo en if=0 (retardo no registrado)
+[DRV 1] pop recibido tx#154 @43300
+[MON] POP  if=1 pkt=0x01e4 @43305
+T=43305 [Checker] PASS  [389] tx#154 if=1 type=EVT_POP packet=0x1e4
+[DRV 1] ofrecido tx#155 pkt=0xc355 @43390
+[DRV 2] pop recibido tx#255 @43500
+[MON] POP  if=2 pkt=0x6e36 @43505
+T=43505 [Checker] PASS  [390] tx#255 if=2 type=EVT_POP packet=0x6e36
+[DRV 2] ofrecido tx#256 pkt=0x7551 @43570
+[DRV 3] pop recibido tx#355 @43700
+[MON] POP  if=3 pkt=0x0370 @43705
+T=43705 [Checker] PASS  [391] tx#355 if=3 type=EVT_POP packet=0x370
+[DRV 3] ofrecido tx#356 pkt=0xff0a @43780
+[DRV 0] pop recibido tx#55 @43900
+[MON] POP  if=0 pkt=0x652c @43905
+T=43905 [Checker] PASS  [392] tx#55 if=0 type=EVT_POP packet=0x652c
+[DRV 0] ofrecido tx#56 pkt=0x0000 @43990
+[DRV 1] pop recibido tx#155 @44100
+[MON] POP  if=1 pkt=0xc355 @44105
+T=44105 [Checker] PASS  [393] tx#155 if=1 type=EVT_POP packet=0xc355
+[DRV 1] ofrecido tx#156 pkt=0x1edf @44200
+[DRV 2] pop recibido tx#256 @44300
+[MON] POP  if=2 pkt=0x7551 @44305
+T=44305 [Checker] PASS  [394] tx#256 if=2 type=EVT_POP packet=0x7551
+[DRV 2] ofrecido tx#257 pkt=0x44aa @44410
+[DRV 3] pop recibido tx#356 @44500
+[MON] POP  if=3 pkt=0xff0a @44505
+T=44505 [Checker] PASS  [395] tx#356 if=3 type=EVT_POP packet=0xff0a
+[DRV 3] ofrecido tx#357 pkt=0x16f4 @44600
+[DRV 0] pop recibido tx#56 @44700
+[MON] POP  if=0 pkt=0x0000 @44705
+T=44705 [Checker] PASS  [396] tx#56 if=0 type=EVT_POP packet=0x0
+[DRV 0] ofrecido tx#57 pkt=0x0343 @44720
+[DRV 1] pop recibido tx#156 @44900
+[MON] POP  if=1 pkt=0x1edf @44905
+T=44905 [Checker] PASS  [397] tx#156 if=1 type=EVT_POP packet=0x1edf
+[DRV 1] ofrecido tx#157 pkt=0x0200 @44970
+[DRV 2] pop recibido tx#257 @45100
+[MON] POP  if=2 pkt=0x44aa @45105
+T=45105 [Checker] PASS  [398] tx#257 if=2 type=EVT_POP packet=0x44aa
+[DRV 2] ofrecido tx#258 pkt=0x0000 @45200
+[MON] PUSH if=0 pkt=0xff0a @45275
+[MON] PUSH if=1 pkt=0xff0a @45275
+[MON] PUSH if=2 pkt=0xff0a @45275
+T=45275 [Checker] PASS  [399] tx#356 if=0 type=EVT_PUSH packet=0xff0a
+T=45275 [Checker] PASS  [400] tx#356 if=1 type=EVT_PUSH packet=0xff0a
+T=45275 [Checker] PASS  [401] tx#356 if=2 type=EVT_PUSH packet=0xff0a
+[DRV 3] pop recibido tx#357 @45300
+[MON] POP  if=3 pkt=0x16f4 @45305
+T=45305 [Checker] PASS  [402] tx#357 if=3 type=EVT_POP packet=0x16f4
+[DRV 3] ofrecido tx#358 pkt=0x062d @45320
+[DRV 0] pop recibido tx#57 @45500
+[MON] POP  if=0 pkt=0x0343 @45505
+T=45505 [Checker] PASS  [403] tx#57 if=0 type=EVT_POP packet=0x343
+[DRV 0] ofrecido tx#58 pkt=0xff00 @45520
+[DRV 1] pop recibido tx#157 @45700
+[MON] POP  if=1 pkt=0x0200 @45705
+T=45705 [Checker] PASS  [404] tx#157 if=1 type=EVT_POP packet=0x200
+[DRV 1] ofrecido tx#158 pkt=0x4137 @45750
+[DRV 2] pop recibido tx#258 @45900
+[MON] POP  if=2 pkt=0x0000 @45905
+T=45905 [Checker] PASS  [405] tx#258 if=2 type=EVT_POP packet=0x0
+[DRV 2] ofrecido tx#259 pkt=0xaf55 @45990
+[DRV 3] pop recibido tx#358 @46100
+[MON] POP  if=3 pkt=0x062d @46105
+T=46105 [Checker] PASS  [406] tx#358 if=3 type=EVT_POP packet=0x62d
+[DRV 3] ofrecido tx#359 pkt=0x00ff @46180
+[MON] PUSH if=3 pkt=0x0343 @46275
+T=46275 [Checker] PASS  [407] tx#57 if=3 type=EVT_PUSH packet=0x343
+[DRV 0] pop recibido tx#58 @46300
+[MON] POP  if=0 pkt=0xff00 @46305
+T=46305 [Checker] PASS  [408] tx#58 if=0 type=EVT_POP packet=0xff00
+[DRV 0] ofrecido tx#59 pkt=0x007d @46410
+[MON] PUSH if=2 pkt=0x0200 @46475
+T=46475 [Checker] PASS  [409] tx#157 if=2 type=EVT_PUSH packet=0x200
+[DRV 1] pop recibido tx#158 @46500
+[MON] POP  if=1 pkt=0x4137 @46505
+T=46505 [Checker] PASS  [410] tx#158 if=1 type=EVT_POP packet=0x4137
+[DRV 1] ofrecido tx#159 pkt=0x13ff @46580
+[MON] PUSH if=0 pkt=0x0000 @46675
+T=46675 [Checker] PASS  [411] tx#258 if=0 type=EVT_PUSH packet=0x0
+[DRV 2] pop recibido tx#259 @46700
+[MON] POP  if=2 pkt=0xaf55 @46705
+T=46705 [Checker] PASS  [412] tx#259 if=2 type=EVT_POP packet=0xaf55
+[DRV 2] ofrecido tx#260 pkt=0x4aaa @46740
+[DRV 3] pop recibido tx#359 @46900
+[MON] POP  if=3 pkt=0x00ff @46905
+T=46905 [Checker] PASS  [413] tx#359 if=3 type=EVT_POP packet=0xff
+[DRV 3] ofrecido tx#360 pkt=0xff3d @46990
+[MON] PUSH if=1 pkt=0xff00 @47075
+[MON] PUSH if=2 pkt=0xff00 @47075
+[MON] PUSH if=3 pkt=0xff00 @47075
+T=47075 [Checker] PASS  [414] tx#232 if=1 type=EVT_PUSH packet=0xff00
+T=47075 [Checker] PASS  [415] tx#88 if=2 type=EVT_PUSH packet=0xff00
+T=47075 [Checker] WARNING: push if=2 pkt=0xff00 sin pop previo en if=0 (retardo no registrado)
+T=47075 [Checker] PASS  [416] tx#193 if=3 type=EVT_PUSH packet=0xff00
+T=47075 [Checker] WARNING: push if=3 pkt=0xff00 sin pop previo en if=1 (retardo no registrado)
+[DRV 0] pop recibido tx#59 @47100
+[MON] POP  if=0 pkt=0x007d @47105
+T=47105 [Checker] PASS  [417] tx#59 if=0 type=EVT_POP packet=0x7d
+[DRV 0] ofrecido tx#60 pkt=0x7dff @47120
+[DRV 1] pop recibido tx#159 @47300
+[MON] POP  if=1 pkt=0x13ff @47305
+T=47305 [Checker] PASS  [418] tx#159 if=1 type=EVT_POP packet=0x13ff
+[DRV 1] ofrecido tx#160 pkt=0x6d00 @47330
+[DRV 2] pop recibido tx#260 @47500
+[MON] POP  if=2 pkt=0x4aaa @47505
+T=47505 [Checker] PASS  [419] tx#260 if=2 type=EVT_POP packet=0x4aaa
+[DRV 2] ofrecido tx#261 pkt=0x3004 @47610
+[MON] PUSH if=0 pkt=0x00ff @47675
+T=47675 [Checker] PASS  [420] tx#359 if=0 type=EVT_PUSH packet=0xff
+[DRV 3] pop recibido tx#360 @47700
+[MON] POP  if=3 pkt=0xff3d @47705
+T=47705 [Checker] PASS  [421] tx#360 if=3 type=EVT_POP packet=0xff3d
+[DRV 3] ofrecido tx#361 pkt=0xffe1 @47750
+[DRV 0] pop recibido tx#60 @47900
+[MON] POP  if=0 pkt=0x7dff @47905
+T=47905 [Checker] PASS  [422] tx#60 if=0 type=EVT_POP packet=0x7dff
+[DRV 0] ofrecido tx#61 pkt=0xff37 @47970
+[DRV 1] pop recibido tx#160 @48100
+[MON] POP  if=1 pkt=0x6d00 @48105
+T=48105 [Checker] PASS  [423] tx#160 if=1 type=EVT_POP packet=0x6d00
+[DRV 1] ofrecido tx#161 pkt=0x02e4 @48220
+[DRV 2] pop recibido tx#261 @48300
+[MON] POP  if=2 pkt=0x3004 @48305
+T=48305 [Checker] PASS  [424] tx#261 if=2 type=EVT_POP packet=0x3004
+[DRV 2] ofrecido tx#262 pkt=0x01aa @48390
+[MON] PUSH if=0 pkt=0xff3d @48475
+[MON] PUSH if=1 pkt=0xff3d @48475
+[MON] PUSH if=2 pkt=0xff3d @48475
+T=48475 [Checker] PASS  [425] tx#360 if=0 type=EVT_PUSH packet=0xff3d
+T=48475 [Checker] PASS  [426] tx#360 if=1 type=EVT_PUSH packet=0xff3d
+T=48475 [Checker] PASS  [427] tx#360 if=2 type=EVT_PUSH packet=0xff3d
+[DRV 3] pop recibido tx#361 @48500
+[MON] POP  if=3 pkt=0xffe1 @48505
+T=48505 [Checker] PASS  [428] tx#361 if=3 type=EVT_POP packet=0xffe1
+[DRV 3] ofrecido tx#362 pkt=0xffaa @48540
+[DRV 0] pop recibido tx#61 @48700
+[MON] POP  if=0 pkt=0xff37 @48705
+T=48705 [Checker] PASS  [429] tx#61 if=0 type=EVT_POP packet=0xff37
+[DRV 0] ofrecido tx#62 pkt=0xff5c @48740
+[DRV 1] pop recibido tx#161 @48900
+[MON] POP  if=1 pkt=0x02e4 @48905
+T=48905 [Checker] PASS  [430] tx#161 if=1 type=EVT_POP packet=0x2e4
+[DRV 1] ofrecido tx#162 pkt=0xffaa @48960
+[DRV 2] pop recibido tx#262 @49100
+[MON] POP  if=2 pkt=0x01aa @49105
+T=49105 [Checker] PASS  [431] tx#262 if=2 type=EVT_POP packet=0x1aa
+[DRV 2] ofrecido tx#263 pkt=0x0155 @49120
+[MON] PUSH if=0 pkt=0xffe1 @49275
+[MON] PUSH if=1 pkt=0xffe1 @49275
+[MON] PUSH if=2 pkt=0xffe1 @49275
+T=49275 [Checker] PASS  [432] tx#361 if=0 type=EVT_PUSH packet=0xffe1
+T=49275 [Checker] PASS  [433] tx#361 if=1 type=EVT_PUSH packet=0xffe1
+T=49275 [Checker] PASS  [434] tx#361 if=2 type=EVT_PUSH packet=0xffe1
+[DRV 3] pop recibido tx#362 @49300
+[MON] POP  if=3 pkt=0xffaa @49305
+T=49305 [Checker] PASS  [435] tx#362 if=3 type=EVT_POP packet=0xffaa
+[DRV 3] ofrecido tx#363 pkt=0x5eb8 @49400
+[MON] PUSH if=1 pkt=0xff37 @49475
+[MON] PUSH if=2 pkt=0xff37 @49475
+[MON] PUSH if=3 pkt=0xff37 @49475
+T=49475 [Checker] PASS  [436] tx#61 if=1 type=EVT_PUSH packet=0xff37
+T=49475 [Checker] PASS  [437] tx#153 if=2 type=EVT_PUSH packet=0xff37
+T=49475 [Checker] PASS  [438] tx#153 if=3 type=EVT_PUSH packet=0xff37
+[DRV 0] pop recibido tx#62 @49500
+[MON] POP  if=0 pkt=0xff5c @49505
+T=49505 [Checker] PASS  [439] tx#62 if=0 type=EVT_POP packet=0xff5c
+[DRV 0] ofrecido tx#63 pkt=0xc5d9 @49550
+[MON] PUSH if=2 pkt=0x02e4 @49675
+T=49675 [Checker] PASS  [440] tx#161 if=2 type=EVT_PUSH packet=0x2e4
+[DRV 1] pop recibido tx#162 @49700
+[MON] POP  if=1 pkt=0xffaa @49705
+T=49705 [Checker] PASS  [441] tx#162 if=1 type=EVT_POP packet=0xffaa
+[DRV 1] ofrecido tx#163 pkt=0x01ff @49720
+[MON] PUSH if=1 pkt=0x01aa @49875
+T=49875 [Checker] PASS  [442] tx#248 if=1 type=EVT_PUSH packet=0x1aa
+[DRV 2] pop recibido tx#263 @49900
+[MON] POP  if=2 pkt=0x0155 @49905
+T=49905 [Checker] PASS  [443] tx#263 if=2 type=EVT_POP packet=0x155
+[DRV 2] ofrecido tx#264 pkt=0xd88f @49970
+[MON] PUSH if=0 pkt=0xffaa @50075
+[MON] PUSH if=1 pkt=0xffaa @50075
+[MON] PUSH if=2 pkt=0xffaa @50075
+T=50075 [Checker] PASS  [444] tx#276 if=0 type=EVT_PUSH packet=0xffaa
+T=50075 [Checker] WARNING: push if=0 pkt=0xffaa sin pop previo en if=2 (retardo no registrado)
+T=50075 [Checker] PASS  [445] tx#299 if=1 type=EVT_PUSH packet=0xffaa
+T=50075 [Checker] WARNING: push if=1 pkt=0xffaa sin pop previo en if=2 (retardo no registrado)
+T=50075 [Checker] PASS  [446] tx#165 if=2 type=EVT_PUSH packet=0xffaa
+T=50075 [Checker] WARNING: push if=2 pkt=0xffaa sin pop previo en if=1 (retardo no registrado)
+[DRV 3] pop recibido tx#363 @50100
+[MON] POP  if=3 pkt=0x5eb8 @50105
+T=50105 [Checker] PASS  [447] tx#363 if=3 type=EVT_POP packet=0x5eb8
+[DRV 3] ofrecido tx#364 pkt=0xbc0d @50200
+[MON] PUSH if=1 pkt=0xff5c @50275
+[MON] PUSH if=2 pkt=0xff5c @50275
+[MON] PUSH if=3 pkt=0xff5c @50275
+T=50275 [Checker] PASS  [448] tx#62 if=1 type=EVT_PUSH packet=0xff5c
+T=50275 [Checker] PASS  [449] tx#62 if=2 type=EVT_PUSH packet=0xff5c
+T=50275 [Checker] PASS  [450] tx#62 if=3 type=EVT_PUSH packet=0xff5c
+[DRV 0] pop recibido tx#63 @50300
+[MON] POP  if=0 pkt=0xc5d9 @50305
+T=50305 [Checker] PASS  [451] tx#63 if=0 type=EVT_POP packet=0xc5d9
+[DRV 0] ofrecido tx#64 pkt=0x2a31 @50360
+[MON] PUSH if=0 pkt=0xffaa @50475
+[MON] PUSH if=2 pkt=0xffaa @50475
+[MON] PUSH if=3 pkt=0xffaa @50475
+T=50475 [Checker] PASS  [452] tx#299 if=0 type=EVT_PUSH packet=0xffaa
+T=50475 [Checker] WARNING: push if=0 pkt=0xffaa sin pop previo en if=2 (retardo no registrado)
+T=50475 [Checker] PASS  [453] tx#312 if=2 type=EVT_PUSH packet=0xffaa
+T=50475 [Checker] PASS  [454] tx#162 if=3 type=EVT_PUSH packet=0xffaa
+[DRV 1] pop recibido tx#163 @50500
+[MON] POP  if=1 pkt=0x01ff @50505
+T=50505 [Checker] PASS  [455] tx#163 if=1 type=EVT_POP packet=0x1ff
+[DRV 1] ofrecido tx#164 pkt=0xf762 @50610
+[MON] PUSH if=1 pkt=0x0155 @50675
+T=50675 [Checker] PASS  [456] tx#263 if=1 type=EVT_PUSH packet=0x155
+[DRV 2] pop recibido tx#264 @50700
+[MON] POP  if=2 pkt=0xd88f @50705
+T=50705 [Checker] PASS  [457] tx#264 if=2 type=EVT_POP packet=0xd88f
+[DRV 2] ofrecido tx#265 pkt=0x66e1 @50810
+[DRV 3] pop recibido tx#364 @50900
+[MON] POP  if=3 pkt=0xbc0d @50905
+T=50905 [Checker] PASS  [458] tx#364 if=3 type=EVT_POP packet=0xbc0d
+[DRV 3] ofrecido tx#365 pkt=0x0368 @50990
+[DRV 0] pop recibido tx#64 @51100
+[MON] POP  if=0 pkt=0x2a31 @51105
+T=51105 [Checker] PASS  [459] tx#64 if=0 type=EVT_POP packet=0x2a31
+[DRV 0] ofrecido tx#65 pkt=0x86ff @51180
+[DRV 1] pop recibido tx#164 @51300
+[MON] POP  if=1 pkt=0xf762 @51305
+T=51305 [Checker] PASS  [460] tx#164 if=1 type=EVT_POP packet=0xf762
+[DRV 1] ofrecido tx#165 pkt=0xffaa @51360
+[DRV 2] pop recibido tx#265 @51500
+[MON] POP  if=2 pkt=0x66e1 @51505
+T=51505 [Checker] PASS  [461] tx#265 if=2 type=EVT_POP packet=0x66e1
+[DRV 2] ofrecido tx#266 pkt=0xff00 @51560
+[DRV 3] pop recibido tx#365 @51700
+[MON] POP  if=3 pkt=0x0368 @51705
+T=51705 [Checker] PASS  [462] tx#365 if=3 type=EVT_POP packet=0x368
+[DRV 3] ofrecido tx#366 pkt=0xbfff @51820
+[DRV 0] pop recibido tx#65 @51900
+[MON] POP  if=0 pkt=0x86ff @51905
+T=51905 [Checker] PASS  [463] tx#65 if=0 type=EVT_POP packet=0x86ff
+[DRV 0] ofrecido tx#66 pkt=0x0004 @51940
+[DRV 1] pop recibido tx#165 @52100
+[MON] POP  if=1 pkt=0xffaa @52105
+T=52105 [Checker] PASS  [464] tx#165 if=1 type=EVT_POP packet=0xffaa
+[DRV 1] ofrecido tx#166 pkt=0xff5e @52150
+[DRV 2] pop recibido tx#266 @52300
+[MON] POP  if=2 pkt=0xff00 @52305
+T=52305 [Checker] PASS  [465] tx#266 if=2 type=EVT_POP packet=0xff00
+[DRV 2] ofrecido tx#267 pkt=0x00a3 @52350
+[DRV 3] pop recibido tx#366 @52500
+[MON] POP  if=3 pkt=0xbfff @52505
+T=52505 [Checker] PASS  [466] tx#366 if=3 type=EVT_POP packet=0xbfff
+[DRV 3] ofrecido tx#367 pkt=0x03a7 @52540
+[DRV 0] pop recibido tx#66 @52700
+[MON] POP  if=0 pkt=0x0004 @52705
+T=52705 [Checker] PASS  [467] tx#66 if=0 type=EVT_POP packet=0x4
+[DRV 0] ofrecido tx#67 pkt=0xb7aa @52780
+[MON] PUSH if=0 pkt=0xffaa @52875
+[MON] PUSH if=2 pkt=0xffaa @52875
+[MON] PUSH if=3 pkt=0xffaa @52875
+T=52875 [Checker] PASS  [468] tx#312 if=0 type=EVT_PUSH packet=0xffaa
+T=52875 [Checker] PASS  [469] tx#336 if=2 type=EVT_PUSH packet=0xffaa
+T=52875 [Checker] PASS  [470] tx#165 if=3 type=EVT_PUSH packet=0xffaa
+[DRV 1] pop recibido tx#166 @52900
+[MON] POP  if=1 pkt=0xff5e @52905
+T=52905 [Checker] PASS  [471] tx#166 if=1 type=EVT_POP packet=0xff5e
+[DRV 1] ofrecido tx#167 pkt=0x0155 @52940
+[MON] PUSH if=0 pkt=0xff00 @53075
+[MON] PUSH if=1 pkt=0xff00 @53075
+[MON] PUSH if=3 pkt=0xff00 @53075
+T=53075 [Checker] PASS  [472] tx#232 if=0 type=EVT_PUSH packet=0xff00
+T=53075 [Checker] PASS  [473] tx#242 if=1 type=EVT_PUSH packet=0xff00
+T=53075 [Checker] PASS  [474] tx#221 if=3 type=EVT_PUSH packet=0xff00
+[DRV 2] pop recibido tx#267 @53100
+[MON] POP  if=2 pkt=0x00a3 @53105
+T=53105 [Checker] PASS  [475] tx#267 if=2 type=EVT_POP packet=0xa3
+[DRV 2] ofrecido tx#268 pkt=0xffa8 @53160
+[DRV 3] pop recibido tx#367 @53300
+[MON] POP  if=3 pkt=0x03a7 @53305
+T=53305 [Checker] PASS  [476] tx#367 if=3 type=EVT_POP packet=0x3a7
+[DRV 3] ofrecido tx#368 pkt=0xff69 @53350
+[DRV 0] pop recibido tx#67 @53500
+[MON] POP  if=0 pkt=0xb7aa @53505
+T=53505 [Checker] PASS  [477] tx#67 if=0 type=EVT_POP packet=0xb7aa
+[DRV 0] ofrecido tx#68 pkt=0xff4a @53560
+[MON] PUSH if=0 pkt=0xff5e @53675
+[MON] PUSH if=2 pkt=0xff5e @53675
+[MON] PUSH if=3 pkt=0xff5e @53675
+T=53675 [Checker] PASS  [478] tx#166 if=0 type=EVT_PUSH packet=0xff5e
+T=53675 [Checker] PASS  [479] tx#166 if=2 type=EVT_PUSH packet=0xff5e
+T=53675 [Checker] PASS  [480] tx#166 if=3 type=EVT_PUSH packet=0xff5e
+[DRV 1] pop recibido tx#167 @53700
+[MON] POP  if=1 pkt=0x0155 @53705
+T=53705 [Checker] PASS  [481] tx#167 if=1 type=EVT_POP packet=0x155
+[DRV 1] ofrecido tx#168 pkt=0xc394 @53810
+[MON] PUSH if=0 pkt=0x00a3 @53875
+T=53875 [Checker] PASS  [482] tx#267 if=0 type=EVT_PUSH packet=0xa3
+[DRV 2] pop recibido tx#268 @53900
+[MON] POP  if=2 pkt=0xffa8 @53905
+T=53905 [Checker] PASS  [483] tx#268 if=2 type=EVT_POP packet=0xffa8
+[DRV 2] ofrecido tx#269 pkt=0x02aa @53960
+[DRV 3] pop recibido tx#368 @54100
+[MON] POP  if=3 pkt=0xff69 @54105
+T=54105 [Checker] PASS  [484] tx#368 if=3 type=EVT_POP packet=0xff69
+[DRV 3] ofrecido tx#369 pkt=0xe51f @54200
+[DRV 0] pop recibido tx#68 @54300
+[MON] POP  if=0 pkt=0xff4a @54305
+T=54305 [Checker] PASS  [485] tx#68 if=0 type=EVT_POP packet=0xff4a
+[DRV 0] ofrecido tx#69 pkt=0x6fff @54360
+[DRV 1] pop recibido tx#168 @54500
+[MON] POP  if=1 pkt=0xc394 @54505
+T=54505 [Checker] PASS  [486] tx#168 if=1 type=EVT_POP packet=0xc394
+[DRV 1] ofrecido tx#169 pkt=0xff00 @54610
+[MON] PUSH if=0 pkt=0xffa8 @54675
+[MON] PUSH if=1 pkt=0xffa8 @54675
+[MON] PUSH if=3 pkt=0xffa8 @54675
+T=54675 [Checker] PASS  [487] tx#268 if=0 type=EVT_PUSH packet=0xffa8
+T=54675 [Checker] PASS  [488] tx#268 if=1 type=EVT_PUSH packet=0xffa8
+T=54675 [Checker] PASS  [489] tx#268 if=3 type=EVT_PUSH packet=0xffa8
+[DRV 2] pop recibido tx#269 @54700
+[MON] POP  if=2 pkt=0x02aa @54705
+T=54705 [Checker] PASS  [490] tx#269 if=2 type=EVT_POP packet=0x2aa
+[DRV 2] ofrecido tx#270 pkt=0xffa9 @54720
+[MON] PUSH if=0 pkt=0xff69 @54875
+[MON] PUSH if=1 pkt=0xff69 @54875
+[MON] PUSH if=2 pkt=0xff69 @54875
+T=54875 [Checker] PASS  [491] tx#368 if=0 type=EVT_PUSH packet=0xff69
+T=54875 [Checker] PASS  [492] tx#368 if=1 type=EVT_PUSH packet=0xff69
+T=54875 [Checker] PASS  [493] tx#368 if=2 type=EVT_PUSH packet=0xff69
+[DRV 3] pop recibido tx#369 @54900
+[MON] POP  if=3 pkt=0xe51f @54905
+T=54905 [Checker] PASS  [494] tx#369 if=3 type=EVT_POP packet=0xe51f
+[DRV 3] ofrecido tx#370 pkt=0x00bf @55020
+[MON] PUSH if=1 pkt=0xff4a @55075
+[MON] PUSH if=2 pkt=0xff4a @55075
+[MON] PUSH if=3 pkt=0xff4a @55075
+T=55075 [Checker] PASS  [495] tx#68 if=1 type=EVT_PUSH packet=0xff4a
+T=55075 [Checker] PASS  [496] tx#68 if=2 type=EVT_PUSH packet=0xff4a
+T=55075 [Checker] PASS  [497] tx#68 if=3 type=EVT_PUSH packet=0xff4a
+[DRV 0] pop recibido tx#69 @55100
+[MON] POP  if=0 pkt=0x6fff @55105
+T=55105 [Checker] PASS  [498] tx#69 if=0 type=EVT_POP packet=0x6fff
+[DRV 0] ofrecido tx#70 pkt=0xff36 @55130
+[DRV 1] pop recibido tx#169 @55300
+[MON] POP  if=1 pkt=0xff00 @55305
+T=55305 [Checker] PASS  [499] tx#169 if=1 type=EVT_POP packet=0xff00
+[DRV 1] ofrecido tx#170 pkt=0x8ac5 @55380
+[DRV 2] pop recibido tx#270 @55500
+[MON] POP  if=2 pkt=0xffa9 @55505
+T=55505 [Checker] PASS  [500] tx#270 if=2 type=EVT_POP packet=0xffa9
+[DRV 2] ofrecido tx#271 pkt=0x0323 @55560
+[DRV 3] pop recibido tx#370 @55700
+[MON] POP  if=3 pkt=0x00bf @55705
+T=55705 [Checker] PASS  [501] tx#370 if=3 type=EVT_POP packet=0xbf
+[DRV 3] ofrecido tx#371 pkt=0x3baa @55770
+[DRV 0] pop recibido tx#70 @55900
+[MON] POP  if=0 pkt=0xff36 @55905
+T=55905 [Checker] PASS  [502] tx#70 if=0 type=EVT_POP packet=0xff36
+[DRV 0] ofrecido tx#71 pkt=0xffc9 @55940
+[MON] PUSH if=0 pkt=0xff00 @56075
+[MON] PUSH if=2 pkt=0xff00 @56075
+[MON] PUSH if=3 pkt=0xff00 @56075
+T=56075 [Checker] PASS  [503] tx#242 if=0 type=EVT_PUSH packet=0xff00
+T=56075 [Checker] PASS  [504] tx#143 if=2 type=EVT_PUSH packet=0xff00
+T=56075 [Checker] PASS  [505] tx#232 if=3 type=EVT_PUSH packet=0xff00
+[DRV 1] pop recibido tx#170 @56100
+[MON] POP  if=1 pkt=0x8ac5 @56105
+T=56105 [Checker] PASS  [506] tx#170 if=1 type=EVT_POP packet=0x8ac5
+[DRV 1] ofrecido tx#171 pkt=0x4877 @56170
+[MON] PUSH if=0 pkt=0xffa9 @56275
+[MON] PUSH if=1 pkt=0xffa9 @56275
+[MON] PUSH if=3 pkt=0xffa9 @56275
+T=56275 [Checker] PASS  [507] tx#270 if=0 type=EVT_PUSH packet=0xffa9
+T=56275 [Checker] PASS  [508] tx#270 if=1 type=EVT_PUSH packet=0xffa9
+T=56275 [Checker] PASS  [509] tx#270 if=3 type=EVT_PUSH packet=0xffa9
+[DRV 2] pop recibido tx#271 @56300
+[MON] POP  if=2 pkt=0x0323 @56305
+T=56305 [Checker] PASS  [510] tx#271 if=2 type=EVT_POP packet=0x323
+[DRV 2] ofrecido tx#272 pkt=0xfb55 @56390
+[MON] PUSH if=0 pkt=0x00bf @56475
+T=56475 [Checker] PASS  [511] tx#370 if=0 type=EVT_PUSH packet=0xbf
+[DRV 3] pop recibido tx#371 @56500
+[MON] POP  if=3 pkt=0x3baa @56505
+T=56505 [Checker] PASS  [512] tx#371 if=3 type=EVT_POP packet=0x3baa
+[DRV 3] ofrecido tx#372 pkt=0x01d7 @56550
+[MON] PUSH if=1 pkt=0xff36 @56675
+[MON] PUSH if=2 pkt=0xff36 @56675
+[MON] PUSH if=3 pkt=0xff36 @56675
+T=56675 [Checker] PASS  [513] tx#70 if=1 type=EVT_PUSH packet=0xff36
+T=56675 [Checker] PASS  [514] tx#70 if=2 type=EVT_PUSH packet=0xff36
+T=56675 [Checker] PASS  [515] tx#70 if=3 type=EVT_PUSH packet=0xff36
+[DRV 0] pop recibido tx#71 @56700
+[MON] POP  if=0 pkt=0xffc9 @56705
+T=56705 [Checker] PASS  [516] tx#71 if=0 type=EVT_POP packet=0xffc9
+[DRV 0] ofrecido tx#72 pkt=0xffaa @56760
+[DRV 1] pop recibido tx#171 @56900
+[MON] POP  if=1 pkt=0x4877 @56905
+T=56905 [Checker] PASS  [517] tx#171 if=1 type=EVT_POP packet=0x4877
+[DRV 1] ofrecido tx#172 pkt=0xcbaa @57020
+[MON] PUSH if=3 pkt=0x0323 @57075
+T=57075 [Checker] PASS  [518] tx#271 if=3 type=EVT_PUSH packet=0x323
+[DRV 2] pop recibido tx#272 @57100
+[MON] POP  if=2 pkt=0xfb55 @57105
+T=57105 [Checker] PASS  [519] tx#272 if=2 type=EVT_POP packet=0xfb55
+[DRV 2] ofrecido tx#273 pkt=0x02a8 @57210
+[DRV 3] pop recibido tx#372 @57300
+[MON] POP  if=3 pkt=0x01d7 @57305
+T=57305 [Checker] PASS  [520] tx#372 if=3 type=EVT_POP packet=0x1d7
+[DRV 3] ofrecido tx#373 pkt=0x217c @57390
+[MON] PUSH if=1 pkt=0xffc9 @57475
+[MON] PUSH if=2 pkt=0xffc9 @57475
+[MON] PUSH if=3 pkt=0xffc9 @57475
+T=57475 [Checker] PASS  [521] tx#71 if=1 type=EVT_PUSH packet=0xffc9
+T=57475 [Checker] PASS  [522] tx#71 if=2 type=EVT_PUSH packet=0xffc9
+T=57475 [Checker] PASS  [523] tx#71 if=3 type=EVT_PUSH packet=0xffc9
+[DRV 0] pop recibido tx#72 @57500
+[MON] POP  if=0 pkt=0xffaa @57505
+T=57505 [Checker] PASS  [524] tx#72 if=0 type=EVT_POP packet=0xffaa
+[DRV 0] ofrecido tx#73 pkt=0xff20 @57600
+[DRV 1] pop recibido tx#172 @57700
+[MON] POP  if=1 pkt=0xcbaa @57705
+T=57705 [Checker] PASS  [525] tx#172 if=1 type=EVT_POP packet=0xcbaa
+[DRV 1] ofrecido tx#173 pkt=0x01aa @57780
+[DRV 2] pop recibido tx#273 @57900
+[MON] POP  if=2 pkt=0x02a8 @57905
+T=57905 [Checker] PASS  [526] tx#273 if=2 type=EVT_POP packet=0x2a8
+[DRV 2] ofrecido tx#274 pkt=0x025d @57990
+[MON] PUSH if=1 pkt=0x01d7 @58075
+T=58075 [Checker] PASS  [527] tx#372 if=1 type=EVT_PUSH packet=0x1d7
+[DRV 3] pop recibido tx#373 @58100
+[MON] POP  if=3 pkt=0x217c @58105
+T=58105 [Checker] PASS  [528] tx#373 if=3 type=EVT_POP packet=0x217c
+[DRV 3] ofrecido tx#374 pkt=0x44aa @58220
+[MON] PUSH if=1 pkt=0xffaa @58275
+[MON] PUSH if=2 pkt=0xffaa @58275
+[MON] PUSH if=3 pkt=0xffaa @58275
+T=58275 [Checker] PASS  [529] tx#312 if=1 type=EVT_PUSH packet=0xffaa
+T=58275 [Checker] PASS  [530] tx#362 if=2 type=EVT_PUSH packet=0xffaa
+T=58275 [Checker] PASS  [531] tx#252 if=3 type=EVT_PUSH packet=0xffaa
+[DRV 0] pop recibido tx#73 @58300
+[MON] POP  if=0 pkt=0xff20 @58305
+T=58305 [Checker] PASS  [532] tx#73 if=0 type=EVT_POP packet=0xff20
+[DRV 0] ofrecido tx#74 pkt=0x03ff @58320
+[DRV 1] pop recibido tx#173 @58500
+[MON] POP  if=1 pkt=0x01aa @58505
+T=58505 [Checker] PASS  [533] tx#173 if=1 type=EVT_POP packet=0x1aa
+[DRV 1] ofrecido tx#174 pkt=0x02ac @58540
+[DRV 2] pop recibido tx#274 @58700
+[MON] POP  if=2 pkt=0x025d @58705
+T=58705 [Checker] PASS  [534] tx#274 if=2 type=EVT_POP packet=0x25d
+[DRV 2] ofrecido tx#275 pkt=0x02d8 @58780
+[DRV 3] pop recibido tx#374 @58900
+[MON] POP  if=3 pkt=0x44aa @58905
+T=58905 [Checker] PASS  [535] tx#374 if=3 type=EVT_POP packet=0x44aa
+[DRV 3] ofrecido tx#375 pkt=0xffd1 @58960
+[MON] PUSH if=1 pkt=0xff20 @59075
+[MON] PUSH if=2 pkt=0xff20 @59075
+[MON] PUSH if=3 pkt=0xff20 @59075
+T=59075 [Checker] PASS  [536] tx#73 if=1 type=EVT_PUSH packet=0xff20
+T=59075 [Checker] PASS  [537] tx#73 if=2 type=EVT_PUSH packet=0xff20
+T=59075 [Checker] PASS  [538] tx#73 if=3 type=EVT_PUSH packet=0xff20
+[DRV 0] pop recibido tx#74 @59100
+[MON] POP  if=0 pkt=0x03ff @59105
+T=59105 [Checker] PASS  [539] tx#74 if=0 type=EVT_POP packet=0x3ff
+[DRV 0] ofrecido tx#75 pkt=0x008d @59150
+[DRV 1] pop recibido tx#174 @59300
+[MON] POP  if=1 pkt=0x02ac @59305
+T=59305 [Checker] PASS  [540] tx#174 if=1 type=EVT_POP packet=0x2ac
+[DRV 1] ofrecido tx#175 pkt=0xe800 @59360
+[DRV 2] pop recibido tx#275 @59500
+[MON] POP  if=2 pkt=0x02d8 @59505
+T=59505 [Checker] PASS  [541] tx#275 if=2 type=EVT_POP packet=0x2d8
+[DRV 2] ofrecido tx#276 pkt=0xffaa @59600
+[DRV 3] pop recibido tx#375 @59700
+[MON] POP  if=3 pkt=0xffd1 @59705
+T=59705 [Checker] PASS  [542] tx#375 if=3 type=EVT_POP packet=0xffd1
+[DRV 3] ofrecido tx#376 pkt=0x03aa @59780
+[MON] PUSH if=3 pkt=0x03ff @59875
+T=59875 [Checker] PASS  [543] tx#74 if=3 type=EVT_PUSH packet=0x3ff
+[DRV 0] pop recibido tx#75 @59900
+[MON] POP  if=0 pkt=0x008d @59905
+T=59905 [Checker] PASS  [544] tx#75 if=0 type=EVT_POP packet=0x8d
+[DRV 0] ofrecido tx#76 pkt=0xe8df @59960
+[MON] PUSH if=2 pkt=0x02ac @60075
+T=60075 [Checker] PASS  [545] tx#174 if=2 type=EVT_PUSH packet=0x2ac
+[DRV 1] pop recibido tx#175 @60100
+[MON] POP  if=1 pkt=0xe800 @60105
+T=60105 [Checker] PASS  [546] tx#175 if=1 type=EVT_POP packet=0xe800
+[DRV 1] ofrecido tx#176 pkt=0x0154 @60200
+[DRV 2] pop recibido tx#276 @60300
+[MON] POP  if=2 pkt=0xffaa @60305
+T=60305 [Checker] PASS  [547] tx#276 if=2 type=EVT_POP packet=0xffaa
+[DRV 2] ofrecido tx#277 pkt=0x0086 @60330
+[MON] PUSH if=0 pkt=0xffd1 @60475
+[MON] PUSH if=1 pkt=0xffd1 @60475
+[MON] PUSH if=2 pkt=0xffd1 @60475
+T=60475 [Checker] PASS  [548] tx#375 if=0 type=EVT_PUSH packet=0xffd1
+T=60475 [Checker] PASS  [549] tx#375 if=1 type=EVT_PUSH packet=0xffd1
+T=60475 [Checker] PASS  [550] tx#375 if=2 type=EVT_PUSH packet=0xffd1
+[DRV 3] pop recibido tx#376 @60500
+[MON] POP  if=3 pkt=0x03aa @60505
+T=60505 [Checker] PASS  [551] tx#376 if=3 type=EVT_POP packet=0x3aa
+[DRV 3] ofrecido tx#377 pkt=0xd155 @60590
+[DRV 0] pop recibido tx#76 @60700
+[MON] POP  if=0 pkt=0xe8df @60705
+T=60705 [Checker] PASS  [552] tx#76 if=0 type=EVT_POP packet=0xe8df
+[DRV 0] ofrecido tx#77 pkt=0x01e2 @60780
+[DRV 1] pop recibido tx#176 @60900
+[MON] POP  if=1 pkt=0x0154 @60905
+T=60905 [Checker] PASS  [553] tx#176 if=1 type=EVT_POP packet=0x154
+[DRV 1] ofrecido tx#177 pkt=0x5055 @60960
+[MON] PUSH if=0 pkt=0xffaa @61075
+[MON] PUSH if=1 pkt=0xffaa @61075
+[MON] PUSH if=3 pkt=0xffaa @61075
+T=61075 [Checker] PASS  [554] tx#336 if=0 type=EVT_PUSH packet=0xffaa
+T=61075 [Checker] PASS  [555] tx#336 if=1 type=EVT_PUSH packet=0xffaa
+T=61075 [Checker] PASS  [556] tx#276 if=3 type=EVT_PUSH packet=0xffaa
+[DRV 2] pop recibido tx#277 @61100
+[MON] POP  if=2 pkt=0x0086 @61105
+T=61105 [Checker] PASS  [557] tx#277 if=2 type=EVT_POP packet=0x86
+[DRV 2] ofrecido tx#278 pkt=0xfe02 @61160
+[DRV 3] pop recibido tx#377 @61300
+[MON] POP  if=3 pkt=0xd155 @61305
+T=61305 [Checker] PASS  [558] tx#377 if=3 type=EVT_POP packet=0xd155
+[DRV 3] ofrecido tx#378 pkt=0xffb3 @61340
+[DRV 0] pop recibido tx#77 @61500
+[MON] POP  if=0 pkt=0x01e2 @61505
+T=61505 [Checker] PASS  [559] tx#77 if=0 type=EVT_POP packet=0x1e2
+[DRV 0] ofrecido tx#78 pkt=0x9eaa @61540
+[DRV 1] pop recibido tx#177 @61700
+[MON] POP  if=1 pkt=0x5055 @61705
+T=61705 [Checker] PASS  [560] tx#177 if=1 type=EVT_POP packet=0x5055
+[DRV 1] ofrecido tx#178 pkt=0xffe5 @61720
+[MON] PUSH if=0 pkt=0x0086 @61875
+T=61875 [Checker] PASS  [561] tx#277 if=0 type=EVT_PUSH packet=0x86
+[DRV 2] pop recibido tx#278 @61900
+[MON] POP  if=2 pkt=0xfe02 @61905
+T=61905 [Checker] PASS  [562] tx#278 if=2 type=EVT_POP packet=0xfe02
+[DRV 2] ofrecido tx#279 pkt=0xffff @62000
+[DRV 3] pop recibido tx#378 @62100
+[MON] POP  if=3 pkt=0xffb3 @62105
+T=62105 [Checker] PASS  [563] tx#378 if=3 type=EVT_POP packet=0xffb3
+[DRV 3] ofrecido tx#379 pkt=0x0324 @62220
+[MON] PUSH if=1 pkt=0x01e2 @62275
+T=62275 [Checker] PASS  [564] tx#77 if=1 type=EVT_PUSH packet=0x1e2
+[DRV 0] pop recibido tx#78 @62300
+[MON] POP  if=0 pkt=0x9eaa @62305
+T=62305 [Checker] PASS  [565] tx#78 if=0 type=EVT_POP packet=0x9eaa
+[DRV 0] ofrecido tx#79 pkt=0x7f51 @62370
+[DRV 1] pop recibido tx#178 @62500
+[MON] POP  if=1 pkt=0xffe5 @62505
+T=62505 [Checker] PASS  [566] tx#178 if=1 type=EVT_POP packet=0xffe5
+[DRV 1] ofrecido tx#179 pkt=0xa890 @62560
+[DRV 2] pop recibido tx#279 @62700
+[MON] POP  if=2 pkt=0xffff @62705
+T=62705 [Checker] PASS  [567] tx#279 if=2 type=EVT_POP packet=0xffff
+[DRV 2] ofrecido tx#280 pkt=0x500f @62750
+[MON] PUSH if=0 pkt=0xffb3 @62875
+[MON] PUSH if=1 pkt=0xffb3 @62875
+[MON] PUSH if=2 pkt=0xffb3 @62875
+T=62875 [Checker] PASS  [568] tx#378 if=0 type=EVT_PUSH packet=0xffb3
+T=62875 [Checker] PASS  [569] tx#378 if=1 type=EVT_PUSH packet=0xffb3
+T=62875 [Checker] PASS  [570] tx#378 if=2 type=EVT_PUSH packet=0xffb3
+[DRV 3] pop recibido tx#379 @62900
+[MON] POP  if=3 pkt=0x0324 @62905
+T=62905 [Checker] PASS  [571] tx#379 if=3 type=EVT_POP packet=0x324
+[DRV 3] ofrecido tx#380 pkt=0x1dbd @62950
+[DRV 0] pop recibido tx#79 @63100
+[MON] POP  if=0 pkt=0x7f51 @63105
+T=63105 [Checker] PASS  [572] tx#79 if=0 type=EVT_POP packet=0x7f51
+[DRV 0] ofrecido tx#80 pkt=0x7800 @63200
+[MON] PUSH if=0 pkt=0xffe5 @63275
+[MON] PUSH if=2 pkt=0xffe5 @63275
+[MON] PUSH if=3 pkt=0xffe5 @63275
+T=63275 [Checker] PASS  [573] tx#178 if=0 type=EVT_PUSH packet=0xffe5
+T=63275 [Checker] PASS  [574] tx#178 if=2 type=EVT_PUSH packet=0xffe5
+T=63275 [Checker] PASS  [575] tx#178 if=3 type=EVT_PUSH packet=0xffe5
+[DRV 1] pop recibido tx#179 @63300
+[MON] POP  if=1 pkt=0xa890 @63305
+T=63305 [Checker] PASS  [576] tx#179 if=1 type=EVT_POP packet=0xa890
+[DRV 1] ofrecido tx#180 pkt=0xff91 @63320
+[MON] PUSH if=0 pkt=0xffff @63475
+[MON] PUSH if=1 pkt=0xffff @63475
+[MON] PUSH if=3 pkt=0xffff @63475
+T=63475 [Checker] PASS  [577] tx#316 if=0 type=EVT_PUSH packet=0xffff
+T=63475 [Checker] PASS  [578] tx#316 if=1 type=EVT_PUSH packet=0xffff
+T=63475 [Checker] PASS  [579] tx#249 if=3 type=EVT_PUSH packet=0xffff
+[DRV 2] pop recibido tx#280 @63500
+[MON] POP  if=2 pkt=0x500f @63505
+T=63505 [Checker] PASS  [580] tx#280 if=2 type=EVT_POP packet=0x500f
+[DRV 2] ofrecido tx#281 pkt=0xadc1 @63530
+[DRV 3] pop recibido tx#380 @63700
+[MON] POP  if=3 pkt=0x1dbd @63705
+T=63705 [Checker] PASS  [581] tx#380 if=3 type=EVT_POP packet=0x1dbd
+[DRV 3] ofrecido tx#381 pkt=0xff23 @63740
+[DRV 0] pop recibido tx#80 @63900
+[MON] POP  if=0 pkt=0x7800 @63905
+T=63905 [Checker] PASS  [582] tx#80 if=0 type=EVT_POP packet=0x7800
+[DRV 0] ofrecido tx#81 pkt=0xff66 @63960
+[DRV 1] pop recibido tx#180 @64100
+[MON] POP  if=1 pkt=0xff91 @64105
+T=64105 [Checker] PASS  [583] tx#180 if=1 type=EVT_POP packet=0xff91
+[DRV 1] ofrecido tx#181 pkt=0x7b06 @64120
+[DRV 2] pop recibido tx#281 @64300
+[MON] POP  if=2 pkt=0xadc1 @64305
+T=64305 [Checker] PASS  [584] tx#281 if=2 type=EVT_POP packet=0xadc1
+[DRV 2] ofrecido tx#282 pkt=0xff18 @64370
+[DRV 3] pop recibido tx#381 @64500
+[MON] POP  if=3 pkt=0xff23 @64505
+T=64505 [Checker] PASS  [585] tx#381 if=3 type=EVT_POP packet=0xff23
+[DRV 3] ofrecido tx#382 pkt=0x024d @64550
+[DRV 0] pop recibido tx#81 @64700
+[MON] POP  if=0 pkt=0xff66 @64705
+T=64705 [Checker] PASS  [586] tx#81 if=0 type=EVT_POP packet=0xff66
+[DRV 0] ofrecido tx#82 pkt=0x7055 @64750
+[MON] PUSH if=0 pkt=0xff91 @64875
+[MON] PUSH if=2 pkt=0xff91 @64875
+[MON] PUSH if=3 pkt=0xff91 @64875
+T=64875 [Checker] PASS  [587] tx#180 if=0 type=EVT_PUSH packet=0xff91
+T=64875 [Checker] PASS  [588] tx#180 if=2 type=EVT_PUSH packet=0xff91
+T=64875 [Checker] PASS  [589] tx#180 if=3 type=EVT_PUSH packet=0xff91
+[DRV 1] pop recibido tx#181 @64900
+[MON] POP  if=1 pkt=0x7b06 @64905
+T=64905 [Checker] PASS  [590] tx#181 if=1 type=EVT_POP packet=0x7b06
+[DRV 1] ofrecido tx#182 pkt=0xc142 @65000
+[DRV 2] pop recibido tx#282 @65100
+[MON] POP  if=2 pkt=0xff18 @65105
+T=65105 [Checker] PASS  [591] tx#282 if=2 type=EVT_POP packet=0xff18
+[DRV 2] ofrecido tx#283 pkt=0xffbc @65210
+[MON] PUSH if=0 pkt=0xff23 @65275
+[MON] PUSH if=1 pkt=0xff23 @65275
+[MON] PUSH if=2 pkt=0xff23 @65275
+T=65275 [Checker] PASS  [592] tx#381 if=0 type=EVT_PUSH packet=0xff23
+T=65275 [Checker] PASS  [593] tx#381 if=1 type=EVT_PUSH packet=0xff23
+T=65275 [Checker] PASS  [594] tx#381 if=2 type=EVT_PUSH packet=0xff23
+[DRV 3] pop recibido tx#382 @65300
+[MON] POP  if=3 pkt=0x024d @65305
+T=65305 [Checker] PASS  [595] tx#382 if=3 type=EVT_POP packet=0x24d
+[DRV 3] ofrecido tx#383 pkt=0xdc9f @65340
+[MON] PUSH if=1 pkt=0xff66 @65475
+[MON] PUSH if=2 pkt=0xff66 @65475
+[MON] PUSH if=3 pkt=0xff66 @65475
+T=65475 [Checker] PASS  [596] tx#81 if=1 type=EVT_PUSH packet=0xff66
+T=65475 [Checker] PASS  [597] tx#81 if=2 type=EVT_PUSH packet=0xff66
+T=65475 [Checker] PASS  [598] tx#81 if=3 type=EVT_PUSH packet=0xff66
+[DRV 0] pop recibido tx#82 @65500
+[MON] POP  if=0 pkt=0x7055 @65505
+T=65505 [Checker] PASS  [599] tx#82 if=0 type=EVT_POP packet=0x7055
+[DRV 0] ofrecido tx#83 pkt=0x0173 @65540
+[DRV 1] pop recibido tx#182 @65700
+[MON] POP  if=1 pkt=0xc142 @65705
+T=65705 [Checker] PASS  [600] tx#182 if=1 type=EVT_POP packet=0xc142
+[DRV 1] ofrecido tx#183 pkt=0xff27 @65730
+[MON] PUSH if=0 pkt=0xff18 @65875
+[MON] PUSH if=1 pkt=0xff18 @65875
+[MON] PUSH if=3 pkt=0xff18 @65875
+T=65875 [Checker] PASS  [601] tx#282 if=0 type=EVT_PUSH packet=0xff18
+T=65875 [Checker] PASS  [602] tx#282 if=1 type=EVT_PUSH packet=0xff18
+T=65875 [Checker] PASS  [603] tx#282 if=3 type=EVT_PUSH packet=0xff18
+[DRV 2] pop recibido tx#283 @65900
+[MON] POP  if=2 pkt=0xffbc @65905
+T=65905 [Checker] PASS  [604] tx#283 if=2 type=EVT_POP packet=0xffbc
+[DRV 2] ofrecido tx#284 pkt=0x0255 @65950
+[MON] PUSH if=2 pkt=0x024d @66075
+T=66075 [Checker] PASS  [605] tx#382 if=2 type=EVT_PUSH packet=0x24d
+[DRV 3] pop recibido tx#383 @66100
+[MON] POP  if=3 pkt=0xdc9f @66105
+T=66105 [Checker] PASS  [606] tx#383 if=3 type=EVT_POP packet=0xdc9f
+[DRV 3] ofrecido tx#384 pkt=0xdf55 @66200
+[DRV 0] pop recibido tx#83 @66300
+[MON] POP  if=0 pkt=0x0173 @66305
+T=66305 [Checker] PASS  [607] tx#83 if=0 type=EVT_POP packet=0x173
+[DRV 0] ofrecido tx#84 pkt=0xb300 @66330
+[DRV 1] pop recibido tx#183 @66500
+[MON] POP  if=1 pkt=0xff27 @66505
+T=66505 [Checker] PASS  [608] tx#183 if=1 type=EVT_POP packet=0xff27
+[DRV 1] ofrecido tx#184 pkt=0xff55 @66530
+[MON] PUSH if=0 pkt=0xffbc @66675
+[MON] PUSH if=1 pkt=0xffbc @66675
+[MON] PUSH if=3 pkt=0xffbc @66675
+T=66675 [Checker] PASS  [609] tx#283 if=0 type=EVT_PUSH packet=0xffbc
+T=66675 [Checker] PASS  [610] tx#283 if=1 type=EVT_PUSH packet=0xffbc
+T=66675 [Checker] PASS  [611] tx#283 if=3 type=EVT_PUSH packet=0xffbc
+[DRV 2] pop recibido tx#284 @66700
+[MON] POP  if=2 pkt=0x0255 @66705
+T=66705 [Checker] PASS  [612] tx#284 if=2 type=EVT_POP packet=0x255
+[DRV 2] ofrecido tx#285 pkt=0xffff @66800
+[DRV 3] pop recibido tx#384 @66900
+[MON] POP  if=3 pkt=0xdf55 @66905
+T=66905 [Checker] PASS  [613] tx#384 if=3 type=EVT_POP packet=0xdf55
+[DRV 3] ofrecido tx#385 pkt=0x03d5 @66960
+[MON] PUSH if=1 pkt=0x0173 @67075
+T=67075 [Checker] PASS  [614] tx#83 if=1 type=EVT_PUSH packet=0x173
+[DRV 0] pop recibido tx#84 @67100
+[MON] POP  if=0 pkt=0xb300 @67105
+T=67105 [Checker] PASS  [615] tx#84 if=0 type=EVT_POP packet=0xb300
+[DRV 0] ofrecido tx#85 pkt=0x64fe @67200
+[MON] PUSH if=0 pkt=0xff27 @67275
+[MON] PUSH if=2 pkt=0xff27 @67275
+[MON] PUSH if=3 pkt=0xff27 @67275
+T=67275 [Checker] PASS  [616] tx#183 if=0 type=EVT_PUSH packet=0xff27
+T=67275 [Checker] PASS  [617] tx#183 if=2 type=EVT_PUSH packet=0xff27
+T=67275 [Checker] PASS  [618] tx#183 if=3 type=EVT_PUSH packet=0xff27
+[DRV 1] pop recibido tx#184 @67300
+[MON] POP  if=1 pkt=0xff55 @67305
+T=67305 [Checker] PASS  [619] tx#184 if=1 type=EVT_POP packet=0xff55
+[DRV 1] ofrecido tx#185 pkt=0xff11 @67360
+[DRV 2] pop recibido tx#285 @67500
+[MON] POP  if=2 pkt=0xffff @67505
+T=67505 [Checker] PASS  [620] tx#285 if=2 type=EVT_POP packet=0xffff
+[DRV 2] ofrecido tx#286 pkt=0x0206 @67600
+[DRV 3] pop recibido tx#385 @67700
+[MON] POP  if=3 pkt=0x03d5 @67705
+T=67705 [Checker] PASS  [621] tx#385 if=3 type=EVT_POP packet=0x3d5
+[DRV 3] ofrecido tx#386 pkt=0xb0d4 @67820
+[DRV 0] pop recibido tx#85 @67900
+[MON] POP  if=0 pkt=0x64fe @67905
+T=67905 [Checker] PASS  [622] tx#85 if=0 type=EVT_POP packet=0x64fe
+[DRV 0] ofrecido tx#86 pkt=0x02ff @67920
+[MON] PUSH if=0 pkt=0xff55 @68075
+[MON] PUSH if=2 pkt=0xff55 @68075
+[MON] PUSH if=3 pkt=0xff55 @68075
+T=68075 [Checker] PASS  [623] tx#341 if=0 type=EVT_PUSH packet=0xff55
+T=68075 [Checker] PASS  [624] tx#184 if=2 type=EVT_PUSH packet=0xff55
+T=68075 [Checker] PASS  [625] tx#184 if=3 type=EVT_PUSH packet=0xff55
+[DRV 1] pop recibido tx#185 @68100
+[MON] POP  if=1 pkt=0xff11 @68105
+T=68105 [Checker] PASS  [626] tx#185 if=1 type=EVT_POP packet=0xff11
+[DRV 1] ofrecido tx#186 pkt=0xff76 @68150
+[MON] PUSH if=0 pkt=0xffff @68275
+[MON] PUSH if=1 pkt=0xffff @68275
+[MON] PUSH if=3 pkt=0xffff @68275
+T=68275 [Checker] PASS  [627] tx#323 if=0 type=EVT_PUSH packet=0xffff
+T=68275 [Checker] PASS  [628] tx#323 if=1 type=EVT_PUSH packet=0xffff
+T=68275 [Checker] PASS  [629] tx#250 if=3 type=EVT_PUSH packet=0xffff
+[DRV 2] pop recibido tx#286 @68300
+[MON] POP  if=2 pkt=0x0206 @68305
+T=68305 [Checker] PASS  [630] tx#286 if=2 type=EVT_POP packet=0x206
+[DRV 2] ofrecido tx#287 pkt=0xe955 @68330
+[DRV 3] pop recibido tx#386 @68500
+[MON] POP  if=3 pkt=0xb0d4 @68505
+T=68505 [Checker] PASS  [631] tx#386 if=3 type=EVT_POP packet=0xb0d4
+[DRV 3] ofrecido tx#387 pkt=0x0355 @68600
+[DRV 0] pop recibido tx#86 @68700
+[MON] POP  if=0 pkt=0x02ff @68705
+T=68705 [Checker] PASS  [632] tx#86 if=0 type=EVT_POP packet=0x2ff
+[DRV 0] ofrecido tx#87 pkt=0x01aa @68780
+[MON] PUSH if=0 pkt=0xff11 @68875
+[MON] PUSH if=2 pkt=0xff11 @68875
+[MON] PUSH if=3 pkt=0xff11 @68875
+T=68875 [Checker] PASS  [633] tx#185 if=0 type=EVT_PUSH packet=0xff11
+T=68875 [Checker] PASS  [634] tx#185 if=2 type=EVT_PUSH packet=0xff11
+T=68875 [Checker] PASS  [635] tx#185 if=3 type=EVT_PUSH packet=0xff11
+[DRV 1] pop recibido tx#186 @68900
+[MON] POP  if=1 pkt=0xff76 @68905
+T=68905 [Checker] PASS  [636] tx#186 if=1 type=EVT_POP packet=0xff76
+[DRV 1] ofrecido tx#187 pkt=0x39ff @68940
+[DRV 2] pop recibido tx#287 @69100
+[MON] POP  if=2 pkt=0xe955 @69105
+T=69105 [Checker] PASS  [637] tx#287 if=2 type=EVT_POP packet=0xe955
+[DRV 2] ofrecido tx#288 pkt=0xff42 @69220
+[DRV 3] pop recibido tx#387 @69300
+[MON] POP  if=3 pkt=0x0355 @69305
+T=69305 [Checker] PASS  [638] tx#387 if=3 type=EVT_POP packet=0x355
+[DRV 3] ofrecido tx#388 pkt=0x2305 @69390
+[MON] PUSH if=2 pkt=0x02ff @69475
+T=69475 [Checker] PASS  [639] tx#142 if=2 type=EVT_PUSH packet=0x2ff
+[DRV 0] pop recibido tx#87 @69500
+[MON] POP  if=0 pkt=0x01aa @69505
+T=69505 [Checker] PASS  [640] tx#87 if=0 type=EVT_POP packet=0x1aa
+[DRV 0] ofrecido tx#88 pkt=0xff00 @69530
+[MON] PUSH if=0 pkt=0xff76 @69675
+[MON] PUSH if=2 pkt=0xff76 @69675
+[MON] PUSH if=3 pkt=0xff76 @69675
+T=69675 [Checker] PASS  [641] tx#186 if=0 type=EVT_PUSH packet=0xff76
+T=69675 [Checker] PASS  [642] tx#186 if=2 type=EVT_PUSH packet=0xff76
+T=69675 [Checker] PASS  [643] tx#186 if=3 type=EVT_PUSH packet=0xff76
+[DRV 1] pop recibido tx#187 @69700
+[MON] POP  if=1 pkt=0x39ff @69705
+T=69705 [Checker] PASS  [644] tx#187 if=1 type=EVT_POP packet=0x39ff
+[DRV 1] ofrecido tx#188 pkt=0x1e00 @69780
+[DRV 2] pop recibido tx#288 @69900
+[MON] POP  if=2 pkt=0xff42 @69905
+T=69905 [Checker] PASS  [645] tx#288 if=2 type=EVT_POP packet=0xff42
+[DRV 2] ofrecido tx#289 pkt=0x92ba @69980
+[DRV 3] pop recibido tx#388 @70100
+[MON] POP  if=3 pkt=0x2305 @70105
+T=70105 [Checker] PASS  [646] tx#388 if=3 type=EVT_POP packet=0x2305
+[DRV 3] ofrecido tx#389 pkt=0x2bff @70140
+[MON] PUSH if=1 pkt=0x01aa @70275
+T=70275 [Checker] PASS  [647] tx#262 if=1 type=EVT_PUSH packet=0x1aa
+[DRV 0] pop recibido tx#88 @70300
+[MON] POP  if=0 pkt=0xff00 @70305
+T=70305 [Checker] PASS  [648] tx#88 if=0 type=EVT_POP packet=0xff00
+[DRV 0] ofrecido tx#89 pkt=0x03e6 @70420
+[DRV 1] pop recibido tx#188 @70500
+[MON] POP  if=1 pkt=0x1e00 @70505
+T=70505 [Checker] PASS  [649] tx#188 if=1 type=EVT_POP packet=0x1e00
+[DRV 1] ofrecido tx#189 pkt=0x74d1 @70590
+[MON] PUSH if=0 pkt=0xff42 @70675
+[MON] PUSH if=1 pkt=0xff42 @70675
+[MON] PUSH if=3 pkt=0xff42 @70675
+T=70675 [Checker] PASS  [650] tx#288 if=0 type=EVT_PUSH packet=0xff42
+T=70675 [Checker] PASS  [651] tx#288 if=1 type=EVT_PUSH packet=0xff42
+T=70675 [Checker] PASS  [652] tx#288 if=3 type=EVT_PUSH packet=0xff42
+[DRV 2] pop recibido tx#289 @70700
+[MON] POP  if=2 pkt=0x92ba @70705
+T=70705 [Checker] PASS  [653] tx#289 if=2 type=EVT_POP packet=0x92ba
+[DRV 2] ofrecido tx#290 pkt=0x03e9 @70770
+[DRV 3] pop recibido tx#389 @70900
+[MON] POP  if=3 pkt=0x2bff @70905
+T=70905 [Checker] PASS  [654] tx#389 if=3 type=EVT_POP packet=0x2bff
+[DRV 3] ofrecido tx#390 pkt=0xe499 @70950
+[MON] PUSH if=1 pkt=0xff00 @71075
+[MON] PUSH if=2 pkt=0xff00 @71075
+[MON] PUSH if=3 pkt=0xff00 @71075
+T=71075 [Checker] PASS  [655] tx#266 if=1 type=EVT_PUSH packet=0xff00
+T=71075 [Checker] PASS  [656] tx#169 if=2 type=EVT_PUSH packet=0xff00
+T=71075 [Checker] PASS  [657] tx#242 if=3 type=EVT_PUSH packet=0xff00
+[DRV 0] pop recibido tx#89 @71100
+[MON] POP  if=0 pkt=0x03e6 @71105
+T=71105 [Checker] PASS  [658] tx#89 if=0 type=EVT_POP packet=0x3e6
+[DRV 0] ofrecido tx#90 pkt=0xff9d @71120
+[DRV 1] pop recibido tx#189 @71300
+[MON] POP  if=1 pkt=0x74d1 @71305
+T=71305 [Checker] PASS  [659] tx#189 if=1 type=EVT_POP packet=0x74d1
+[DRV 1] ofrecido tx#190 pkt=0x01bc @71320
+[DRV 2] pop recibido tx#290 @71500
+[MON] POP  if=2 pkt=0x03e9 @71505
+T=71505 [Checker] PASS  [660] tx#290 if=2 type=EVT_POP packet=0x3e9
+[DRV 2] ofrecido tx#291 pkt=0x02ff @71560
+[DRV 3] pop recibido tx#390 @71700
+[MON] POP  if=3 pkt=0xe499 @71705
+T=71705 [Checker] PASS  [661] tx#390 if=3 type=EVT_POP packet=0xe499
+[DRV 3] ofrecido tx#391 pkt=0x488a @71730
+[MON] PUSH if=3 pkt=0x03e6 @71875
+T=71875 [Checker] PASS  [662] tx#89 if=3 type=EVT_PUSH packet=0x3e6
+[DRV 0] pop recibido tx#90 @71900
+[MON] POP  if=0 pkt=0xff9d @71905
+T=71905 [Checker] PASS  [663] tx#90 if=0 type=EVT_POP packet=0xff9d
+[DRV 0] ofrecido tx#91 pkt=0xd0aa @71920
+[DRV 1] pop recibido tx#190 @72100
+[MON] POP  if=1 pkt=0x01bc @72105
+T=72105 [Checker] PASS  [664] tx#190 if=1 type=EVT_POP packet=0x1bc
+[DRV 1] ofrecido tx#191 pkt=0x0100 @72170
+[MON] PUSH if=3 pkt=0x03e9 @72275
+T=72275 [Checker] PASS  [665] tx#290 if=3 type=EVT_PUSH packet=0x3e9
+[DRV 2] pop recibido tx#291 @72300
+[MON] POP  if=2 pkt=0x02ff @72305
+T=72305 [Checker] PASS  [666] tx#291 if=2 type=EVT_POP packet=0x2ff
+[DRV 2] ofrecido tx#292 pkt=0x4df9 @72390
+[DRV 3] pop recibido tx#391 @72500
+[MON] POP  if=3 pkt=0x488a @72505
+T=72505 [Checker] PASS  [667] tx#391 if=3 type=EVT_POP packet=0x488a
+[DRV 3] ofrecido tx#392 pkt=0xffaa @72560
+[MON] PUSH if=1 pkt=0xff9d @72675
+[MON] PUSH if=2 pkt=0xff9d @72675
+[MON] PUSH if=3 pkt=0xff9d @72675
+T=72675 [Checker] PASS  [668] tx#90 if=1 type=EVT_PUSH packet=0xff9d
+T=72675 [Checker] PASS  [669] tx#90 if=2 type=EVT_PUSH packet=0xff9d
+T=72675 [Checker] PASS  [670] tx#90 if=3 type=EVT_PUSH packet=0xff9d
+[DRV 0] pop recibido tx#91 @72700
+[MON] POP  if=0 pkt=0xd0aa @72705
+T=72705 [Checker] PASS  [671] tx#91 if=0 type=EVT_POP packet=0xd0aa
+[DRV 0] ofrecido tx#92 pkt=0xffff @72790
+[DRV 1] pop recibido tx#191 @72900
+[MON] POP  if=1 pkt=0x0100 @72905
+T=72905 [Checker] PASS  [672] tx#191 if=1 type=EVT_POP packet=0x100
+[DRV 1] ofrecido tx#192 pkt=0xffff @72980
+[DRV 2] pop recibido tx#292 @73100
+[MON] POP  if=2 pkt=0x4df9 @73105
+T=73105 [Checker] PASS  [673] tx#292 if=2 type=EVT_POP packet=0x4df9
+[DRV 2] ofrecido tx#293 pkt=0x0212 @73190
+[DRV 3] pop recibido tx#392 @73300
+[MON] POP  if=3 pkt=0xffaa @73305
+T=73305 [Checker] PASS  [674] tx#392 if=3 type=EVT_POP packet=0xffaa
+[DRV 3] ofrecido tx#393 pkt=0x0c00 @73350
+[DRV 0] pop recibido tx#92 @73500
+[MON] POP  if=0 pkt=0xffff @73505
+T=73505 [Checker] PASS  [675] tx#92 if=0 type=EVT_POP packet=0xffff
+[DRV 0] ofrecido tx#93 pkt=0xca55 @73600
+[DRV 1] pop recibido tx#192 @73700
+[MON] POP  if=1 pkt=0xffff @73705
+T=73705 [Checker] PASS  [676] tx#192 if=1 type=EVT_POP packet=0xffff
+[DRV 1] ofrecido tx#193 pkt=0xff00 @73780
+[DRV 2] pop recibido tx#293 @73900
+[MON] POP  if=2 pkt=0x0212 @73905
+T=73905 [Checker] PASS  [677] tx#293 if=2 type=EVT_POP packet=0x212
+[DRV 2] ofrecido tx#294 pkt=0x0299 @74010
+[MON] PUSH if=0 pkt=0xffaa @74075
+[MON] PUSH if=1 pkt=0xffaa @74075
+[MON] PUSH if=2 pkt=0xffaa @74075
+T=74075 [Checker] PASS  [678] tx#362 if=0 type=EVT_PUSH packet=0xffaa
+T=74075 [Checker] PASS  [679] tx#362 if=1 type=EVT_PUSH packet=0xffaa
+T=74075 [Checker] PASS  [680] tx#392 if=2 type=EVT_PUSH packet=0xffaa
+[DRV 3] pop recibido tx#393 @74100
+[MON] POP  if=3 pkt=0x0c00 @74105
+T=74105 [Checker] PASS  [681] tx#393 if=3 type=EVT_POP packet=0xc00
+[DRV 3] ofrecido tx#394 pkt=0x03ff @74210
+[MON] PUSH if=1 pkt=0xffff @74275
+[MON] PUSH if=2 pkt=0xffff @74275
+[MON] PUSH if=3 pkt=0xffff @74275
+T=74275 [Checker] PASS  [682] tx#338 if=1 type=EVT_PUSH packet=0xffff
+T=74275 [Checker] PASS  [683] tx#323 if=2 type=EVT_PUSH packet=0xffff
+T=74275 [Checker] PASS  [684] tx#279 if=3 type=EVT_PUSH packet=0xffff
+[DRV 0] pop recibido tx#93 @74300
+[MON] POP  if=0 pkt=0xca55 @74305
+T=74305 [Checker] PASS  [685] tx#93 if=0 type=EVT_POP packet=0xca55
+[DRV 0] ofrecido tx#94 pkt=0xf54f @74370
+[MON] PUSH if=0 pkt=0xffff @74475
+[MON] PUSH if=2 pkt=0xffff @74475
+[MON] PUSH if=3 pkt=0xffff @74475
+T=74475 [Checker] PASS  [686] tx#338 if=0 type=EVT_PUSH packet=0xffff
+T=74475 [Checker] PASS  [687] tx#338 if=2 type=EVT_PUSH packet=0xffff
+T=74475 [Checker] PASS  [688] tx#285 if=3 type=EVT_PUSH packet=0xffff
+[DRV 1] pop recibido tx#193 @74500
+[MON] POP  if=1 pkt=0xff00 @74505
+T=74505 [Checker] PASS  [689] tx#193 if=1 type=EVT_POP packet=0xff00
+[DRV 1] ofrecido tx#194 pkt=0xecaa @74560
+[DRV 2] pop recibido tx#294 @74700
+[MON] POP  if=2 pkt=0x0299 @74705
+T=74705 [Checker] PASS  [690] tx#294 if=2 type=EVT_POP packet=0x299
+[DRV 2] ofrecido tx#295 pkt=0x02aa @74820
+[DRV 3] pop recibido tx#394 @74900
+[MON] POP  if=3 pkt=0x03ff @74905
+T=74905 [Checker] PASS  [691] tx#394 if=3 type=EVT_POP packet=0x3ff
+[DRV 3] ofrecido tx#395 pkt=0x00b4 @74940
+[DRV 0] pop recibido tx#94 @75100
+[MON] POP  if=0 pkt=0xf54f @75105
+T=75105 [Checker] PASS  [692] tx#94 if=0 type=EVT_POP packet=0xf54f
+[DRV 0] ofrecido tx#95 pkt=0xff55 @75170
+[MON] PUSH if=0 pkt=0xff00 @75275
+[MON] PUSH if=2 pkt=0xff00 @75275
+[MON] PUSH if=3 pkt=0xff00 @75275
+T=75275 [Checker] PASS  [693] tx#266 if=0 type=EVT_PUSH packet=0xff00
+T=75275 [Checker] PASS  [694] tx#193 if=2 type=EVT_PUSH packet=0xff00
+T=75275 [Checker] PASS  [695] tx#266 if=3 type=EVT_PUSH packet=0xff00
+[DRV 1] pop recibido tx#194 @75300
+[MON] POP  if=1 pkt=0xecaa @75305
+T=75305 [Checker] PASS  [696] tx#194 if=1 type=EVT_POP packet=0xecaa
+[DRV 1] ofrecido tx#195 pkt=0x01ce @75400
+[DRV 2] pop recibido tx#295 @75500
+[MON] POP  if=2 pkt=0x02aa @75505
+T=75505 [Checker] PASS  [697] tx#295 if=2 type=EVT_POP packet=0x2aa
+[DRV 2] ofrecido tx#296 pkt=0x6bfd @75600
+[DRV 3] pop recibido tx#395 @75700
+[MON] POP  if=3 pkt=0x00b4 @75705
+T=75705 [Checker] PASS  [698] tx#395 if=3 type=EVT_POP packet=0xb4
+[DRV 3] ofrecido tx#396 pkt=0x01d2 @75750
+[DRV 0] pop recibido tx#95 @75900
+[MON] POP  if=0 pkt=0xff55 @75905
+T=75905 [Checker] PASS  [699] tx#95 if=0 type=EVT_POP packet=0xff55
+[DRV 0] ofrecido tx#96 pkt=0x003f @75960
+[DRV 1] pop recibido tx#195 @76100
+[MON] POP  if=1 pkt=0x01ce @76105
+T=76105 [Checker] PASS  [700] tx#195 if=1 type=EVT_POP packet=0x1ce
+[DRV 1] ofrecido tx#196 pkt=0x021e @76190
+[DRV 2] pop recibido tx#296 @76300
+[MON] POP  if=2 pkt=0x6bfd @76305
+T=76305 [Checker] PASS  [701] tx#296 if=2 type=EVT_POP packet=0x6bfd
+[DRV 2] ofrecido tx#297 pkt=0x6c55 @76400
+[MON] PUSH if=0 pkt=0x00b4 @76475
+T=76475 [Checker] PASS  [702] tx#395 if=0 type=EVT_PUSH packet=0xb4
+[DRV 3] pop recibido tx#396 @76500
+[MON] POP  if=3 pkt=0x01d2 @76505
+T=76505 [Checker] PASS  [703] tx#396 if=3 type=EVT_POP packet=0x1d2
+[DRV 3] ofrecido tx#397 pkt=0xff55 @76620
+[MON] PUSH if=1 pkt=0xff55 @76675
+[MON] PUSH if=2 pkt=0xff55 @76675
+[MON] PUSH if=3 pkt=0xff55 @76675
+T=76675 [Checker] PASS  [704] tx#341 if=1 type=EVT_PUSH packet=0xff55
+T=76675 [Checker] PASS  [705] tx#341 if=2 type=EVT_PUSH packet=0xff55
+T=76675 [Checker] PASS  [706] tx#238 if=3 type=EVT_PUSH packet=0xff55
+[DRV 0] pop recibido tx#96 @76700
+[MON] POP  if=0 pkt=0x003f @76705
+T=76705 [Checker] PASS  [707] tx#96 if=0 type=EVT_POP packet=0x3f
+[DRV 0] ofrecido tx#97 pkt=0x49aa @76740
+[DRV 1] pop recibido tx#196 @76900
+[MON] POP  if=1 pkt=0x021e @76905
+T=76905 [Checker] PASS  [708] tx#196 if=1 type=EVT_POP packet=0x21e
+[DRV 1] ofrecido tx#197 pkt=0xaeff @77010
+[DRV 2] pop recibido tx#297 @77100
+[MON] POP  if=2 pkt=0x6c55 @77105
+T=77105 [Checker] PASS  [709] tx#297 if=2 type=EVT_POP packet=0x6c55
+[DRV 2] ofrecido tx#298 pkt=0xe044 @77170
+[MON] PUSH if=1 pkt=0x01d2 @77275
+T=77275 [Checker] PASS  [710] tx#396 if=1 type=EVT_PUSH packet=0x1d2
+[DRV 3] pop recibido tx#397 @77300
+[MON] POP  if=3 pkt=0xff55 @77305
+T=77305 [Checker] PASS  [711] tx#397 if=3 type=EVT_POP packet=0xff55
+[DRV 3] ofrecido tx#398 pkt=0x13b8 @77410
+[DRV 0] pop recibido tx#97 @77500
+[MON] POP  if=0 pkt=0x49aa @77505
+T=77505 [Checker] PASS  [712] tx#97 if=0 type=EVT_POP packet=0x49aa
+[DRV 0] ofrecido tx#98 pkt=0xf0cb @77530
+[MON] PUSH if=2 pkt=0x021e @77675
+T=77675 [Checker] PASS  [713] tx#196 if=2 type=EVT_PUSH packet=0x21e
+[DRV 1] pop recibido tx#197 @77700
+[MON] POP  if=1 pkt=0xaeff @77705
+T=77705 [Checker] PASS  [714] tx#197 if=1 type=EVT_POP packet=0xaeff
+[DRV 1] ofrecido tx#198 pkt=0x8259 @77760
+[DRV 2] pop recibido tx#298 @77900
+[MON] POP  if=2 pkt=0xe044 @77905
+T=77905 [Checker] PASS  [715] tx#298 if=2 type=EVT_POP packet=0xe044
+[DRV 2] ofrecido tx#299 pkt=0xffaa @77930
+[MON] PUSH if=0 pkt=0xff55 @78075
+[MON] PUSH if=1 pkt=0xff55 @78075
+[MON] PUSH if=2 pkt=0xff55 @78075
+T=78075 [Checker] PASS  [716] tx#397 if=0 type=EVT_PUSH packet=0xff55
+T=78075 [Checker] PASS  [717] tx#397 if=1 type=EVT_PUSH packet=0xff55
+T=78075 [Checker] PASS  [718] tx#397 if=2 type=EVT_PUSH packet=0xff55
+[DRV 3] pop recibido tx#398 @78100
+[MON] POP  if=3 pkt=0x13b8 @78105
+T=78105 [Checker] PASS  [719] tx#398 if=3 type=EVT_POP packet=0x13b8
+[DRV 3] ofrecido tx#399 pkt=0xffba @78140
+[DRV 0] pop recibido tx#98 @78300
+[MON] POP  if=0 pkt=0xf0cb @78305
+T=78305 [Checker] PASS  [720] tx#98 if=0 type=EVT_POP packet=0xf0cb
+[DRV 0] ofrecido tx#99 pkt=0xc217 @78370
+[DRV 1] pop recibido tx#198 @78500
+[MON] POP  if=1 pkt=0x8259 @78505
+T=78505 [Checker] PASS  [721] tx#198 if=1 type=EVT_POP packet=0x8259
+[DRV 1] ofrecido tx#199 pkt=0x0027 @78580
+[DRV 2] pop recibido tx#299 @78700
+[MON] POP  if=2 pkt=0xffaa @78705
+T=78705 [Checker] PASS  [722] tx#299 if=2 type=EVT_POP packet=0xffaa
+[DRV 3] pop recibido tx#399 @78900
+[MON] POP  if=3 pkt=0xffba @78905
+T=78905 [Checker] PASS  [723] tx#399 if=3 type=EVT_POP packet=0xffba
+[DRV 0] pop recibido tx#99 @79100
+[MON] POP  if=0 pkt=0xc217 @79105
+T=79105 [Checker] PASS  [724] tx#99 if=0 type=EVT_POP packet=0xc217
+[DRV 1] pop recibido tx#199 @79300
+[MON] POP  if=1 pkt=0x0027 @79305
+T=79305 [Checker] PASS  [725] tx#199 if=1 type=EVT_POP packet=0x27
+[MON] PUSH if=0 pkt=0xffaa @79475
+[MON] PUSH if=1 pkt=0xffaa @79475
+[MON] PUSH if=3 pkt=0xffaa @79475
+T=79475 [Checker] PASS  [726] tx#392 if=0 type=EVT_PUSH packet=0xffaa
+T=79475 [Checker] PASS  [727] tx#392 if=1 type=EVT_PUSH packet=0xffaa
+T=79475 [Checker] PASS  [728] tx#299 if=3 type=EVT_PUSH packet=0xffaa
+[MON] PUSH if=0 pkt=0xffba @79675
+[MON] PUSH if=1 pkt=0xffba @79675
+[MON] PUSH if=2 pkt=0xffba @79675
+T=79675 [Checker] PASS  [729] tx#399 if=0 type=EVT_PUSH packet=0xffba
+T=79675 [Checker] PASS  [730] tx#399 if=1 type=EVT_PUSH packet=0xffba
+T=79675 [Checker] PASS  [731] tx#399 if=2 type=EVT_PUSH packet=0xffba
+[MON] PUSH if=0 pkt=0x0027 @80075
+T=80075 [Checker] PASS  [732] tx#199 if=0 type=EVT_PUSH packet=0x27
+[TB] trafico terminado @80455
+
+================================================================
+  CHECKER - REPORTE FINAL   @80455 ns
+================================================================
+  Transacciones correctas  : 732
+  Transacciones con error  : 0
+  Esperados no observados  : 0
+  Transacciones PASS/FAIL  : 400 / 0
+  Retardo pop->push (ns)   : min=820  max=56930  prom=6741.2  (275 paquetes recibidos)
+  Reporte CSV              : escrito (580 filas)
+  Round Robin              : 1185 verificaciones, 0 violaciones
+----------------------------------------------------------------
+  >>  RESULTADO: ** PASS ** - sin errores detectados
+================================================================
+
+========================================
+VERIFICATION SUMMARY
+========================================
+SEED        : 1234
+SCENARIO    : SC_RANDOM
+DRVRS       : 4
+PCKG_SZ     : 16
+BROADCAST   : 255
+NUM/TERM    : 100
+TOTAL       : 400
+PASS        : 400
+FAIL        : 0
+EVENT ERRORS: 0
+RESULT      : PASS
+========================================
+[TB] fin de simulacion @80455
+$finish called from file "/mnt/vol_NFS_rh003/Est_Veri_II2026/CASTRO_VELASQUEZ_ERIC_VeriII26/P1/Verificacion_funcional_2026/EDA_VCS/testbench.sv", line 228.
+$finish at simulation time                80455
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 80455
+CPU Time:      1.850 seconds;       Data structure size:   0.1Mb
+Fri Oct  2 23:14:21 2026
