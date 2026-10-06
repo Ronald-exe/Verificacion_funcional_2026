@@ -9,29 +9,39 @@ NUM ?= 50
 SEED ?= 1
 SCENARIOS ?= SC_RANDOM SC_BURST SC_CONCURRENT SC_BOUNDARY SC_MIXED
 SEEDS ?= 1 2 3
+BUILD_DIR = sim/eda_vcs/d$(DRVRS)_p$(PCKG_SZ)_b$(BROADCAST)/build
 RUN_DIR = sim/eda_vcs/d$(DRVRS)_p$(PCKG_SZ)_b$(BROADCAST)/$(SCENARIO)_n$(NUM)_s$(SEED)
 CSV ?= $(RUN_DIR)/reporte_paquetes.csv
 PLOT ?= $(RUN_DIR)/histograma_retardos.png
+VCS_SETUP ?= /mnt/vol_NFS_rh003/estudiantes/archivos_config/synopsys_tools2.sh
 
-.PHONY: help run regression plot
+.PHONY: help compile run regression plot
 
 help:
 	@printf '%s\n' \
-	  'make run [DRVRS=4 PCKG_SZ=16 BITS=1 BROADCAST=255 SCENARIO=SC_MIXED NUM=50 SEED=1]' \
+	  'make compile [DRVRS=4 PCKG_SZ=16 BITS=1 BROADCAST=255]' \
+	  'make run [DRVRS=4 PCKG_SZ=16 BROADCAST=255 SCENARIO=SC_MIXED NUM=50 SEED=1]' \
 	  'NUM is the number of transactions generated per source/interface' \
+	  'Compile once for each DRVRS/PCKG_SZ/BROADCAST combination before make run' \
 	  'make regression [SCENARIOS="SC_RANDOM SC_MIXED" SEEDS="1 2 3"]' \
 	  'make plot [CSV=sim/eda_vcs/.../reporte_paquetes.csv]'
 
+compile:
+	@DRVRS='$(DRVRS)' PCKG_SZ='$(PCKG_SZ)' BITS='$(BITS)' BROADCAST='$(BROADCAST)' \
+	 VCS_SETUP='$(VCS_SETUP)' bash ./scripts/run_eda_vcs.sh compile
+
 run:
 	@DRVRS='$(DRVRS)' PCKG_SZ='$(PCKG_SZ)' BITS='$(BITS)' BROADCAST='$(BROADCAST)' \
-	 SCENARIO='$(SCENARIO)' NUM='$(NUM)' SEED='$(SEED)' bash ./scripts/run_eda_vcs.sh
+	 SCENARIO='$(SCENARIO)' NUM='$(NUM)' SEED='$(SEED)' VCS_SETUP='$(VCS_SETUP)' \
+	 bash ./scripts/run_eda_vcs.sh run
 
 regression:
 	@set -eu; \
 	for scenario in $(SCENARIOS); do \
 	  for seed in $(SEEDS); do \
 	    DRVRS='$(DRVRS)' PCKG_SZ='$(PCKG_SZ)' BITS='$(BITS)' BROADCAST='$(BROADCAST)' \
-	    SCENARIO="$$scenario" NUM='$(NUM)' SEED="$$seed" bash ./scripts/run_eda_vcs.sh; \
+	    SCENARIO="$$scenario" NUM='$(NUM)' SEED="$$seed" VCS_SETUP='$(VCS_SETUP)' \
+	    bash ./scripts/run_eda_vcs.sh run; \
 	  done; \
 	done
 

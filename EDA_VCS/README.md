@@ -66,8 +66,27 @@ Repetir los mismos Compile Options y Run Options debe reproducir el mismo
 estímulo. Para cambiar entre perfiles, usar `SC_RANDOM`, `SC_BURST`,
 `SC_CONCURRENT`, `SC_BOUNDARY` o `SC_MIXED`.
 
-La ejecución local con Makefile/runner es secundaria y aún no está validada;
-la primera validación de estos cambios se realizará en EDA Playground.
+### Ejecución local separando compilación y pruebas
+
+La compilación fija los parámetros estructurales del DUT. Se realiza una vez
+por cada combinación de `DRVRS`, `PCKG_SZ` y `BROADCAST`:
+
+```sh
+make compile DRVRS=4 PCKG_SZ=16 BROADCAST=255
+```
+
+Después, cada prueba reutiliza ese ejecutable y solo cambia los plusargs de
+simulación (`SCENARIO`, `NUM`, `SEED`):
+
+```sh
+make run DRVRS=4 PCKG_SZ=16 BROADCAST=255 SCENARIO=SC_MIXED NUM=10 SEED=21
+make regression DRVRS=4 PCKG_SZ=16 BROADCAST=255 SCENARIOS="SC_RANDOM SC_MIXED" SEEDS="1 2 3" NUM=10
+```
+
+`make run` y `make regression` no compilan automáticamente. Si no existe un
+ejecutable para esa combinación estructural, primero hay que ejecutar
+`make compile`. Los ejecutables se guardan en `sim/eda_vcs/.../build/`; cada
+corrida guarda su log, `dump.vcd` y CSV en un directorio separado.
 
 Para descargar el CSV, marcar **"Download files after run"** en el panel izquierdo.
 

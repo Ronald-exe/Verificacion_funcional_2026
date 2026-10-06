@@ -225,7 +225,10 @@ module tb_top;
     $display("========================================");
 
     $display("[TB] fin de simulacion @%0t", $time);
-    $finish;
+    if (env.chk.final_pass)
+      $finish;
+    else
+      $fatal(1, "[TB] Verificacion funcional fallida");
   end
 
 endmodule
