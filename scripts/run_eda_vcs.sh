@@ -103,7 +103,7 @@ if [[ "$ACTION" == compile ]]; then
     -kdb \
     -lca \
     -debug_access+all \
-    -debug_region+cell+encrypt \
+    -debug_region+design+cell+encrypt \
     +lint=TFIPC-L \
     -top tb_top \
     "+incdir+$TB_DIR" \

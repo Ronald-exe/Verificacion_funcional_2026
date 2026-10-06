@@ -148,7 +148,6 @@ module tb_top;
 
     // Ondas
     $dumpfile("dump.vcd");
-    $dumpvars(0, bus_if_inst);
     $dumpvars(0, dut);
 
     // Reset
