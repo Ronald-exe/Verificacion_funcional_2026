@@ -13,6 +13,7 @@ BUILD_DIR = sim/eda_vcs/d$(DRVRS)_p$(PCKG_SZ)_b$(BROADCAST)/build
 RUN_DIR = sim/eda_vcs/d$(DRVRS)_p$(PCKG_SZ)_b$(BROADCAST)/$(SCENARIO)_n$(NUM)_s$(SEED)
 CSV ?= $(RUN_DIR)/reporte_paquetes.csv
 PLOT ?= $(RUN_DIR)/histograma_retardos.png
+ANCHO ?= 50
 VCS_SETUP ?= /mnt/vol_NFS_rh003/estudiantes/archivos_config/synopsys_tools2.sh
 
 .PHONY: help compile run regression plot
@@ -24,7 +25,7 @@ help:
 	  'NUM is the number of transactions generated per source/interface' \
 	  'Compile once for each DRVRS/PCKG_SZ/BROADCAST combination before make run' \
 	  'make regression [SCENARIOS="SC_RANDOM SC_MIXED" SEEDS="1 2 3"]' \
-	  'make plot [CSV=sim/eda_vcs/.../reporte_paquetes.csv]'
+	  'make plot [ANCHO=50 CSV=sim/eda_vcs/.../reporte_paquetes.csv]'
 
 compile:
 	@DRVRS='$(DRVRS)' PCKG_SZ='$(PCKG_SZ)' BITS='$(BITS)' BROADCAST='$(BROADCAST)' \
@@ -48,5 +49,6 @@ regression:
 plot:
 	@test -f "$(CSV)" || { echo "CSV no encontrado: $(CSV)" >&2; exit 1; }
 	@command -v gnuplot >/dev/null 2>&1 || { echo "gnuplot no esta disponible" >&2; exit 127; }
+	@test "$(ANCHO)" -gt 0 || { echo "ANCHO debe ser un entero mayor que cero" >&2; exit 2; }
 	@mkdir -p "$(dir $(PLOT))"
-	@gnuplot -e "archivo='$(CSV)'; salida='$(PLOT)'" EDA_VCS/histograma.gp
+	@gnuplot -e "archivo='$(CSV)'; salida='$(PLOT)'; ancho=$(ANCHO)" EDA_VCS/histograma.gp

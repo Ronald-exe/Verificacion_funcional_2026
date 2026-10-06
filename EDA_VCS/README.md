@@ -194,15 +194,21 @@ indistinguibles no puede garantizarse.
 
 En EDA Playground, descargar el CSV y ejecutar GNUplot en un entorno que lo
 tenga instalado. Para una corrida local, reutilizar `make plot` con los mismos
-parámetros de configuración:
+parámetros de configuración. `ANCHO` controla el ancho de cada barra en ns
+(default 50); prueba un valor menor para ver más detalle o uno mayor para
+agrupar más observaciones:
 
 ```
-make plot SCENARIO=SC_MIXED NUM=10 SEED=1
-make plot CSV=reporte_paquetes.csv PLOT=histograma.png
+make plot DRVRS=8 PCKG_SZ=32 BROADCAST=200 SCENARIO=SC_RANDOM NUM=5000 SEED=1 ANCHO=10
+make plot DRVRS=8 PCKG_SZ=32 BROADCAST=200 SCENARIO=SC_RANDOM NUM=5000 SEED=1 ANCHO=100
+make plot CSV=reporte_paquetes.csv PLOT=histograma.png ANCHO=25
 ```
 
 El script `histograma.gp` usa únicamente la columna `delay` del CSV; las filas
 sin recepción y sin delay se omiten. El histograma no genera datos sintéticos.
+Los parámetros estructurales usados para `make plot` deben coincidir con los
+de la corrida que produjo el CSV. `PCKG_SZ` soportados son 16, 32 y 64; 35 no es
+una configuración válida del runner.
 
 ---
 
