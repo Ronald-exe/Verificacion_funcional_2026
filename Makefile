@@ -16,14 +16,15 @@ PLOT ?= $(RUN_DIR)/histograma_retardos.png
 ANCHO ?= 50
 VCS_SETUP ?= /mnt/vol_NFS_rh003/estudiantes/archivos_config/synopsys_tools2.sh
 
-.PHONY: help compile run regression plot
+.PHONY: help compile run regression plot verdi
 
 help:
 	@printf '%s\n' \
 	  'make compile [DRVRS=4 PCKG_SZ=16 BITS=1 BROADCAST=255]' \
 	  'make run [DRVRS=4 PCKG_SZ=16 BROADCAST=255 SCENARIO=SC_MIXED NUM=50 SEED=1]' \
+	  'make verdi [DRVRS=4 PCKG_SZ=16 BROADCAST=255 SCENARIO=SC_MIXED NUM=50 SEED=1]' \
 	  'NUM is the number of transactions generated per source/interface' \
-	  'Compile once for each DRVRS/PCKG_SZ/BROADCAST combination before make run' \
+	  'Compile once per structural configuration; run before verdi' \
 	  'make regression [SCENARIOS="SC_RANDOM SC_MIXED" SEEDS="1 2 3"]' \
 	  'make plot [ANCHO=50 CSV=sim/eda_vcs/.../reporte_paquetes.csv]'
 
@@ -35,6 +36,11 @@ run:
 	@DRVRS='$(DRVRS)' PCKG_SZ='$(PCKG_SZ)' BITS='$(BITS)' BROADCAST='$(BROADCAST)' \
 	 SCENARIO='$(SCENARIO)' NUM='$(NUM)' SEED='$(SEED)' VCS_SETUP='$(VCS_SETUP)' \
 	 bash ./scripts/run_eda_vcs.sh run
+
+verdi:
+	@DRVRS='$(DRVRS)' PCKG_SZ='$(PCKG_SZ)' BITS='$(BITS)' BROADCAST='$(BROADCAST)' \
+	 SCENARIO='$(SCENARIO)' NUM='$(NUM)' SEED='$(SEED)' VCS_SETUP='$(VCS_SETUP)' \
+	 bash ./scripts/run_eda_vcs.sh verdi
 
 regression:
 	@set -eu; \

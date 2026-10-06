@@ -80,6 +80,7 @@ simulación (`SCENARIO`, `NUM`, `SEED`):
 
 ```sh
 make run DRVRS=4 PCKG_SZ=16 BROADCAST=255 SCENARIO=SC_MIXED NUM=10 SEED=21
+make verdi DRVRS=4 PCKG_SZ=16 BROADCAST=255 SCENARIO=SC_MIXED NUM=10 SEED=21
 make regression DRVRS=4 PCKG_SZ=16 BROADCAST=255 SCENARIOS="SC_RANDOM SC_MIXED" SEEDS="1 2 3" NUM=10
 ```
 
@@ -87,6 +88,10 @@ make regression DRVRS=4 PCKG_SZ=16 BROADCAST=255 SCENARIOS="SC_RANDOM SC_MIXED" 
 ejecutable para esa combinación estructural, primero hay que ejecutar
 `make compile`. Los ejecutables se guardan en `sim/eda_vcs/.../build/`; cada
 corrida guarda su log, `dump.vcd` y CSV en un directorio separado.
+`make verdi` abre la base KDB generada al compilar junto con el `dump.vcd` de la
+corrida seleccionada. Se debe ejecutar después de `make compile` y `make run`,
+con los mismos parámetros estructurales y de prueba; en una conexión remota el
+servidor necesita una sesión gráfica/X11 disponible.
 
 Para descargar el CSV, marcar **"Download files after run"** en el panel izquierdo.
 

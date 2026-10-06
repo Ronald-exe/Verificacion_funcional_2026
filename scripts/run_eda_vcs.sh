@@ -16,8 +16,8 @@ SCENARIO="${SCENARIO:-SC_MIXED}"
 NUM="${NUM:-50}"
 SEED="${SEED:-1}"
 
-if [[ "$ACTION" != compile && "$ACTION" != run ]]; then
-  echo "Uso: $0 compile|run" >&2
+if [[ "$ACTION" != compile && "$ACTION" != run && "$ACTION" != verdi ]]; then
+  echo "Uso: $0 compile|run|verdi" >&2
   exit 2
 fi
 
@@ -37,7 +37,7 @@ if [[ ! "$BROADCAST" =~ ^[0-9]+$ ]] || (( 10#$BROADCAST > 255 )); then
   echo "ERROR: BROADCAST debe ser un entero entre 0 y 255 (recibido: $BROADCAST)" >&2
   exit 2
 fi
-if [[ "$ACTION" == run ]]; then
+if [[ "$ACTION" == run || "$ACTION" == verdi ]]; then
   case "$SCENARIO" in
     SC_RANDOM|SC_BURST|SC_CONCURRENT|SC_BOUNDARY|SC_MIXED) ;;
     *) echo "ERROR: perfil SCENARIO desconocido: $SCENARIO" >&2; exit 2 ;;
@@ -61,13 +61,34 @@ if [[ "$ACTION" == run && ! -x "$BUILD_DIR/simv" ]]; then
   exit 2
 fi
 
+RUN_DIR="$CONFIG_DIR/${SCENARIO}_n${NUM}_s${SEED}"
+if [[ "$ACTION" == verdi ]]; then
+  if [[ ! -f "$BUILD_DIR/simv.daidir/simv.kdb" ]]; then
+    echo "ERROR: no se encontro la base KDB de Verdi en $BUILD_DIR/simv.daidir." >&2
+    echo "Ejecute primero make compile con la misma configuracion estructural." >&2
+    exit 2
+  fi
+  if [[ ! -f "$RUN_DIR/dump.vcd" ]]; then
+    echo "ERROR: no se encontro el waveform $RUN_DIR/dump.vcd." >&2
+    echo "Ejecute primero make run con los mismos DRVRS/PCKG_SZ/BROADCAST/SCENARIO/NUM/SEED." >&2
+    exit 2
+  fi
+fi
+
 if [[ -f "$VCS_SETUP" ]]; then
   # shellcheck source=/dev/null
   source "$VCS_SETUP"
 fi
-if ! command -v vcs >/dev/null 2>&1; then
-  echo "ERROR: no se encontro VCS. Configure VCS_SETUP o ejecute en el servidor Synopsys." >&2
-  exit 127
+if [[ "$ACTION" == verdi ]]; then
+  if ! command -v verdi >/dev/null 2>&1; then
+    echo "ERROR: no se encontro Verdi. Configure VCS_SETUP o ejecute en el servidor Synopsys." >&2
+    exit 127
+  fi
+else
+  if ! command -v vcs >/dev/null 2>&1; then
+    echo "ERROR: no se encontro VCS. Configure VCS_SETUP o ejecute en el servidor Synopsys." >&2
+    exit 127
+  fi
 fi
 
 if [[ "$ACTION" == compile ]]; then
@@ -97,7 +118,13 @@ if [[ "$ACTION" == compile ]]; then
   exit 0
 fi
 
-RUN_DIR="$CONFIG_DIR/${SCENARIO}_n${NUM}_s${SEED}"
+if [[ "$ACTION" == verdi ]]; then
+  echo "Abriendo Verdi: SCENARIO=$SCENARIO NUM=$NUM SEED=$SEED"
+  echo "KDB: $BUILD_DIR/simv.daidir/simv.kdb"
+  echo "VCD: $RUN_DIR/dump.vcd"
+  exec verdi -dbdir "$BUILD_DIR/simv.daidir" -ssf "$RUN_DIR/dump.vcd"
+fi
+
 mkdir -p "$RUN_DIR"
 cd "$RUN_DIR"
 echo "Ejecutando: SCENARIO=$SCENARIO NUM=$NUM/source SEED=$SEED"
