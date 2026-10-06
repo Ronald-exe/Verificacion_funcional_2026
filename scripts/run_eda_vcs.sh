@@ -102,7 +102,7 @@ if [[ "$ACTION" == compile ]]; then
     -sverilog \
     -kdb \
     -lca \
-    -debug_acc+all \
+    -debug_access+all \
     -debug_region+cell+encrypt \
     +lint=TFIPC-L \
     -top tb_top \
