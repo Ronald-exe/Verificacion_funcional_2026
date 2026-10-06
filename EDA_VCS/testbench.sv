@@ -78,7 +78,8 @@ module tb_top;
 
   // Ciclos extra tras el último pop para que llegue el último push
   // (serialización de un paquete completo más margen)
-  localparam int DRAIN_CYCLES = 4*pckg_sz + 50;
+  localparam int DRAIN_CYCLES_DEFAULT = 4*pckg_sz + 50;
+  int unsigned drain_cycles;
 
   int unsigned num_transactions;
   int unsigned total_transactions;
@@ -136,15 +137,19 @@ module tb_top;
     end
     void'($value$plusargs("NUM=%d", num_transactions));
     void'($value$plusargs("SEED=%d", seed));
+    drain_cycles = DRAIN_CYCLES_DEFAULT;
+    void'($value$plusargs("DRAIN_CYCLES=%d", drain_cycles));
 
     if (broadcast < drvrs)
       $fatal(1, "[TB] BROADCAST=%0d colisiona con IDs validos 0..%0d", broadcast, drvrs-1);
+    if (drain_cycles == 0)
+      $fatal(1, "[TB] DRAIN_CYCLES debe ser mayor que cero");
     if (drvrs == 0 || num_transactions > (32'hFFFF_FFFF / drvrs))
       $fatal(1, "[TB] NUM=%0d por terminal excede el rango para drvrs=%0d", num_transactions, drvrs);
     total_transactions = num_transactions * drvrs;
     SIM_CYCLES = (longint'(total_transactions) * (pckg_sz + 16) * 3) +
                  (longint'(total_transactions) * (DELAY_MAX + 1)) +
-                 DRAIN_CYCLES + 1000;
+                 drain_cycles + 1000;
 
     // Ondas
     $dumpfile("dump.vcd");
@@ -162,6 +167,7 @@ module tb_top;
           drvrs, pckg_sz, broadcast, num_transactions, total_transactions);
     $display("  seed=%0d", seed);
     $display("  scenario=%s", scenario.name());
+    $display("  drain_cycles=%0d", drain_cycles);
     if (DELAY_MIN > DELAY_MAX)
       $fatal(1, "[TB] DELAY_MIN=%0d > DELAY_MAX=%0d", DELAY_MIN, DELAY_MAX);
     $display("  arrival_delta=[%0d:%0d] ciclos", DELAY_MIN, DELAY_MAX);
@@ -190,7 +196,7 @@ module tb_top;
         fork
           begin
             while (!env.idle()) @(posedge clk);
-            repeat (DRAIN_CYCLES) @(posedge clk);
+            repeat (drain_cycles) @(posedge clk);
             $display("[TB] trafico terminado @%0t", $time);
           end
           begin

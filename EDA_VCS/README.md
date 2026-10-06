@@ -80,6 +80,7 @@ simulación (`SCENARIO`, `NUM`, `SEED`):
 
 ```sh
 make run DRVRS=4 PCKG_SZ=16 BROADCAST=255 SCENARIO=SC_MIXED NUM=10 SEED=21
+make run DRVRS=8 PCKG_SZ=32 BROADCAST=255 SCENARIO=SC_RANDOM NUM=500 SEED=20 DRAIN_CYCLES=5000
 make verdi DRVRS=4 PCKG_SZ=16 BROADCAST=255 SCENARIO=SC_MIXED NUM=10 SEED=21
 make regression DRVRS=4 PCKG_SZ=16 BROADCAST=255 SCENARIOS="SC_RANDOM SC_MIXED" SEEDS="1 2 3" NUM=10
 ```
@@ -88,6 +89,9 @@ make regression DRVRS=4 PCKG_SZ=16 BROADCAST=255 SCENARIOS="SC_RANDOM SC_MIXED" 
 ejecutable para esa combinación estructural, primero hay que ejecutar
 `make compile`. Los ejecutables se guardan en `sim/eda_vcs/.../build/`; cada
 corrida guarda su log, `dump.vcd` y CSV en un directorio separado.
+`DRAIN_CYCLES` es un plusarg opcional de ejecución; si se omite, el testbench
+usa `4*PCKG_SZ+50`. Se imprime el valor efectivo en el encabezado del log. No
+requiere recompilar para cambiarlo.
 `make verdi` abre la base KDB generada al compilar junto con el `dump.vcd` de la
 corrida seleccionada. Se debe ejecutar después de `make compile` y `make run`,
 con los mismos parámetros estructurales y de prueba; en una conexión remota el
@@ -95,12 +99,16 @@ servidor necesita una sesión gráfica/X11 disponible.
 
 Si Verdi muestra `NF` en una señal interna, recompila y vuelve a ejecutar para
 regenerar el KDB y el VCD con la misma configuración. La compilación habilita
-`-kdb`, `-debug_access+all` y la región `design`; el testbench vuelca la
-jerarquía de `dut`.
-Busca `pndng`, `pop` y `push` bajo `tb_top.dut`. Si la señal no aparece en
-`dump.vcd`, no fue incluida en el waveform; si aparece, confirma que Verdi abrió
-el KDB de `build/` que corresponde a esa misma compilación, no una base antigua
-de otra corrida/configuración.
+`-kdb` y `-debug_access+all`; no se usa `-debug_region`, porque `design` no es
+un valor reconocido por VCS R-2020.12. El VCD contiene `pndng`, `pop` y `push`
+en cada interfaz generada, por ejemplo bajo
+`tb_top.dut.BUS[0].ID[0].ntrfs`; `ID[1]` a `ID[7]` corresponden a las demás
+interfaces cuando `DRVRS=8`. Busca las señales en esa jerarquía, no como
+`tb_top.dut.pndng`.
+
+Si las señales aparecen en `dump.vcd` pero Verdi muestra `NF`, confirma que
+Verdi abrió el KDB de `build/` de la misma compilación que produjo ese VCD, no
+una base antigua de otra configuración.
 
 Para descargar el CSV, marcar **"Download files after run"** en el panel izquierdo.
 

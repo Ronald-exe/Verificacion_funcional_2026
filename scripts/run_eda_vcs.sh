@@ -15,6 +15,7 @@ BROADCAST="${BROADCAST:-255}"
 SCENARIO="${SCENARIO:-SC_MIXED}"
 NUM="${NUM:-50}"
 SEED="${SEED:-1}"
+DRAIN_CYCLES="${DRAIN_CYCLES:-}"
 
 if [[ "$ACTION" != compile && "$ACTION" != run && "$ACTION" != verdi ]]; then
   echo "Uso: $0 compile|run|verdi" >&2
@@ -48,6 +49,11 @@ if [[ "$ACTION" == run || "$ACTION" == verdi ]]; then
   fi
   if [[ ! "$SEED" =~ ^[0-9]+$ ]]; then
     echo "ERROR: SEED debe ser un entero no negativo (recibido: $SEED)" >&2
+    exit 2
+  fi
+  if [[ -n "$DRAIN_CYCLES" && ! "$DRAIN_CYCLES" =~ ^[0-9]+$ ]] ||
+     [[ "$DRAIN_CYCLES" == 0 ]]; then
+    echo "ERROR: DRAIN_CYCLES debe ser un entero mayor que cero (recibido: $DRAIN_CYCLES)" >&2
     exit 2
   fi
 fi
@@ -103,7 +109,6 @@ if [[ "$ACTION" == compile ]]; then
     -kdb \
     -lca \
     -debug_access+all \
-    -debug_region+design+cell+encrypt \
     +lint=TFIPC-L \
     -top tb_top \
     "+incdir+$TB_DIR" \
@@ -130,7 +135,12 @@ cd "$RUN_DIR"
 echo "Ejecutando: SCENARIO=$SCENARIO NUM=$NUM/source SEED=$SEED"
 echo "Resultados: $RUN_DIR"
 
-if ! "$BUILD_DIR/simv" "+SCENARIO=$SCENARIO" "+NUM=$NUM" "+SEED=$SEED" -l simulation.log; then
+sim_args=("+SCENARIO=$SCENARIO" "+NUM=$NUM" "+SEED=$SEED")
+if [[ -n "$DRAIN_CYCLES" ]]; then
+  sim_args+=("+DRAIN_CYCLES=$DRAIN_CYCLES")
+fi
+
+if ! "$BUILD_DIR/simv" "${sim_args[@]}" -l simulation.log; then
   echo "ERROR: simulacion fallida; revisar $RUN_DIR/simulation.log" >&2
   exit 1
 fi

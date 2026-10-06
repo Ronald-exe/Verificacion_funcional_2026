@@ -7,6 +7,7 @@ BROADCAST ?= 255
 SCENARIO ?= SC_MIXED
 NUM ?= 50
 SEED ?= 1
+DRAIN_CYCLES ?=
 SCENARIOS ?= SC_RANDOM SC_BURST SC_CONCURRENT SC_BOUNDARY SC_MIXED
 SEEDS ?= 1 2 3
 BUILD_DIR = sim/eda_vcs/d$(DRVRS)_p$(PCKG_SZ)_b$(BROADCAST)/build
@@ -22,6 +23,7 @@ help:
 	@printf '%s\n' \
 	  'make compile [DRVRS=4 PCKG_SZ=16 BITS=1 BROADCAST=255]' \
 	  'make run [DRVRS=4 PCKG_SZ=16 BROADCAST=255 SCENARIO=SC_MIXED NUM=50 SEED=1]' \
+	  'make run ... DRAIN_CYCLES=5000 (optional; default is 4*PCKG_SZ+50)' \
 	  'make verdi [DRVRS=4 PCKG_SZ=16 BROADCAST=255 SCENARIO=SC_MIXED NUM=50 SEED=1]' \
 	  'NUM is the number of transactions generated per source/interface' \
 	  'Compile once per structural configuration; run before verdi' \
@@ -34,7 +36,7 @@ compile:
 
 run:
 	@DRVRS='$(DRVRS)' PCKG_SZ='$(PCKG_SZ)' BITS='$(BITS)' BROADCAST='$(BROADCAST)' \
-	 SCENARIO='$(SCENARIO)' NUM='$(NUM)' SEED='$(SEED)' VCS_SETUP='$(VCS_SETUP)' \
+	 SCENARIO='$(SCENARIO)' NUM='$(NUM)' SEED='$(SEED)' DRAIN_CYCLES='$(DRAIN_CYCLES)' VCS_SETUP='$(VCS_SETUP)' \
 	 bash ./scripts/run_eda_vcs.sh run
 
 verdi:
@@ -47,7 +49,7 @@ regression:
 	for scenario in $(SCENARIOS); do \
 	  for seed in $(SEEDS); do \
 	    DRVRS='$(DRVRS)' PCKG_SZ='$(PCKG_SZ)' BITS='$(BITS)' BROADCAST='$(BROADCAST)' \
-	    SCENARIO="$$scenario" NUM='$(NUM)' SEED="$$seed" VCS_SETUP='$(VCS_SETUP)' \
+	    SCENARIO="$$scenario" NUM='$(NUM)' SEED="$$seed" DRAIN_CYCLES='$(DRAIN_CYCLES)' VCS_SETUP='$(VCS_SETUP)' \
 	    bash ./scripts/run_eda_vcs.sh run; \
 	  done; \
 	done
