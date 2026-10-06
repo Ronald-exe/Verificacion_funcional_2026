@@ -96,9 +96,11 @@ servidor necesita una sesión gráfica/X11 disponible.
 Si Verdi muestra `NF` en una señal interna, recompila y vuelve a ejecutar para
 regenerar el KDB y el VCD con la misma configuración. La compilación habilita
 `-kdb` y `-debug_access+all`, y el testbench solicita volcar la jerarquía de
-`dut`. Si la señal no aparece en `dump.vcd`, no fue incluida en el waveform;
-si aparece, confirma que Verdi abrió el KDB de `build/` que corresponde a esa
-misma compilación, no una base antigua de otra corrida/configuración.
+`dut` y `bus_if_inst`. Busca las señales bajo `tb_top.dut` o
+`tb_top.bus_if_inst`, respectivamente. Si la señal no aparece en `dump.vcd`,
+no fue incluida en el waveform; si aparece, confirma que Verdi abrió el KDB de
+`build/` que corresponde a esa misma compilación, no una base antigua de otra
+corrida/configuración.
 
 Para descargar el CSV, marcar **"Download files after run"** en el panel izquierdo.
 
